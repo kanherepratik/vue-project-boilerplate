@@ -2,8 +2,23 @@ import Vue, { VNode } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import register from './config';
 
 Vue.config.productionTip = false;
+
+register();
+
+// if (SENTRY_ENV !== 'development') {
+//     import(/* webpackChunkName: "sentry" */ '@sentry/browser').then((Sentry) => {
+//         Sentry.init({
+//             dsn: 'https://d850ef5acf4f4addab2477c9523e6584@app.getsentry.com/1342484',
+//             integrations: [new Sentry.Integrations.Vue({ Vue })],
+//             environment: SENTRY_ENV
+//         });
+//     });
+// }
+
+// Vue.prototype.STATIC_URL = STATIC_URL;
 
 new Vue({
     router,

@@ -26,6 +26,7 @@ module.exports = {
         'no-template-curly-in-string': 'error',
         '@typescript-eslint/indent': 'error',
         'prefer-arrow-callback': 'error',
+        "class-methods-use-this": "off",
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/no-useless-constructor': 'error',
         '@typescript-eslint/default-param-last': 'error',
@@ -38,15 +39,6 @@ module.exports = {
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/naming-convention': [
             'error',
-            {
-                selector: 'default',
-                format: ['camelCase','PascalCase']
-            },
-
-            {
-                selector: 'variable',
-                format: ['camelCase', 'UPPER_CASE']
-            },
             {
                 selector: 'parameter',
                 format: ['camelCase'],

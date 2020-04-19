@@ -1,29 +1,30 @@
 import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue';
+import Router from 'vue-router';
+import { ROUTES } from '@/shared/constants';
+import { lazyLoad } from './utils';
+import configureRouteGuard from './config';
 
-Vue.use(VueRouter);
+Vue.use(Router);
 
-const routes: Array<RouteConfig> = [
-    {
-        path: '/',
-        name: 'Home',
-        component: Home
-    },
-    {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    }
-];
-
-const router = new VueRouter({
+const router: Router = new Router({
     mode: 'history',
-    base: process.env.BASE_URL,
-    routes
+    base: process.env.VUE_APP_BASE_ROUTE,
+    routes: [
+        {
+            path: '/',
+            component: lazyLoad(
+                ROUTES.HOME.componentName as string,
+                ROUTES.HOME.componentPath,
+                ROUTES.HOME.hasMobileVersion
+            )
+        },
+        {
+            path: '**',
+            redirect: '/'
+        }
+    ]
 });
+
+configureRouteGuard(router);
 
 export default router;
