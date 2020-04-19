@@ -1,4 +1,4 @@
-# vue-styled
+# Vue project setup with typescript support
 
 ## Project setup
 ```

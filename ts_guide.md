@@ -5,8 +5,6 @@ When developing software as an organization, the value of the software produced 
 ## Files
 
 -   All TypeScript files must have a ".ts" or ".tsx" extension.
--   They should be all lower case, and only include letters, numbers, and periods.
--   It is OK (even recommended) to separate words with periods (e.g. `my.view.html`).
 -   **All files should end in a new line.** This is necessary for some Unix systems.
 
 ## Indentation

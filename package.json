@@ -1,5 +1,5 @@
 {
-    "name": "vue-styled",
+    "name": "vue-project-boilerplate",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -9,7 +9,6 @@
     },
     "dependencies": {
         "axios": "^0.19.2",
-        "core-js": "^3.6.4",
         "vue": "^2.6.11",
         "vue-class-component": "^7.2.3",
         "vue-property-decorator": "^8.4.1",
