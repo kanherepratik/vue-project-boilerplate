@@ -1,32 +1,35 @@
 <template>
     <div>
-        <input type="text" v-model="task" />
-        <button @click="onAddTodo()">Add Task</button>
-
-        <div>
-            <p>Todo List</p>
-            <div v-for="(todo, index) in todoList" :key="index">
-                {{ todo }}
-            </div>
-        </div>
+        <div>{{ dataExample }}</div>
+        <div @click="methodExample()">{{ computedExample }}</div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import todo from '@/store/modules/todo';
+import Vue, { PropType } from 'vue';
+import todoMixin from '../mixins/todoMixin';
 
-@Component
-export default class TodoComponent extends Vue {
-    private task = '';
-
-    private get todoList(): string[] {
-        return todo.getTodoList;
-    }
-
-    private onAddTodo(): void {
-        console.log('clicked');
-        todo.addTodo(this.task);
-    }
-}
+type ComplexObjectInterface = {
+    testProp: string;
+    modelName: number;
+};
+export default Vue.extend({
+    mixins: [todoMixin],
+    props: {
+        propExample: {
+            type: Object as PropType<ComplexObjectInterface>
+        }
+    },
+    data() {
+        return {
+            dataExample: 'This Property Will Be Data'
+        };
+    },
+    computed: {
+        computedExample(): string {
+            return `${this.dataExample} ${this.propExample.testProp} ${this.propExample.modelName} Computed Property Example`;
+        }
+    },
+    methods: {}
+});
 </script>

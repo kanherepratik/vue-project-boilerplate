@@ -1,12 +1,15 @@
+// import componentLibrary from '@kanherepratik/vue-components';
 import Vue, { VNode } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import register from './config';
+
+// Vue.use(componentLibrary);
+// import register from './config';
 
 Vue.config.productionTip = false;
 
-register();
+// register();
 
 // if (SENTRY_ENV !== 'development') {
 //     import(/* webpackChunkName: "sentry" */ '@sentry/browser').then((Sentry) => {
