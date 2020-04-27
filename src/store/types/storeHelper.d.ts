@@ -3,19 +3,19 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 declare module 'store-helper' {
     // vuex action interface
-    // interface ActionsHelper {}
+    interface IActionsHelper {}
 
-    // interface GettersHelper {}
+    interface IGettersHelper {}
 
     module 'vuex/types' {
         interface Store<S> {
-            actionsHelper: ActionsHelper;
+            actionsHelper: IActionsHelper;
             _actions: {
                 [key: string]: () => any;
             };
             // can't redefine the property
             // ref: https://stackoverflow.com/questions/48690619/how-can-i-augment-a-property-within-a-third-party-typescript-interface-defined-a
-            gettersHelper: GettersHelper;
+            gettersHelper: IGettersHelper;
         }
     }
 }

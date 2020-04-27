@@ -1,8 +1,17 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { StoreOptions } from 'vuex';
 import { IRoot } from '@/shared/interfaces';
-import { root } from './modules/root';
+import { todo } from './modules/todo';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store<IRoot>(root);
+const store: StoreOptions<IRoot> = {
+    state: {
+        version: '1.0.0' // a simple property
+    },
+    modules: {
+        todo
+    }
+};
+
+export default new Vuex.Store<IRoot>(store);

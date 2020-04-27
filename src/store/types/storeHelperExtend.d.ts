@@ -1,18 +1,20 @@
 declare module 'store-helper-extend' {
     // Getters
     import { TodoGetters } from '@/store/modules/todo/todoGetters';
+    import { RootGetters } from '@/store/modules/root/rootGetters';
 
     // Actions
     import { TodoActions } from '@/store/modules/todo/todoActions';
+    import { RootActions } from '@/store/modules/root/rootActions';
 
     // Class extend interface is working as expected but we are not directly call the store action
-    // We need to use dispatch to call the action so can't just extend the store action interfce directly
+    // We need to use dispatch to call the action so can't just extend the store action interface directly
 
     // NOTE: Keep root actions and getters in the end as they are top level
 
     module 'store-helper' {
-        type ActionsHelper = ActionExtend<TodoActions>;
+        interface IActionsHelper extends ActionExtend<TodoActions>, ActionExtend<RootActions> {}
 
-        type GettersHelper = GetterExtend<TodoGetters>;
+        interface IGettersHelper extends GetterExtend<TodoGetters>, GetterExtend<RootGetters> {}
     }
 }

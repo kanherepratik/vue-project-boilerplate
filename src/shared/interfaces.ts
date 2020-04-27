@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IRoot {}
+export interface IRoot {
+    version: string;
+}
 
 export interface ITodoState {
     todoList: string[];

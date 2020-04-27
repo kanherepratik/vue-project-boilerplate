@@ -7,7 +7,9 @@ import actions from './rootActions';
 import { todo } from '../todo';
 
 // State
-const state: IRoot = {};
+const state: IRoot = {
+    version: '1.0.0'
+};
 
 // Mutations
 const mutations: MutationTree<IRoot> = {};
