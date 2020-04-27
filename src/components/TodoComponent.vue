@@ -13,20 +13,28 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import todo from '@/store/modules/todo';
+import Vue from 'vue';
 
-@Component
-export default class TodoComponent extends Vue {
-    private task = '';
-
-    private get todoList(): string[] {
-        return todo.getTodoList;
-    }
-
-    private onAddTodo(): void {
-        console.log('clicked');
-        todo.addTodo(this.task);
-    }
+interface IData {
+    task: string;
 }
+
+export default Vue.extend({
+    name: 'TodoComponent',
+    data: (): IData => ({
+        task: ''
+    }),
+    computed: {
+        todoList: {
+            get(): string[] {
+                return this.$store.gettersHelper.addTodo;
+            }
+        }
+    },
+    methods: {
+        onAddTodo(): void {
+            this.$store.actionsHelper.addTodo(this.task);
+        }
+    }
+});
 </script>
