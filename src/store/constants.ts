@@ -7,3 +7,12 @@ export const TODO_STORE = {
         ADD_TODO: 'addTodo'
     }
 };
+
+export const ROOT_STORE = {
+    MUTATIONS: {
+        VERSION: 'version'
+    },
+    ACTIONS: {
+        VERSION: 'version'
+    }
+};

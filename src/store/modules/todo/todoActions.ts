@@ -10,11 +10,3 @@ export class TodoActions {
 }
 
 export default classToStoreCoreObject<ITodoState, IRoot>(TodoActions) as ActionTree<ITodoState, IRoot>;
-
-// const action: ActionTree<ITodoState, IRoot> = {
-//     addTodo(context: ActionContext<ITodoState, IRoot>, payload: string): void {
-//         context.commit(TODO_STORE.MUTATIONS.ADD_TODO, payload);
-//     }
-// };
-
-// export default action;
