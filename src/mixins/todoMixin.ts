@@ -1,6 +1,8 @@
 import Vue from 'vue';
 
-interface IMixinData {} // local interface for data properties
+interface IMixinData {
+    mixinMessage: string;
+} // local interface for data properties
 
 export default Vue.extend({
     data: (): IMixinData => ({
