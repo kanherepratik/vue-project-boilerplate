@@ -1,16 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { ITodoState } from '@/shared/interfaces';
+import { IRoot } from '@/shared/interfaces';
+import { root } from '@/store/modules/root';
 
 Vue.use(Vuex);
 
-Vue.use(Vuex);
-
-// add module states
-export interface IRootState {
-    todo: ITodoState;
-}
-
-const store = new Vuex.Store<IRootState>({});
-
-export default store;
+export default new Vuex.Store<IRoot>(root);
