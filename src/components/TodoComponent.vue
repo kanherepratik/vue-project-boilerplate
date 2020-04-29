@@ -2,7 +2,6 @@
     <div>
         <input type="text" v-model="task" />
         <button @click="onAddTodo()">Add Task</button>
-
         <div>
             <p>Todo List</p>
             <div v-for="(todo, index) in todoList" :key="index">
@@ -13,13 +12,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import mixins from '@/mixins/mixinHelper';
+import todoMixin from '@/mixins/todoMixin';
 
+// local interface for data object
 interface IData {
     task: string;
 }
 
-export default Vue.extend({
+export default mixins(todoMixin).extend({
     name: 'TodoComponent',
     data: (): IData => ({
         task: ''
@@ -33,6 +34,7 @@ export default Vue.extend({
     },
     methods: {
         onAddTodo(): void {
+            this.mixinOutput(this.task);
             this.$store.actionsHelper.addTodo(this.task);
         }
     }

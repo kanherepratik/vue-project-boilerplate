@@ -27,6 +27,7 @@ module.exports = {
         '@typescript-eslint/indent': 'error',
         'prefer-arrow-callback': 'error',
         "class-methods-use-this": "off",
+        "import/prefer-default-export": "off",
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/no-useless-constructor': 'error',
         '@typescript-eslint/default-param-last': 'error',
