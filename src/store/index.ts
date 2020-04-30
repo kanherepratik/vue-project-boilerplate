@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { IRoot } from '@/shared/interfaces';
+import { IRoot } from '@/store/interfaces';
 import { root } from '@/store/modules/root';
 
 Vue.use(Vuex);

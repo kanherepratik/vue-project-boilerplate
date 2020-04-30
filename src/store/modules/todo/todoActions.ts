@@ -1,5 +1,5 @@
 import { ActionContext, ActionTree } from 'vuex';
-import { ITodoState, IRoot } from '@/shared/interfaces';
+import { ITodoState, IRoot } from '@/store/interfaces';
 import { TODO_STORE } from '@/store/constants';
 import { classToStoreCoreObject } from '../../utils';
 

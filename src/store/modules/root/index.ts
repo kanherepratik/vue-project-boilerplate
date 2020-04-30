@@ -1,7 +1,5 @@
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable no-param-reassign */
 import { StoreOptions, ModuleTree, MutationTree } from 'vuex';
-import { IRoot } from '@/shared/interfaces';
+import { IRoot } from '@/store/interfaces';
 import { ROOT_STORE } from '@/store/constants';
 import getters from './rootGetters';
 import actions from './rootActions';

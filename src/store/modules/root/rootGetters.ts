@@ -1,4 +1,4 @@
-import { IRoot } from '@/shared/interfaces';
+import { IRoot } from '@/store/interfaces';
 import { classToStoreCoreObject } from '@/store/utils';
 import { GetterTree } from 'vuex';
 

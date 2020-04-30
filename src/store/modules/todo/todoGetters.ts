@@ -1,4 +1,4 @@
-import { ITodoState, IRoot } from '@/shared/interfaces';
+import { ITodoState, IRoot } from '@/store/interfaces';
 import { GetterTree } from 'vuex';
 import { classToStoreCoreObject } from '../../utils';
 

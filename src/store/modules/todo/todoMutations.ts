@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import { ITodoState } from '@/shared/interfaces';
+import { ITodoState } from '@/store/interfaces';
 import { TODO_STORE } from '@/store/constants';
 
 const mutations: MutationTree<ITodoState> = {

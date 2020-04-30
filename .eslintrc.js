@@ -14,20 +14,22 @@ module.exports = {
     "parserOptions": {
         "ecmaVersion": 2020,
         "sourceType": "module",
-        project: ['./tsconfig.json']
+        "project": './tsconfig.json',
+        "createDefaultProgram": true,
      },
     plugins: ['@typescript-eslint'],
     rules: {
         'no-unused-vars': 'off',
         'no-useless-constructor': 'off',
-        "indent": 'off',
+        "indent": ["error", 2],
         'no-tabs': 'error',
         'max-len': [2, 140, 4, { ignoreUrls: true }],
         'no-template-curly-in-string': 'error',
-        '@typescript-eslint/indent': 'error',
         'prefer-arrow-callback': 'error',
+        "no-param-reassign": "off",
         "class-methods-use-this": "off",
         "import/prefer-default-export": "off",
+        "comma-dangle": "error",
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/no-useless-constructor': 'error',
         '@typescript-eslint/default-param-last': 'error',
@@ -38,6 +40,7 @@ module.exports = {
         '@typescript-eslint/no-inferrable-types': 'error',
         '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
         '@typescript-eslint/interface-name-prefix': 'off',
+        '@typescript-eslint/indent': "off",
         '@typescript-eslint/naming-convention': [
             'error',
             {
