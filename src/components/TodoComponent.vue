@@ -1,7 +1,7 @@
 <template>
     <div>
         <input type="text" v-model="task" />
-        <button @click="onAddTodo()">Add Task</button>
+        <app-button color="red" @click="onAddTodo()">Add Task</app-button>
         <div>
             <p>Todo List</p>
             <div v-for="(todo, index) in todoList" :key="index">
@@ -14,6 +14,7 @@
 <script lang="ts">
 import mixins from '@/mixins/mixinHelper';
 import todoMixin from '@/mixins/todoMixin';
+import AppButton from '@/components/AppButton.vue';
 
 // local interface for data object
 interface IData {
@@ -37,6 +38,9 @@ export default mixins(todoMixin).extend({
             this.mixinOutput(this.task);
             this.$store.actionsHelper.addTodo(this.task);
         }
+    },
+    components: {
+        'app-button': AppButton
     }
 });
 </script>
