@@ -1,11 +1,11 @@
 export interface IRoot {
-    version: string;
+  version: string;
 }
 
 export interface ITodoState {
-    todoList: string[];
+  todoList: string[];
 }
 
 export interface ITodo {
-    task: string;
+  task: string;
 }

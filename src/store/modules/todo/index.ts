@@ -6,13 +6,13 @@ import mutations from './todoMutations';
 
 // State
 const state: ITodoState = {
-    todoList: []
+  todoList: [],
 };
 
 // Module
 export const todo: Module<ITodoState, IRoot> = {
-    state,
-    getters,
-    mutations,
-    actions
+  state,
+  getters,
+  mutations,
+  actions,
 };

@@ -20,7 +20,7 @@ Vue.use(storeHelper);
 // Vue.prototype.STATIC_URL = STATIC_URL;
 
 new Vue({
-    router,
-    store,
-    render: (h): VNode => h(App)
+  router,
+  store,
+  render: (h): VNode => h(App),
 }).$mount('#app');

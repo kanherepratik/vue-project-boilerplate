@@ -1,8 +1,8 @@
 <template>
-    <div>
-        {{ isErrorBoundaryError }} <slot></slot>
-        <error-boundary-modal v-if="this.error" />
-    </div>
+  <div>
+    {{ isErrorBoundaryError }} <slot></slot>
+    <error-boundary-modal v-if="this.error" />
+  </div>
 </template>
 
 <script lang="ts">

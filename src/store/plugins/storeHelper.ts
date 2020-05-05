@@ -5,19 +5,19 @@
 import Vue from 'vue';
 
 export class StoreHelperMixin extends Vue {
-    public beforeCreate(): void {
-        if (!this.$store) {
-        } else {
-            const actions: any = {};
-            Object.keys((this.$store as any)._actions).forEach((action) => {
-                actions[action] = (...args: any[]) => this.$store.dispatch(action, ...args);
-            });
-            this.$store.actionsHelper = actions;
-            this.$store.gettersHelper = this.$store.getters;
-        }
+  public beforeCreate(): void {
+    if (!this.$store) {
+    } else {
+      const actions: any = {};
+      Object.keys((this.$store as any)._actions).forEach((action) => {
+        actions[action] = (...args: any[]) => this.$store.dispatch(action, ...args);
+      });
+      this.$store.actionsHelper = actions;
+      this.$store.gettersHelper = this.$store.getters;
     }
+  }
 }
 
 export default (localVue: any) => {
-    localVue.mixin(new StoreHelperMixin());
+  localVue.mixin(new StoreHelperMixin());
 };
