@@ -75,7 +75,7 @@ This is the folder which will hold all the code for the project
 - App.vue is the root component of the app
 - All the child components will be rendered from App.vue.
 - settings.ts will hold the environment based app settings.
-- 
+
 - ## components
     - This folder will hold all the reusable components which are project specific. Please don't put global common components in this directory (ex. button, dropdown etc.)
     - Name convention for All the component files will be `PascalCase.vue`. 
