@@ -33,6 +33,10 @@ export default mixins(todoMixin).extend({
         }
     },
     methods: {
+        /**
+         * App todos to the store
+         * @public
+         */
         onAddTodo(): void {
             this.mixinOutput(this.task);
             this.$store.actionsHelper.addTodo(this.task);
