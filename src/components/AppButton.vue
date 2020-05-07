@@ -14,18 +14,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
-interface IStyles {
-    backgroundColor: string;
-}
-
-/**
- *
- * List of Props
- * 1. disabled: true or false (Default value - true)
- * 2. size: small, normal, large (Default value - normal)
- * 3. customCssClasses: An array of classes to apply on button
- */
-
+// Button component to be used in whole app
 export default Vue.extend({
     name: 'AppButton',
     props: {
@@ -39,15 +28,14 @@ export default Vue.extend({
         },
         /**
          * The size of the button
-         * @values small, large
+         * @values small, large, normal
          */
         size: {
             type: String,
             default: 'normal'
         },
         /**
-         * The size of the button
-         * @values small, large
+         * An array of classes to apply on button
          */
         customCssClasses: {
             type: Array,
