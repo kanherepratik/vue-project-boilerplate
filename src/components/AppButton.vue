@@ -28,11 +28,11 @@ export default Vue.extend({
         },
         /**
          * The size of the button
-         * @values small, large, normal
+         * @values small, medium, large
          */
         size: {
             type: String,
-            default: 'normal'
+            default: 'medium'
         },
         /**
          * An array of classes to apply on button
@@ -69,7 +69,7 @@ export default Vue.extend({
     justify-content: center;
     align-items: center;
 }
-.appButtonContainer .btn.btn-normal {
+.appButtonContainer .btn.btn-medium {
     height: 36px;
     min-width: 64px;
     padding: 0 16px;
