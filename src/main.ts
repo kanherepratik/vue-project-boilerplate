@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import register from './config';
 import storeHelper from './store/plugins/storeHelper';
+import i18n from './i18n';
 
 Vue.config.productionTip = false;
 Vue.use(storeHelper);
@@ -24,5 +25,6 @@ register();
 new Vue({
     router,
     store,
+    i18n,
     render: (h): VNode => h(App)
 }).$mount('#app');
