@@ -1,7 +1,7 @@
 <template>
     <div class="radioButton">
         <div class="radioButton__box" @click="onRadioClicked"></div>
-        <div v-if="this.radioActive === this.value" class="radioButton--tick">{{ '&#x2714;' }}</div>
+        <div v-if="radioActive === value" class="radioButton--tick">{{ '&#x2714;' }}</div>
         <div v-if="label" class="radioButton__label" @change="onRadioClicked">{{ label }}</div>
     </div>
 </template>
