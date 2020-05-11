@@ -1,4 +1,7 @@
 {
-    "message": "Hola i18!!",
-    "goodbye": "adios"
+    "message": "Hola i18 {name}!!",
+    "goodbye": "adios",
+    "todoComponent": {
+        "todo": "Lista de quehaceres"
+    }
 }

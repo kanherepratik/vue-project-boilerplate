@@ -3,10 +3,8 @@
         <input type="text" v-model="task" />
         <button @click="onAddTodo()">Add Task</button>
         <div>
-            <p>Todo List</p>
-            <div v-for="(todo, index) in todoList" :key="index">
-                {{ todo }}
-            </div>
+            <p>{{ $t('todoComponent.todo') }}</p>
+            <div v-for="(todo, index) in todoList" :key="index">{{ todo }}</div>
         </div>
     </div>
 </template>
