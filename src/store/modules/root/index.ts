@@ -1,7 +1,5 @@
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable no-param-reassign */
 import { StoreOptions, ModuleTree, MutationTree } from 'vuex';
-import { IRoot } from '@/shared/interfaces';
+import { IRoot } from '@/store/interfaces';
 import { ROOT_STORE } from '@/store/constants';
 import getters from './rootGetters';
 import actions from './rootActions';
@@ -10,26 +8,26 @@ import { todo } from '../todo';
 
 // State
 const state: IRoot = {
-    version: '0.1'
+  version: '0.1',
 };
 
 // Mutations
 const mutations: MutationTree<IRoot> = {
-    [ROOT_STORE.MUTATIONS.VERSION]: (currentState: IRoot, payload: string): void => {
-        currentState.version = payload;
-    }
+  [ROOT_STORE.MUTATIONS.VERSION]: (currentState: IRoot, payload: string): void => {
+    currentState.version = payload;
+  },
 };
 
 // Modules
 const modules: ModuleTree<IRoot> = {
-    todo
+  todo,
 };
 
 // Root Module
 export const root: StoreOptions<IRoot> = {
-    state,
-    getters,
-    mutations,
-    actions,
-    modules
+  state,
+  getters,
+  mutations,
+  actions,
+  modules,
 };

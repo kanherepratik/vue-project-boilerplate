@@ -1,12 +1,16 @@
 <template>
+  <div>
+    <input type="text" v-model="task" />
+    <button @click="onAddTodo()">Add Task</button>
     <div>
-        <input type="text" v-model="task" />
-        <button @click="onAddTodo()">Add Task</button>
-        <div>
-            <p>{{ $t('todoComponent.todo') }}</p>
-            <div v-for="(todo, index) in todoList" :key="index">{{ todo }}</div>
-        </div>
+      <input type="text" v-model="task" />
+      <button @click="onAddTodo()">Add Task</button>
+      <div>
+        <p>{{ $t('todoComponent.todo') }}</p>
+        <div v-for="(todo, index) in todoList" :key="index">{{ todo }}</div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,26 +19,27 @@ import todoMixin from '@/mixins/todoMixin';
 
 // local interface for data object
 interface IData {
-    task: string;
+  task: string;
 }
 
 export default mixins(todoMixin).extend({
-    name: 'TodoComponent',
-    data: (): IData => ({
-        task: ''
-    }),
-    computed: {
-        todoList: {
-            get(): string[] {
-                return this.$store.gettersHelper.addTodo;
-            }
-        }
+  name: 'TodoComponent',
+  data: (): IData => ({
+    task: '',
+  }),
+  computed: {
+    todoList: {
+      get(): string[] {
+        return this.$store.gettersHelper.addTodo;
+      },
     },
-    methods: {
-        onAddTodo(): void {
-            this.mixinOutput(this.task);
-            this.$store.actionsHelper.addTodo(this.task);
-        }
-    }
+  },
+
+  methods: {
+    onAddTodo(): void {
+      this.mixinOutput(this.task);
+      this.$store.actionsHelper.addTodo(this.task);
+    },
+  },
 });
 </script>

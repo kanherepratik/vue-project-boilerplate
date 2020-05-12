@@ -3,3 +3,4 @@ node_modules/
 src/shims-tsx.d.ts
 src/shims-vue.d.ts
 src/mixins/mixinHelper.ts
+vue.config.js
