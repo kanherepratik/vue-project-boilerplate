@@ -30,6 +30,7 @@ const dateTimeFormats = {
 export const i18n = new VueI18n({
   locale: process.env.VUE_APP_I18N_LOCALE || 'en',
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
+  messages: {},
   dateTimeFormats,
 });
 const loadedLanguages = ['en'];
@@ -37,7 +38,7 @@ const loadedLanguages = ['en'];
 const setI18nLanguage = (lang: string): string => {
   i18n.locale = lang;
   axios.defaults.headers.common['Accept-Language'] = lang;
-  //   document.querySelector('html').setAttribute('lang', lang);
+  document.querySelector('html').setAttribute('lang', lang);
   return lang;
 };
 
