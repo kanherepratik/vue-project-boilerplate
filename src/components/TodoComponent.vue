@@ -32,7 +32,6 @@ export default mixins(todoMixin).extend({
       },
     },
   },
-
   methods: {
     onAddTodo(): void {
       this.mixinOutput(this.task);
