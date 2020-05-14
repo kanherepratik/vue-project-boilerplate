@@ -10,7 +10,7 @@ import Vue from 'vue';
 
 // @ is an alias to /src
 import TodoComponent from '@/components/TodoComponent.vue';
-import I18Component from '../../components/I18Component.vue';
+import I18Component from '@/components/I18Component.vue';
 
 interface IData {} // local interface for data properties
 

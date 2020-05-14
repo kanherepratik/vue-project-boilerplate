@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import VueI18n, { DateTimeFormat } from 'vue-i18n';
-import messages from './lang/en';
+import messages from '@/lang/en';
 
 Vue.use(VueI18n);
 
