@@ -2,8 +2,7 @@
   <div>
     <button @click="setLocale('en')">English</button>
     <button @click="setLocale('es')">Spanish</button>
-    <p>{{ $t('message', { name }) }}</p>
-    <p>{{ $t('goodbye') }}</p>
+    <p>{{ $t('message.hello') }}</p>
     <p>{{ $d(new Date(), 'long') }}</p>
   </div>
 </template>

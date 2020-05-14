@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import VueI18n, { DateTimeFormat } from 'vue-i18n';
+import messages from './lang/en';
 
 Vue.use(VueI18n);
 
@@ -30,10 +31,10 @@ const dateTimeFormats = {
 export const i18n = new VueI18n({
   locale: process.env.VUE_APP_I18N_LOCALE || 'en',
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
-  messages: {},
+  messages,
   dateTimeFormats,
 });
-const loadedLanguages = ['en'];
+const loadedLanguages = ['en']; // our default language that is preloaded
 
 const setI18nLanguage = (lang: string): string => {
   i18n.locale = lang;
@@ -42,7 +43,7 @@ const setI18nLanguage = (lang: string): string => {
   return lang;
 };
 
-export const loadLanguageAsync = async (lang: string): Promise<string> => {
+export const loadLanguageAsync = (lang: string): Promise<string> => {
   // If the same language
   if (i18n.locale === lang) {
     return Promise.resolve(setI18nLanguage(lang));
@@ -54,8 +55,9 @@ export const loadLanguageAsync = async (lang: string): Promise<string> => {
   }
 
   // If the language hasn't been loaded yet
-  const messages = await import(/* webpackChunkName: "lang-[request]" */ `@/locales/${lang}.json`);
-  i18n.setLocaleMessage(lang, messages.default);
-  loadedLanguages.push(lang);
-  return setI18nLanguage(lang);
+  return import(/* webpackChunkName: "lang-[request]" */ `@/lang/${lang}`).then((msg) => {
+    i18n.setLocaleMessage(lang, msg.default);
+    loadedLanguages.push(lang);
+    return setI18nLanguage(lang);
+  });
 };

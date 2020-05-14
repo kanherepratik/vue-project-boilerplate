@@ -1,7 +1,0 @@
-{
-    "message": "hello i18n {name}!!",
-    "goodbye": "goodBye",
-    "todoComponent": {
-        "todo": "To do List"
-    }
-}
