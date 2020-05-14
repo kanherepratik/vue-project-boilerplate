@@ -1,5 +1,5 @@
 <template>
-  <div class="autocompleteDropdownConatiner">
+  <div class="autoCompleteDropdown">
     <div class="inputContainer">
       <div class="inputControl">
         <label class="inputLabel">{{ label }}</label>
@@ -69,7 +69,7 @@ export default Vue.extend({
     selectedItem: '',
     queryValue: '',
     filteredItems: [] as IItem[],
-    searchIndex: -1,
+    searchIndex: 0,
     clearable: true,
     showDropdown: false,
     mappedItems: [] as IItem[],
@@ -158,10 +158,13 @@ export default Vue.extend({
      * @param itemIndex Index of the item clicked
      */
     onSelection(itemIndex: number): void {
+      if (!this.filteredItems.length) {
+        return;
+      }
       this.queryValue = this.filteredItems[itemIndex].label;
       this.updateAndNotifySelection(this.queryValue);
       this.filteredItems = [];
-      this.searchIndex = -1;
+      this.searchIndex = 0;
     },
     updateAndNotifySelection(selectedItem = ''): void {
       this.selectedItem = selectedItem;
@@ -224,8 +227,9 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.autocompleteDropdownConatiner {
+.autoCompleteDropdown {
   display: flex;
+  flex-direction: column;
 }
 
 .inputContainer {
