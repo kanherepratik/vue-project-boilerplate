@@ -77,11 +77,11 @@ export default Vue.extend({
   props: {
     label: String,
     placeholder: String,
-    labelkey: {
+    labelKey: {
       type: String,
       default: 'label',
     },
-    valuekey: {
+    valueKey: {
       type: String,
       default: 'value',
     },
@@ -92,7 +92,7 @@ export default Vue.extend({
   mounted(): void {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     document.addEventListener('click', this.onBlur);
-    this.mappedItems = this.transformData(this.items, this.labelkey, this.valuekey);
+    this.mappedItems = this.transformData(this.items, this.labelKey, this.valueKey);
   },
   beforeDestroy(): void {
     // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -161,8 +161,9 @@ export default Vue.extend({
       if (!this.filteredItems.length) {
         return;
       }
-      this.queryValue = this.filteredItems[itemIndex].label;
-      this.updateAndNotifySelection(this.queryValue);
+      const selectedItem = this.filteredItems[itemIndex];
+      this.queryValue = selectedItem.label;
+      this.updateAndNotifySelection(selectedItem.value);
       this.filteredItems = [];
       this.searchIndex = 0;
     },
