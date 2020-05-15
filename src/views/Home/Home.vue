@@ -20,13 +20,5 @@ export default Vue.extend({
     'todo-component': TodoComponent,
     'i18-component': I18Component,
   },
-  created(): void {
-    const locale = localStorage.getItem('locale');
-    if (locale) {
-      this.$i18n.locale = locale;
-    } else if (navigator.language) {
-      this.$i18n.locale = navigator.language.substring(0, 2);
-    }
-  },
 });
 </script>

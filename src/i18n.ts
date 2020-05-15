@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
-import VueI18n, { DateTimeFormat } from 'vue-i18n';
+import VueI18n, { DateTimeFormat, DateTimeFormats } from 'vue-i18n';
 import messages from '@/lang/en';
 import { LOCALE, FALLBACK_LOCALE } from '@/settings';
 
@@ -21,7 +21,7 @@ const setDateTimeFormats: DateTimeFormat = {
     minute: 'numeric',
   },
 };
-const dateTimeFormats = {
+const dateTimeFormats: DateTimeFormats = {
   en: setDateTimeFormats,
   es: setDateTimeFormats,
 };
@@ -40,7 +40,7 @@ const loadedLanguages = ['en']; // our default language that is preloaded
 const setI18nLanguage = (lang: string): string => {
   i18n.locale = lang;
   axios.defaults.headers.common['Accept-Language'] = lang;
-  document.querySelector('html').setAttribute('lang', lang);
+  // document.querySelector('html').setAttribute('lang', lang);
   return lang;
 };
 
