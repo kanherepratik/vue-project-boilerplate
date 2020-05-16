@@ -21,7 +21,7 @@ module.exports = {
   rules: {
     'no-unused-vars': 'off',
     'no-useless-constructor': 'off',
-    indent: ['error', 2],
+    indent: 'off',
     'no-tabs': 'error',
     'max-len': [2, 140, 4, { ignoreUrls: true }],
     'no-template-curly-in-string': 'error',
@@ -29,7 +29,8 @@ module.exports = {
     'no-param-reassign': 'off',
     'class-methods-use-this': 'off',
     'import/prefer-default-export': 'off',
-    'comma-dangle': 'error',
+    'comma-dangle': 'off',
+    'no-restricted-syntax': 'off',
     'no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/no-useless-constructor': 'error',
@@ -41,7 +42,7 @@ module.exports = {
     '@typescript-eslint/no-inferrable-types': 'error',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
     '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/indent': 'off',
+    '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/naming-convention': [
       'error',
       {
