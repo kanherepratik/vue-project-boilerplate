@@ -12,7 +12,7 @@
       ]"
       @click="onCheckboxClick"
     >
-      <div v-if="isSelected" class="tick">{{ '&#x2714;' }}</div>
+      <div v-if="isSelected" class="checkboxComponent__box__tick">{{ '&#x2714;' }}</div>
     </div>
     <!--
       triggered on click
@@ -33,14 +33,31 @@ interface IData {
 // Checkbox component
 export default Vue.extend({
   name: 'CheckboxComponent',
+  /**
+   * Model of the component
+   * prop contains the state of the component
+   * event contains the events of the component
+   */
+  model: {
+    prop: 'checked',
+    event: 'onClick',
+  },
   props: {
     /**
-     * The checked state of the button
-     * @values true, false
+     * The checked state of the checkbox
+     * @values true, false(default)
      */
-    value: {
+    checked: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * The value of the checkbox
+     * @values String
+     */
+    value: {
+      type: String,
+      default: '',
     },
     /**
      * The label text to represent the checkbox
@@ -52,7 +69,7 @@ export default Vue.extend({
     },
     /**
      * The disabled state of checkbox
-     * @values true, false
+     * @values true, false(default)
      */
     disabled: {
       type: Boolean,
@@ -60,7 +77,7 @@ export default Vue.extend({
     },
     /**
      * The array of classes to customize the checkbox
-     * @values []
+     * @values Array of classnames(strings)
      */
     customCssClasses: {
       type: Array,
@@ -72,7 +89,7 @@ export default Vue.extend({
   }),
   created(): void {
     // Set the initial checked state of the checkbox from the props
-    this.isSelected = this.value;
+    this.isSelected = this.checked;
   },
   methods: {
     /**
@@ -108,7 +125,7 @@ export default Vue.extend({
   min-height: 20px;
   max-height: 20px;
   max-width: 20px;
-  border: 2px solid black;
+  border: 2px solid #000;
 }
 
 .checkboxComponent__box:before {
@@ -123,11 +140,15 @@ export default Vue.extend({
 
 .checkboxComponent__active {
   background-color: #1867c0;
-  color: white;
+  color: #fff;
 }
 
 .checkboxComponent__disabled {
-  border-color: #dddddd;
+  border-color: #ddd;
+}
+
+.checkboxComponent__box__tick {
+  color: #fff;
 }
 
 .checkboxComponent__label {
