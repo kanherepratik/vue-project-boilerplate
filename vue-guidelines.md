@@ -1,5 +1,5 @@
 # Introduction
-This project is bootstraped using vue-cli --typescript flag
+This project is bootstraped using vue-cli
 
 # Folder structure
 
