@@ -2,12 +2,10 @@ import Vue, { VNode } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import register from './config';
 import storeHelper from './store/plugins/storeHelper';
 
 Vue.config.productionTip = false;
 Vue.use(storeHelper);
-register();
 
 // if (SENTRY_ENV !== 'development') {
 //     import(/* webpackChunkName: "sentry" */ '@sentry/browser').then((Sentry) => {
@@ -22,7 +20,7 @@ register();
 // Vue.prototype.STATIC_URL = STATIC_URL;
 
 new Vue({
-    router,
-    store,
-    render: (h): VNode => h(App)
+  router,
+  store,
+  render: (h): VNode => h(App),
 }).$mount('#app');

@@ -6,11 +6,11 @@ import { scrollToTop } from './utils';
  * @param router Vue Router object
  */
 const configureRouteGuard = (router: Router): void => {
-    router.beforeEach((to: Route, from: Route, next: () => void) => {
-        scrollToTop();
-        next();
-    });
-    // router.afterEach((to: Route, from: Route) => {});
+  router.beforeEach((to: Route, from: Route, next: () => void) => {
+    scrollToTop();
+    next();
+  });
+  // router.afterEach((to: Route, from: Route) => {});
 };
 
 export default configureRouteGuard;
