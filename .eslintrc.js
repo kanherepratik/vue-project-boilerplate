@@ -37,7 +37,7 @@ module.exports = {
     '@typescript-eslint/default-param-last': 'error',
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/no-empty-interface': 'warn',
-    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-implied-eval': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
