@@ -9,7 +9,7 @@
             :value="queryValue"
             :placeholder="placeholder"
             @input="onInputChange"
-            @keydown="onkeydown"
+            @keydown="onKeyDown"
             @focus="onFocus"
           />
         </div>
@@ -31,14 +31,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { NavigationKeys } from '../shared/enum';
 
-enum NavigationKeys {
-  ENTER = 13,
-  ARROW_UP = 38,
-  ARROW_DOWN = 40,
-}
-
-interface IItem {
+interface IDropdownItem {
   label: string;
   value: string;
 }
@@ -47,7 +42,6 @@ interface IItem {
  * Props
  *
  * disabled: it will disable the component
- * searchable {Boolean} - it will turn off the autocomplete
  * placeholder {string}
  * label {string}
  * clearable {Boolean} - clear the input
@@ -68,11 +62,10 @@ export default Vue.extend({
   data: () => ({
     selectedItem: '',
     queryValue: '',
-    filteredItems: [] as IItem[],
+    filteredItems: [] as IDropdownItem[],
     searchIndex: 0,
-    clearable: true,
     showDropdown: false,
-    mappedItems: [] as IItem[],
+    mappedItems: [] as IDropdownItem[],
   }),
   props: {
     label: String,
@@ -88,6 +81,10 @@ export default Vue.extend({
     items: {
       default: [],
     },
+    clearable: {
+      type: Boolean,
+      default: true,
+    },
   },
   mounted(): void {
     // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -99,13 +96,18 @@ export default Vue.extend({
     document.removeEventListener('click', this.onBlur);
   },
   methods: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    /**
+     * On clicking on out of dropdown it will close the suggestions dropdown
+     */
     onBlur(evt: any): void {
       // close dropdown when clicked outside
       if (!this.$el.contains(evt.target)) {
         this.showDropdown = false;
       }
     },
+    /**
+     * On clicking input box, it will open the suggestion list dropdown and will show all items
+     */
     onFocus(): void {
       this.showDropdown = true;
       this.filteredItems = this.getFilteredItems(this.queryValue, this.mappedItems);
@@ -118,7 +120,10 @@ export default Vue.extend({
       this.updateAndNotifySelection();
       this.filteredItems = this.getFilteredItems(this.queryValue, this.mappedItems);
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    /**
+     * It gets invoked when user types
+     * @param {Event} evt
+     */
     onInputChange(evt: any): void {
       this.queryValue = evt.target.value;
       if (this.selectedItem) {
@@ -128,19 +133,19 @@ export default Vue.extend({
     },
     /**
      * List all matching results
-     * @param query User Input
+     * @param {string} query User Input
      * @param items Array of items
      *
-     * @return {IItem[]} returns an array of IItem type
+     * @return {IDropdownItem[]} Returns an array of IDropdownItem type
      */
-    getFilteredItems(query: string, items: IItem[]): IItem[] {
-      const itemsMatchedAtZeroIndex: IItem[] = [];
-      const restMatchedItems: IItem[] = [];
+    getFilteredItems(query: string, items: IDropdownItem[]): IDropdownItem[] {
+      const itemsMatchedAtZeroIndex: IDropdownItem[] = [];
+      const restMatchedItems: IDropdownItem[] = [];
 
       if (query.length === 0) {
         return items;
       }
-      items.forEach((item: IItem) => {
+      items.forEach((item: IDropdownItem) => {
         const itemLowerCase = item.label.toLowerCase();
         query = query.toLowerCase();
         if (itemLowerCase.includes(query)) {
@@ -155,7 +160,7 @@ export default Vue.extend({
     },
     /**
      * On Selecting the item it emits the selection event which have the selected item value
-     * @param itemIndex Index of the item clicked
+     * @param {number} itemIndex Index of the item clicked
      */
     onSelection(itemIndex: number): void {
       if (!this.filteredItems.length) {
@@ -167,18 +172,25 @@ export default Vue.extend({
       this.filteredItems = [];
       this.searchIndex = 0;
     },
+    /**
+     * On change of selected Item, it updates the selected Item and emits the selection event
+     * @param {string} selectedItem
+     */
     updateAndNotifySelection(selectedItem = ''): void {
       this.selectedItem = selectedItem;
       this.$emit('selection', selectedItem);
     },
+    /**
+     * This function is to used by the parent Component to get the current Selected Item
+     */
     getSelection(): string {
       return this.selectedItem;
     },
     /**
      * It handles the navigation and enter key press
+     * @param {Event} event
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onkeydown(event: any): void {
+    onKeyDown(event: any): void {
       const filteredItemsCount = this.filteredItems.length;
 
       // if filtered Items count is zero then disable navigation
@@ -209,12 +221,12 @@ export default Vue.extend({
       }
     },
     /**
-     * It tranforms the data into the array of objects having type IItem
+     * It tranforms the data into the array of objects having type IDropdownItem
      * @param items It can be array of strings or array of object
-     * @param labelKey Key to used in the object to get the label
-     * @param valueKey Key to used in the object to get the value
+     * @param {string} labelKey Key to used in the object to get the label
+     * @param {string} valueKey Key to used in the object to get the value
      */
-    transformData(items: (string | object)[], labelKey = 'label', valueKey = 'value'): IItem[] {
+    transformData(items: (string | object)[], labelKey = 'label', valueKey = 'value'): IDropdownItem[] {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return items.map((item: any) => {
         if (typeof item === 'object' && item !== null) {
