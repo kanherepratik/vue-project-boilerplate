@@ -36,3 +36,9 @@ export enum VALIDATORS {
   ALPHANUMERIC_WITH_SPACE = 'alphaNumericWithSpace',
   MULTIPLE_OF = 'multipleOf',
 }
+
+export enum DatePickerMode {
+  SINGLE = 'single',
+  MULTIPLE = 'multiple',
+  RANGE = 'range',
+}
