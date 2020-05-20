@@ -1,8 +1,7 @@
 /* eslint-disable comma-dangle */
-import { IValidation, IValidationRules, IValidationRule } from '@/shared/interfaces';
-
-import { isNullUndefined } from '@/shared/utils';
-import { ValidationMessages } from '@/shared/enum';
+import { isNullUndefined } from './utils';
+import { ValidationMessages } from './enum';
+import { IValidation, IValidationRules, IValidationRule } from './interfaces';
 
 declare let RegExp: {
   new (pattern: any, flags?: string): RegExp;
