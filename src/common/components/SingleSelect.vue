@@ -36,15 +36,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import { NavigationKeys } from '../shared/enum';
-
-interface ISelectItem {
-  label: string;
-  value: string;
-}
-
-interface ISelectItemProps {
-  [value: string]: string;
-}
+import { ISelectItem, ISelectItemProps } from '../shared/interfaces';
+import { getFilteredItems, transformData } from '../shared/utils';
 
 /**
  * Props
@@ -100,10 +93,12 @@ export default Vue.extend({
       default: false,
     },
   },
+  created(): void {
+    this.mappedItems = transformData(this.items, this.labelKey, this.valueKey);
+  },
   mounted(): void {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     document.addEventListener('click', this.onBlur);
-    this.mappedItems = this.transformData(this.items, this.labelKey, this.valueKey);
   },
   updated(): void {
     const searchInputRef: any = this.$refs.searchInput;
@@ -128,7 +123,7 @@ export default Vue.extend({
      */
     onFocus(): void {
       this.showDropdown = true;
-      this.filteredItems = this.getFilteredItems(this.queryValue, this.mappedItems);
+      this.filteredItems = getFilteredItems(this.queryValue, this.mappedItems);
     },
     /**
      * It clears the query
@@ -136,7 +131,7 @@ export default Vue.extend({
     clearQuery(): void {
       this.queryValue = '';
       this.updateAndNotifySelection();
-      this.filteredItems = this.getFilteredItems(this.queryValue, this.mappedItems);
+      this.filteredItems = getFilteredItems(this.queryValue, this.mappedItems);
     },
     /**
      * It gets invoked when user types
@@ -147,34 +142,7 @@ export default Vue.extend({
       if (this.selectedItem) {
         this.updateAndNotifySelection();
       }
-      this.filteredItems = this.getFilteredItems(this.queryValue, this.mappedItems);
-    },
-    /**
-     * List all matching results
-     * @param {string} query User Input
-     * @param items Array of items
-     *
-     * @return {ISelectItem[]} Returns an array of ISelectItem type
-     */
-    getFilteredItems(query: string, items: ISelectItem[]): ISelectItem[] {
-      const itemsMatchedAtZeroIndex: ISelectItem[] = [];
-      const restMatchedItems: ISelectItem[] = [];
-
-      if (query.length === 0) {
-        return items;
-      }
-      items.forEach((item: ISelectItem) => {
-        const itemLowerCase = item.label.toLowerCase();
-        query = query.toLowerCase();
-        if (itemLowerCase.includes(query)) {
-          if (item.label.startsWith(query)) {
-            itemsMatchedAtZeroIndex.push(item);
-          } else {
-            restMatchedItems.push(item);
-          }
-        }
-      });
-      return itemsMatchedAtZeroIndex.concat(restMatchedItems);
+      this.filteredItems = getFilteredItems(this.queryValue, this.mappedItems);
     },
     /**
      * On Selecting the item it emits the selection event which have the selected item value
@@ -237,21 +205,6 @@ export default Vue.extend({
         default:
           break;
       }
-    },
-    /**
-     * It tranforms the data into the array of objects having type ISelectItem
-     * @param items It can be array of strings or array of object
-     * @param {string} labelKey Key to used in the object to get the label
-     * @param {string} valueKey Key to used in the object to get the value
-     */
-    transformData(items: (string | object)[], labelKey = 'label', valueKey = 'value'): ISelectItem[] {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return items.map((item: any) => {
-        if (typeof item === 'object' && item !== null) {
-          return { label: item[labelKey], value: item[valueKey] };
-        }
-        return { label: item, value: item };
-      });
     },
   },
 });
