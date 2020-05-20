@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show">
+  <div>
     <div class="lds-ring">
       <div></div>
       <div></div>
@@ -10,9 +10,7 @@
 </template>
 
 <script>
-export default {
-  props: ['show'],
-};
+export default {};
 </script>
 
 <style scoped>
