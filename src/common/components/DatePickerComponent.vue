@@ -1,17 +1,26 @@
 <template>
-  <date-picker
-    :mode="mode"
-    :popover="{ placement: 'auto', visibility: 'click' }"
-    :min-date="minDate"
-    :max-date="maxDate"
-    :value="configuredDates"
-    @input="onDateChange"
-    :input-props="{
-      placeholder: 'Please enter your birthday',
-      readonly: true,
-    }"
-  >
-  </date-picker>
+  <div class="datePickerComponent">
+    <date-picker
+      :mode="mode"
+      :popover="{ placement: 'auto', visibility: 'click' }"
+      :min-date="minDate"
+      :max-date="maxDate"
+      :value="configuredDates"
+      @input="onDateChange"
+    >
+      <div class="inputSlot" slot-scope="{ inputProps, inputEvents }">
+        <input
+          id="date"
+          :class="['inputField', { 'border-red-600': errorMessage }]"
+          v-bind="inputProps"
+          :placeholder="placeholder"
+          v-on="inputEvents"
+        />
+        <div class="calendarIcon">&#128197;</div>
+      </div>
+    </date-picker>
+    <div v-if="errorMessage" class="errormsg">{{ errorMessage }}</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,6 +38,7 @@ import { DatePickerMode } from '../shared/enum';
  * minDate: Before the minDate all dates will be disabled.
  * maxDate: After this date all dates will be disabled
  * dates: Currently, it takes the single date object only
+ * placeholder
  *
  * NOTE -
  * The proposed dates value for rest modes can be-
@@ -44,6 +54,7 @@ export default Vue.extend({
     return {
       configuredDates: '',
       selectedDate: '',
+      errorMessage: '',
     };
   },
   props: {
@@ -54,6 +65,7 @@ export default Vue.extend({
     minDate: Date,
     maxDate: Date,
     dates: Date,
+    placeholder: String,
   },
   created() {
     this.configuredDates = this.dates;
@@ -82,3 +94,22 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.datePickerComponent {
+  display: flex;
+}
+.inputSlot {
+  display: flex;
+  border: 1px solid gray;
+  padding: 2px;
+}
+.inputField {
+  border: none;
+  outline: none;
+  padding: 5px;
+}
+.calendarIcon {
+  cursor: pointer;
+}
+</style>
