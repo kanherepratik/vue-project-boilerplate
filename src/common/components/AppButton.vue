@@ -1,30 +1,35 @@
 <template>
-  <div class="appButtonContainer">
+  <div class="app-button">
     <!--
       trigered on click
       @event click
     -->
-    <div :class="['btn', computedSizeClass, ...customCssClasses]" :disabled="disabled" @click="emitClick">
-      <!-- @slot Use this slot for button name -->
-      <slot></slot>
-    </div>
+    <button :class="classNames" :disabled="disabled" @click="emitClick">
+      <span v-if="loading">loading...</span>
+      <span v-else>{{ title }}</span>
+    </button>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { AppButtonSizes } from '../shared/enum';
 
 /**
  *
  * List of Props
  * 1. disabled: true or false (Default value - true)
- * 2. size: small, normal, large (Default value - normal)
+ * 2. size {Enum AppButtonSizes}: small, normal, large (Default value - normal)
  * 3. customCssClasses: An array of classes to apply on button
  */
 
 export default Vue.extend({
   name: 'AppButton',
   props: {
+    /**
+     * Name of the button
+     */
+    title: String,
     /**
      * The state of the button
      * @values true, false
@@ -39,15 +44,19 @@ export default Vue.extend({
      */
     size: {
       type: String,
-      default: 'normal',
+      default: AppButtonSizes.NORMAL,
     },
     /**
-     * The size of the button
-     * @values small, large
+     * This will show the loading text in the button
+     */
+    loading: Boolean,
+    /**
+     * The css to apply to button
+     * @values css class names
      */
     customCssClasses: {
-      type: Array,
-      default: (): Array<string> => []
+      type: Array as () => Array<string>,
+      default: (): Array<string> => [],
     },
   },
   methods: {
@@ -64,20 +73,21 @@ export default Vue.extend({
     },
   },
   computed: {
-    computedSizeClass(): string {
-      return `btn-${this.size}`;
+    classNames(): string[] {
+      const sizeClass = `btn-${this.size}`;
+      return ['btn', sizeClass, ...this.customCssClasses];
     },
   },
 });
 </script>
 
 <style scoped>
-.appButtonContainer .btn {
+.app-button .btn {
   display: inline-flex;
   justify-content: center;
   align-items: center;
 }
-.appButtonContainer .btn.btn-normal {
+.app-button .btn.btn-normal {
   height: 36px;
   min-width: 64px;
   padding: 0 16px;

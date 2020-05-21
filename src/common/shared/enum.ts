@@ -36,3 +36,9 @@ export enum VALIDATORS {
   ALPHANUMERIC_WITH_SPACE = 'alphaNumericWithSpace',
   MULTIPLE_OF = 'multipleOf',
 }
+
+export enum AppButtonSizes {
+  SMALL = 'small',
+  NORMAL = 'normal',
+  LARGE = 'large',
+}
