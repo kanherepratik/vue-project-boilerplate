@@ -10,5 +10,6 @@
     "source.fixAll.eslint": true
   },
   // to enable suggestions in template for vue components
-  "vetur.experimental.templateInterpolationService": true
+  "vetur.experimental.templateInterpolationService": true,
+  "editor.tabSize": 2
 }

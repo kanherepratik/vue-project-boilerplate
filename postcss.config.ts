@@ -41,13 +41,11 @@ module.exports = {
     'postcss-url': {
       url(assets, dir): string {
         // get index of src folder from the absolute path of file folder
-        const srcIndex = dir.file.lastIndexOf('/ulip-frontend');
-        // var srcIndex = dir.file.indexOf('/src');
+        const srcIndex = dir.file.lastIndexOf('/vue-project-boilerplate');
         // resolve alias @images, url('@images/checkmark.svg')
         if (assets.url.startsWith('@images') && srcIndex >= 0) {
           // base path in src folder
           const basePath = 'public/images/';
-          // var basePath = 'assets/images/';
           // get number of folders a path needs to go up to the src folder
           // path is the file folder path from where the alias is called
           const upstreamDirCount = (dir.file.slice(srcIndex).match(/\//g) || []).length;
