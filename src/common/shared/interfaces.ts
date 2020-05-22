@@ -59,3 +59,10 @@ export interface IUnitLabel {
   full: string;
   short: string;
 }
+
+// Interfaces related to AppTabs components
+export interface IAppTab {
+  title: string;
+  component: any;
+  active?: boolean;
+}
