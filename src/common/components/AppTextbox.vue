@@ -1,13 +1,13 @@
 <template>
   <div class="appTextbox">
-    <div class="textbxoContainer">
-      <div v-if="label" class="textbxoContainer__label">{{ label }}</div>
+    <div class="textboxContainer">
+      <div v-if="label" class="textboxContainer__label">{{ label }}</div>
       <!--
         triggered on any checkbox click
         @event onChange
       -->
       <input
-        class="textbxoContainer__input"
+        class="textboxContainer__input"
         v-model="value"
         :type="inputType"
         :autofocus="autoFocus"
@@ -18,9 +18,9 @@
         @focus="onFocus"
         @blur="onBlur"
       />
-      <div v-if="clearable" class="textbxoContainer__clearIcon">{{ clearIcon }}</div>
+      <div v-if="clearable" class="textboxContainer__clearIcon">{{ clearIcon }}</div>
     </div>
-    <div v-if="!validation.isValid" class="textboxErrorMsg">{{ errorMessage || validation.message }}</div>
+    <div v-if="!validation.isValid" class="textboxErrorMsg">{{ validation.message }}</div>
     <div v-else-if="message" class="textboxMsg">{{ message }}</div>
   </div>
 </template>
@@ -36,10 +36,6 @@ interface IAppTextboxData {
   validation: IValidation; // To store the validation object
 }
 
-/**
- * Props -
- * inputType - d
- */
 export default Vue.extend({
   name: 'AppTextbox',
   /**
@@ -67,14 +63,6 @@ export default Vue.extend({
     autoFocus: {
       type: Boolean,
       default: false,
-    },
-    /**
-     * Default value of the input
-     * @values String
-     */
-    defaultValue: {
-      type: String,
-      default: '',
     },
     /**
      * Max length of the input
@@ -133,14 +121,6 @@ export default Vue.extend({
       default: '',
     },
     /**
-     * Error message to be shown below the input in case of invalid state of input
-     * @values String
-     */
-    errorMessage: {
-      type: String,
-      default: '',
-    },
-    /**
      * Validations array of objects of type IValidationRule to valdiate the input
      * @values Array<IValidationRule>
      */
@@ -153,10 +133,6 @@ export default Vue.extend({
     value: '',
     validation: { isValid: true } as IValidation,
   }),
-  created(): void {
-    // Updating value with the default value of the input
-    this.value = this.defaultValue;
-  },
   methods: {
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not
