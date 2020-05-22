@@ -1,24 +1,20 @@
 <template>
-  <div class="checkboxComponent">
+  <div class="appCheckbox">
     <!--
       triggered on click
       @event onClick
     -->
     <div
-      :class="[
-        'checkboxComponent__box',
-        isSelected && 'checkboxComponent__active',
-        disabled && 'checkboxComponent__disabled',
-      ]"
+      :class="['appCheckbox__box', isSelected && 'appCheckbox__active', disabled && 'appCheckbox__disabled']"
       @click="onCheckboxClick"
     >
-      <div v-if="isSelected" class="checkboxComponent__box__tick">{{ '&#x2714;' }}</div>
+      <div v-if="isSelected" class="appCheckbox__box__tick">{{ '&#x2714;' }}</div>
     </div>
     <!--
       triggered on click
       @event onClick
     -->
-    <div v-if="label" class="checkboxComponent__label" @click="onCheckboxClick">{{ label }}</div>
+    <div v-if="label" class="appCheckbox__label" @click="onCheckboxClick">{{ label }}</div>
   </div>
 </template>
 
@@ -32,7 +28,7 @@ interface IData {
 
 // Checkbox component
 export default Vue.extend({
-  name: 'CheckboxComponent',
+  name: 'AppCheckbox',
   /**
    * Model of the component
    * prop contains the state of the component
@@ -114,13 +110,13 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.checkboxComponent {
+.appCheckbox {
   display: flex;
   flex: 1;
   margin: 10px;
 }
 
-.checkboxComponent__box {
+.appCheckbox__box {
   min-width: 20px;
   min-height: 20px;
   max-height: 20px;
@@ -128,30 +124,30 @@ export default Vue.extend({
   border: 2px solid #000;
 }
 
-.checkboxComponent__box:before {
+.appCheckbox__box:before {
   opacity: 0.2;
   border-radius: 50%;
   position: absolute;
 }
 
-.checkboxComponent__box:hover:before {
+.appCheckbox__box:hover:before {
   background-color: #1867c0;
 }
 
-.checkboxComponent__active {
+.appCheckbox__active {
   background-color: #1867c0;
   color: #fff;
 }
 
-.checkboxComponent__disabled {
+.appCheckbox__disabled {
   border-color: #ddd;
 }
 
-.checkboxComponent__box__tick {
+.appCheckbox__box__tick {
   color: #fff;
 }
 
-.checkboxComponent__label {
+.appCheckbox__label {
   margin-left: 10px;
   text-align: left;
 }

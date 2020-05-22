@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <todo-component />
-    <checkbox-component />
+    <app-checkbox />
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 // @ is an alias to /src
 import Vue from 'vue';
 import TodoComponent from '@/components/TodoComponent.vue';
-import CheckboxComponent from '@/components/CheckboxComponent.vue';
+import AppCheckbox from '@/common/components/AppCheckbox.vue';
 
 interface IData {} // local interface for data properties
 
@@ -17,7 +17,7 @@ export default Vue.extend({
   name: 'Home',
   components: {
     'todo-component': TodoComponent,
-    'checkbox-component': CheckboxComponent,
+    'app-checkbox': AppCheckbox,
   },
   data: (): IData => ({}),
   computed: {},
