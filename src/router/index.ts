@@ -1,22 +1,22 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import { ROUTES } from '@/shared/constants';
+import FormIndex from '@/FormBuilder/FormIndex.vue'
 import { lazyLoad } from './utils';
 import configureRouteGuard from './config';
 
 Vue.use(Router);
-
+// Vue.component('FormIndex', FormIndex)
 const router: Router = new Router({
     mode: 'history',
     base: process.env.VUE_APP_BASE_ROUTE,
     routes: [
         {
             path: '/',
-            component: lazyLoad(
-                ROUTES.HOME.componentName as string,
-                ROUTES.HOME.componentPath,
-                ROUTES.HOME.hasMobileVersion
-            )
+            component: lazyLoad('home', '/HOME', false)
+        },
+        {
+            path: '/proposal',
+            component: FormIndex
         },
         {
             path: '**',

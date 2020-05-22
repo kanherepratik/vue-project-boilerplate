@@ -11,6 +11,13 @@ const register = (): void => {
         const componentName = fileName.replace(/^\.\/(.*)\.\w+$/, '$1');
         Vue.component(componentName, componentConfig.default || componentConfig);
     });
+
+    const requireComponent2 = require.context('./FormBuilder/form-components', false, /\.vue$/);
+    requireComponent2.keys().forEach((fileName) => {
+        const componentConfig2 = requireComponent2(fileName);
+        const componentName2 = fileName.replace(/^\.\/(.*)\.\w+$/, '$1');
+        Vue.component(componentName2, componentConfig2.default || componentConfig2);
+    });
 };
 
 export default register;

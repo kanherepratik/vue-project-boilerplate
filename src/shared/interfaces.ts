@@ -14,8 +14,3 @@ export interface IRoute {
     hasMobileVersion?: boolean;
     redirectToName?: string;
 }
-
-// All Root Routes
-export interface IAllRoutes {
-    HOME: IRoute;
-}
