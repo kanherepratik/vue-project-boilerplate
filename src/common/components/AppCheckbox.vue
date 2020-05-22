@@ -6,7 +6,7 @@
     -->
     <div
       :class="['appCheckbox__box', isSelected && 'appCheckbox__active', disabled && 'appCheckbox__disabled']"
-      @click="onCheckboxClick"
+      @click="onClick"
     >
       <div v-if="isSelected" class="appCheckbox__box__tick">{{ '&#x2714;' }}</div>
     </div>
@@ -14,16 +14,19 @@
       triggered on click
       @event onClick
     -->
-    <div v-if="label" class="appCheckbox__label" @click="onCheckboxClick">{{ label }}</div>
+    <div v-if="label" class="appCheckbox__label" @click="onClick">{{ label }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { IValidationRule, IValidation } from '../shared/interfaces';
+import { validationHandler } from '../shared/validations';
 
 // local interface for data object
-interface IData {
+interface IAppCheckboxData {
   isSelected: boolean;
+  validation: IValidation;
 }
 
 // Checkbox component
@@ -79,9 +82,18 @@ export default Vue.extend({
       type: Array,
       default: (): Array<string> => [],
     },
+    /**
+     * Validations array of objects of type IValidationRule to valdiate the checkbox
+     * @values Array<IValidationRule>
+     */
+    validations: {
+      type: Array as () => Array<IValidationRule>,
+      default: (): Array<IValidationRule> => [] as Array<IValidationRule>,
+    },
   },
-  data: (): IData => ({
+  data: (): IAppCheckboxData => ({
     isSelected: false,
+    validation: { isValid: true } as IValidation,
   }),
   created(): void {
     // Set the initial checked state of the checkbox from the props
@@ -89,10 +101,18 @@ export default Vue.extend({
   },
   methods: {
     /**
+     * Calls the validationHandler to check the validations, whether the state of checkbox is valid or not
+     * @returns boolean whether current state of the checkbox is valid or not
+     */
+    isValid(): boolean {
+      this.validation = validationHandler(this.value, this.validations);
+      return this.validation.isValid;
+    },
+    /**
      * Gets called when the user clicks on the checkbox or label
      * @public
      */
-    onCheckboxClick(): void {
+    onClick(): void {
       // Stop click if the checkbox is disabled
       if (this.disabled) {
         return;
