@@ -24,10 +24,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import AppCheckbox from './AppCheckbox.vue';
+import { IValidationRule, IValidation } from '../shared/interfaces';
+import { validationHandler } from '../shared/validations';
 
 // local interface for data object
-interface IData {
+interface ICheckboxGroupData {
   selectedValues: Array<number>;
+  validation: IValidation;
 }
 
 export interface ICheckboxData {
@@ -81,11 +84,28 @@ export default Vue.extend({
       type: Array,
       default: (): Array<string> => [],
     },
+    /**
+     * Validations array of objects of type IValidationRule to valdiate the checkbox group
+     * @values Array<IValidationRule>
+     */
+    validations: {
+      type: Array as () => Array<IValidationRule>,
+      default: (): Array<IValidationRule> => [] as Array<IValidationRule>,
+    },
   },
-  data: (): IData => ({
+  data: (): ICheckboxGroupData => ({
     selectedValues: [],
+    validation: { isValid: true } as IValidation,
   }),
   methods: {
+    /**
+     * Calls the validationHandler to check the validations, whether the state of checkbox group is valid or not
+     * @returns boolean whether current state of the checkbox group is valid or not
+     */
+    isValid(): boolean {
+      this.validation = validationHandler(this.selectedValues, this.validations);
+      return this.validation.isValid;
+    },
     /**
      * Gets called when the user clicks on any of the checkbox or its label
      * @public
