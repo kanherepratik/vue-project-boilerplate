@@ -27,6 +27,7 @@ export interface IWrapperComponentSchema {
     component: ICommonComponentList
     validations?: IValidation[]
     actions?: IAction[]
+    otherProps?: Object
 }
 
 // this needs to be derived dynamically

@@ -2,7 +2,7 @@
     <div>
         <component
             v-if="schema.component"
-            :is="schema.component"
+            :is="componentMap[schema.component]"
             v-bind="schema.otherProps"
             v-model=""
             :ref="schema.id"
@@ -15,6 +15,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { IWrapperComponentSchema } from '../interfaces/common';
+import componentMap from '../componentMap'
+
 interface IWrapperComponent {
     getValue: () => void
     isValid: (showError: boolean) => boolean
@@ -35,6 +37,10 @@ export default class WrapperComponent extends Vue implements IWrapperComponent {
     setValue = (value: any) => {
         return true
     }
+
+    data = () => ({
+        componentMap
+    })
 
 }
 

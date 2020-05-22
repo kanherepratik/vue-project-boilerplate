@@ -1,4 +1,4 @@
-type IParseMap = {
+type IComponentMap = {
     [key: string] : {
         component: string,
         componentPath: string,
@@ -9,7 +9,7 @@ type IParseMap = {
     }
 }
 
-const parseMap: IParseMap = {
+const componentMap: IComponentMap = {
     Radio: {
         component: 'RadioComponent',
         componentPath: '',
@@ -29,4 +29,4 @@ const parseMap: IParseMap = {
         }  
     }
 }
-export default parseMap
+export default componentMap
