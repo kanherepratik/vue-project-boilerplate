@@ -280,7 +280,7 @@ const callValidator = (validationName: string, validationObj: any, value: any): 
  * @param value
  * @param validationArray
  */
-export const validationHandler = (value: any, validationArray: IValidationRule[]): IValidation | undefined => {
+export const validationHandler = (value: any, validationArray: IValidationRule[]): IValidation => {
   const validationObject: IValidation = { isValid: true, message: '' };
 
   for (const validation of validationArray) {
