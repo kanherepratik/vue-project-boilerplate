@@ -36,3 +36,9 @@ export enum VALIDATORS {
   ALPHANUMERIC_WITH_SPACE = 'alphaNumericWithSpace',
   MULTIPLE_OF = 'multipleOf',
 }
+
+export enum NavigationKeys {
+  ENTER = 13,
+  ARROW_UP = 38,
+  ARROW_DOWN = 40,
+}
