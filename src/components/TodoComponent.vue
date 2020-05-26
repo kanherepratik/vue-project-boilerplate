@@ -7,23 +7,22 @@
       <div v-for="(todo, index) in todoList" :key="index">
         {{ todo }}
       </div>
-      <portal v-if="showModal" to="destination">
-        <div class="overlay">
-          <div class="modal">
-            <h1>
-              Are you sure you want to remove this phone from your list?
-            </h1>
-            <div>
-              <button type="button" @click="closeModal">
-                Cancel
-              </button>
-              <button type="button">
-                Remove
-              </button>
-            </div>
-          </div>
-        </div>
-      </portal>
+      <button type="button" class="dialogButton abc" @click="openModal">
+        Open Modal!
+      </button>
+      <app-dialog v-show="showModal" v-bind:showModal="showModal" @close="closeModal" :hideOverlay="true">
+        <template v-slot:header>
+          This is the default tile!
+          <button type="button" class="btn-close" @click="closeModal" aria-label="Close modal">x</button>
+        </template>
+        <template v-slot:body>
+          I'm the default body!
+        </template>
+        <template v-slot:footer>
+          I'm the default footer!
+          <button type="button" class="btn-green" @click="closeModal" aria-label="Close modal">Close me!</button>
+        </template>
+      </app-dialog>
     </div>
   </div>
 </template>
@@ -31,7 +30,7 @@
 <script lang="ts">
 import mixins from '@/mixins/mixinHelper';
 import todoMixin from '@/mixins/todoMixin';
-import { Portal } from 'portal-vue';
+import AppDialog from '@/components/AppDialog.vue';
 
 // local interface for data object
 interface IData {
@@ -42,7 +41,7 @@ interface IData {
 export default mixins(todoMixin).extend({
   name: 'TodoComponent',
   components: {
-    'portal': Portal,
+    'app-dialog': AppDialog,
   },
   data: (): IData => ({
     task: '',
@@ -56,14 +55,13 @@ export default mixins(todoMixin).extend({
     },
   },
   methods: {
-    toggleModal(): void {
-      this.showModal = !this.showModal;
+    openModal(): void {
+      this.showModal = true;
     },
     closeModal(): void {
-      this.toggleModal();
+      this.showModal = false;
     },
     onAddTodo(): void {
-      this.toggleModal();
       this.mixinOutput(this.task);
       this.$store.actionsHelper.addTodo(this.task);
     },

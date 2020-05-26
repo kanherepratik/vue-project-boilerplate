@@ -1,5 +1,5 @@
 import Vue, { VNode } from 'vue';
-import PortalVue from 'portal-vue';
+// import PortalVue from 'portal-vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -7,7 +7,7 @@ import storeHelper from './store/plugins/storeHelper';
 
 Vue.config.productionTip = false;
 Vue.use(storeHelper);
-Vue.use(PortalVue);
+// Vue.use(PortalVue);
 
 // if (SENTRY_ENV !== 'development') {
 //     import(/* webpackChunkName: "sentry" */ '@sentry/browser').then((Sentry) => {

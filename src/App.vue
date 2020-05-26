@@ -6,21 +6,8 @@
       </router-link>
     </div>
     <router-view />
-    <app-dialog />
   </div>
 </template>
-
-<script lang="ts">
-import Vue from 'vue';
-import AppDialog from '@/common/components/AppDialog.vue';
-
-export default Vue.extend({
-  name: 'App',
-  components: {
-    'app-dialog': AppDialog,
-  },
-});
-</script>
 
 <style>
 #app {
