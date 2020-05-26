@@ -1,32 +1,54 @@
 <template>
-  <div class="radioButton">
-    <div class="radioButton__box" @click="onRadioClicked"></div>
-    <div v-if="radioActive === value" class="radioButton--tick">{{ '&#x2714;' }}</div>
-    <div v-if="label" class="radioButton__label" @change="onRadioClicked">{{ label }}</div>
+  <div>
+    <div v-for="(radioItems, index) in items" :key="radioItems.label" class="radioButton">
+      <div class="radioButton__box" @click="onHandleClick(index)"></div>
+      <div v-if="radioActive === radioItems.value" class="radioButton--tick">{{ '&#x2714;' }}</div>
+      <div class="radioButton__label">{{ radioItems.label }}</div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 
+// local interface for items properties
+interface IItemProps {
+  value: string;
+  label: string;
+}
+
 export default Vue.extend({
   name: 'RadioButton',
   model: {
     prop: 'radioActive',
-    event: 'onRadioUpdate',
+    event: 'onValueChange',
   },
   props: {
-    value: String,
-    label: String,
-    disabled: Boolean,
-    radioActive: String,
+    /**
+     * Disabled state of input
+     * @values Boolean
+     * @default false
+     */
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    radioActive: {
+      type: String,
+      default: '',
+    },
+    items: {
+      type: Array as () => Array<IItemProps>,
+      default: [],
+    },
   },
   methods: {
-    onRadioClicked(): void {
+    onHandleClick(e: number): void {
+      // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
-      this.$emit('onRadioUpdate', this.value);
+      this.$emit('onValueChange', this.items[e].value);
     },
   },
 });
