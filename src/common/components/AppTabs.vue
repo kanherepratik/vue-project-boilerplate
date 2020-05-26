@@ -25,6 +25,19 @@
 import Vue from 'vue';
 import { IAppTab } from '../shared/interfaces';
 
+/**
+ * Tabs component
+ *
+ * Props -
+ * 1. tabs {IAppTab}: Array of tabs
+ * 2. keepAlive {boolean}: It will launch the tab in vue keep-alive mode
+ *
+ * Events -
+ * tab-changed {number}: It gets fire on tab change. In data it has new tab index
+ *
+ * Note - To get the active tab index use getActiveTab function using ref
+ */
+
 export default Vue.extend({
   name: 'AppTabs',
   props: {
