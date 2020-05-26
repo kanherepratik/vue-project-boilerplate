@@ -16,7 +16,6 @@ export default Vue.extend({
   components: {
     'todo-component': TodoComponent,
   },
-  data: (): IData => ({}),
   computed: {},
   methods: {},
 });
