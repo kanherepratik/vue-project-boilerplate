@@ -59,3 +59,18 @@ export interface IUnitLabel {
   full: string;
   short: string;
 }
+
+// Stepper component interfaces
+export interface IStepperStep {
+  name: string;
+  component: any;
+  icon?: string;
+  title?: string;
+  subtitle?: string;
+  completed?: boolean;
+}
+
+export interface IInitStepperStep {
+  name: string;
+  completed: boolean;
+}
