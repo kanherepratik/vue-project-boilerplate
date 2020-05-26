@@ -10,7 +10,7 @@
       <button type="button" class="dialogButton abc" @click="openModal">
         Open Modal!
       </button>
-      <app-dialog v-show="showModal" v-bind:showModal="showModal" @close="closeModal" :hideOverlay="true">
+      <app-dialog v-show="showModal" v-bind:showModal="showModal" @close="closeModal" :fullScreen="true">
         <template v-slot:header>
           This is the default tile!
           <button type="button" class="btn-close" @click="closeModal" aria-label="Close modal">x</button>
@@ -30,7 +30,7 @@
 <script lang="ts">
 import mixins from '@/mixins/mixinHelper';
 import todoMixin from '@/mixins/todoMixin';
-import AppDialog from '@/components/AppDialog.vue';
+import AppDialog from '@/common/components/AppDialog.vue';
 
 // local interface for data object
 interface IData {
