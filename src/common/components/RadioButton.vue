@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-for="(radioItems, index) in items" :key="radioItems.label" class="radioButton">
+    <div v-for="(radioItems, index) in items" :key="radioItems.value" class="radioButton">
       <div class="radioButton__box" @click="onHandleClick(index)"></div>
-      <div v-if="radioActive === radioItems.value" class="radioButton--tick">{{ '&#x2714;' }}</div>
+      <div v-if="selectedItem === radioItems.value" class="radioButton--tick">{{ '&#x2714;' }}</div>
       <div class="radioButton__label">{{ radioItems.label }}</div>
     </div>
   </div>
@@ -20,7 +20,7 @@ interface IItemProps {
 export default Vue.extend({
   name: 'RadioButton',
   model: {
-    prop: 'radioActive',
+    prop: 'selectedItem',
     event: 'onValueChange',
   },
   props: {
@@ -33,7 +33,7 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
-    radioActive: {
+    selectedItem: {
       type: String,
       default: '',
     },
