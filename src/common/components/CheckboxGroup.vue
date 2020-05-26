@@ -1,24 +1,20 @@
 <template>
-  <li :class="['checkboxGroup', align === 'horizontal' && 'checkboxGroup--horizontal']">
-    <ul class="checkboxGroup__checkboxItem" v-for="(item, index) in chechboxItems" :key="index">
+  <ul :class="['checkboxGroup', align === 'horizontal' && 'checkboxGroup--horizontal']">
+    <li class="checkboxGroup__checkboxItem" v-for="(item, index) in chechboxItems" :key="index">
       <!--
         triggered on any checkbox click
         @event onClick
       -->
       <app-checkbox
-        @onClick="
-          () => {
-            onItemChecked(index);
-          }
-        "
+        @onClick="onItemChecked(index)"
         :checked="item.checked"
         :disabled="item.disabled"
         :value="item.value"
         :label="item.label"
         :customCssClasses="item.customCssClasses"
       />
-    </ul>
-  </li>
+    </li>
+  </ul>
 </template>
 
 <script lang="ts">
