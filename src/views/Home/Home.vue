@@ -1,17 +1,23 @@
 <template>
-    <div class="home">
-        <todo-component />
-    </div>
+  <div class="home">
+    <todo-component />
+  </div>
 </template>
 
-<script>
+<script lang="ts">
 // @ is an alias to /src
 import TodoComponent from '@/components/TodoComponent.vue';
+import Vue from 'vue';
 
-export default {
-    name: 'Home',
-    components: {
-        'todo-component': TodoComponent
-    }
-};
+interface IData {} // local interface for data properties
+
+export default Vue.extend({
+  name: 'Home',
+  components: {
+    'todo-component': TodoComponent,
+  },
+  data: (): IData => ({}),
+  computed: {},
+  methods: {},
+});
 </script>

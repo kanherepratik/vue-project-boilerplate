@@ -28,6 +28,3 @@ See [Typescript coding guidelines](https://github.com/kanherepratik/vue-styled/b
 
 ### Vue.js styleguide rules
 See [Vue.js styleguide](https://vuejs.org/v2/style-guide/#Rule-Categories)
-
-### vuex-module-decorators
-See [vuex-module-decorators](https://championswimmer.in/vuex-module-decorators)
