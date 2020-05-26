@@ -25,7 +25,7 @@ export const formStructure: IFormSchema = {
 
                     ],
                     actions: [
-
+                        'showRegistrationDetails'
                     ]
                 },
                 {

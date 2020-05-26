@@ -6,6 +6,7 @@
             >
             </wrapper-component>
         </div>
+        <button>Submit</button>
     </div>
 </template>
 
@@ -20,5 +21,6 @@ export default class FormContainer extends Vue {
     public getValid = () => {
         return false
     }
+
 }
 </script>

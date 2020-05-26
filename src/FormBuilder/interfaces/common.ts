@@ -19,7 +19,7 @@ export interface IContainerSchema {
     id: string,
     label: string,
     submitText?: string,
-    children: any[] //fix this with proper type
+    children: any[] //FIXME this with proper type
 }
 
 // see if this needs more propoerties
