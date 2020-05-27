@@ -59,3 +59,14 @@ export interface IUnitLabel {
   full: string;
   short: string;
 }
+
+// AppToast related interfaces
+export interface IToast {
+  text: string;
+  duration?: number;
+}
+
+export interface ICustomToast {
+  id: number;
+  text: string;
+}
