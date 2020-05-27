@@ -1,87 +1,77 @@
 import { IFormSchema } from './interfaces/common';
 
 export const formStructure: IFormSchema = {
-    label: 'Proposal Form',
-    id: 'proposal-form',
-    children: [
+  label: 'Proposal Form',
+  id: 'proposal-form',
+  children: [
+    {
+      component: 'Container',
+      label: 'Personal Details',
+      id: 'personal-details',
+      children: [
         {
-            component: 'Container',
-            label: 'Personal Details',
-            id: 'personal-details',
-            children: [
-                {
-                    component: 'TextInput',
-                    label: 'Name',
-                    id: 'name',
-                    validations: [
-
-                    ]
-                },
-                {  
-                    component: 'MobileInput',
-                    label: 'Mobile',
-                    id: 'mobile', 
-                    validations: [
-
-                    ],
-                    actions: [
-                        'showRegistrationDetails'
-                    ]
-                },
-                {
-                    component: 'Radio',
-                    label: 'Gender',
-                    id: 'Gender'
-                }
-            ]
+          component: 'TextInput',
+          label: 'Name',
+          value: '',
+          handler: 'handleBlur',
+          otherProps: {
+            validations: [{ name: 'required', message: 'This field is super important' }],
+          },
+          id: 'name',
         },
-
         {
-            component: 'Container',
-            label: 'Nominee Details',
-            id: 'nominee-details',
-            children: [
-                {
-                    component: 'TextInput',
-                    label: 'Name',
-                    id: 'name',
-                    validations: [
-
-                    ]
-                },
-                {  
-                    component: 'MobileInput',
-                    label: 'Mobile',
-                    id: 'mobile', 
-                    validations: [
-
-                    ],
-                    actions: [
-
-                    ]
-                },
-                {
-                    component: 'Radio',
-                    label: 'Gender',
-                    id: 'Gender'
-                }
-            ]
+          component: 'Radio',
+          selectedItem: '',
+          otherProps: {
+            items: [
+              { value: 'male', label: 'Male' },
+              { value: 'female', label: 'Female' },
+            ],
+            validations: [{ name: 'required', message: 'This field is super important' }],
+          },
+          label: 'Gender',
+          id: 'gender',
+          handler: 'handleChange',
         },
-
+        // {
+        //   component: 'MobileInput',
+        //   label: 'Mobile',
+        //   id: 'mobile',
+        //   validations: [],
+        //   actions: ['showRegistrationDetails'],
+        // },
+      ],
+    },
+    {
+      component: 'Container',
+      label: 'Nominee Details',
+      id: 'nominee-details',
+      children: [
         {
-            component: 'Container',
-            label: 'Address Details',
-            id: 'address-details',
-            children: [
-                {
-                    component: 'TextInput',
-                    label: 'Name',
-                    id: 'name',
-                    validations: [
-
-                    ]
-                },
-            ]
-        }
-    ]
-}
+          component: 'TextInput',
+          label: 'address',
+          value: '',
+          handler: 'handleBlur',
+          otherProps: {
+            validations: [{ name: 'required', message: 'This field is super important' }],
+          },
+          id: 'address',
+        },
+        {
+          component: 'Radio',
+          selectedItem: '',
+          otherProps: {
+            items: [
+              { value: 'self', label: 'Self' },
+              { value: 'proposer', label: 'Proposer' },
+            ],
+            validations: [{ name: 'required', message: 'This field is super important' }],
+          },
+          label: 'Buyer Role',
+          id: 'buyerRole',
+          handler: 'handleChange',
+        },
+      ],
+    },
+  ],
+};

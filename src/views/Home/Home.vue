@@ -1,22 +1,25 @@
 <template>
   <div class="home">
-    <todo-component />
+    <!-- <todo-component />
+    <app-checkbox /> -->
+    <form-index />
   </div>
 </template>
 
 <script lang="ts">
 // @ is an alias to /src
-import TodoComponent from '@/components/TodoComponent.vue';
 import Vue from 'vue';
-
-interface IData {} // local interface for data properties
+// import TodoComponent from '@/components/TodoComponent.vue';
+// import AppCheckbox from '@/common/components/AppCheckbox.vue';
+import FormIndex from '../../FormBuilder/FormIndex.vue';
 
 export default Vue.extend({
   name: 'Home',
   components: {
-    'todo-component': TodoComponent,
+    // 'todo-component': TodoComponent,
+    // 'app-checkbox': AppCheckbox,
+    'form-index': FormIndex,
   },
-  data: (): IData => ({}),
   computed: {},
   methods: {},
 });

@@ -8,7 +8,7 @@
       -->
       <input
         class="textboxContainer__input"
-        v-model="value"
+        v-model="inputValue"
         :type="inputType"
         :autofocus="autoFocus"
         :placeholder="placeholder"
@@ -32,7 +32,7 @@ import { validationHandler } from '../shared/validations';
 
 // local interface for data properties
 interface IAppTextboxData {
-  value: string;
+  inputValue: string;
   validation: IValidation; // To store the validation object
 }
 
@@ -44,8 +44,18 @@ export default Vue.extend({
    */
   model: {
     prop: 'value',
+    event: 'onBlur',
   },
   props: {
+    /**
+     * Type of input
+     * @values String
+     * @default ""
+     */
+    value: {
+      type: String,
+      default: '',
+    },
     /**
      * Type of input
      * @values String
@@ -130,16 +140,19 @@ export default Vue.extend({
     },
   },
   data: (): IAppTextboxData => ({
-    value: '',
+    inputValue: '',
     validation: { isValid: true } as IValidation,
   }),
+  created(): void {
+    this.inputValue = this.$props.value;
+  },
   methods: {
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not
      * @returns boolean whether current state of the input is valid or not
      */
     isValid(): boolean {
-      this.validation = validationHandler(this.value, this.validations);
+      this.validation = validationHandler(this.inputValue, this.validations);
       return this.validation.isValid;
     },
     /**
@@ -151,7 +164,7 @@ export default Vue.extend({
       if (this.disabled) {
         return;
       }
-      this.$emit('onChange', this.value);
+      this.$emit('onChange', this.inputValue);
     },
     /**
      * onFocus to be called in case of input gets focus, emits onFocus event
@@ -162,7 +175,7 @@ export default Vue.extend({
       if (this.disabled) {
         return;
       }
-      this.$emit('onFocus', this.value);
+      this.$emit('onFocus', this.inputValue);
     },
     /**
      * onBlur to be called in case of input gets blur, emits onBlur event
@@ -173,7 +186,7 @@ export default Vue.extend({
       if (this.disabled) {
         return;
       }
-      this.$emit('onBlur', this.value);
+      this.$emit('onBlur', this.inputValue);
     },
   },
 });

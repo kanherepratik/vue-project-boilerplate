@@ -1,32 +1,22 @@
-type IComponentMap = {
-    [key: string] : {
-        component: string,
-        componentPath: string,
-        propMap?: Object,
-        eventMap?: Object,
-        eventProp?: string,
-        valueProp?: string
-    }
-}
+import { RadioButton, AppTextbox, AppButton, AppCheckbox } from '@/common/components';
+import { IComponentMap } from './interfaces/common';
 
 const componentMap: IComponentMap = {
-    Radio: {
-        component: 'RadioComponent',
-        componentPath: '',
-        eventProp: 'onChange',
-        valueProp: 'value',
-        propMap: {
-            disabled: 'isDisabled',
-        }
+  Radio: {
+    component: RadioButton,
+    eventProp: 'onValueChange',
+    valueProp: 'selectedItem',
+    propMap: {
+      disabled: 'isDisabled',
     },
-    TextInput: {
-        component: 'TextInput',
-        componentPath: '',
-        eventProp: 'onChange',
-        valueProp: 'value',
-        propMap: {
-            disabled: 'isDisabled',
-        }  
-    }
-}
-export default componentMap
+  },
+  TextInput: {
+    component: AppTextbox,
+    eventProp: 'onBlur',
+    valueProp: 'value',
+    propMap: {
+      disabled: 'isDisabled',
+    },
+  },
+};
+export default componentMap;
