@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { subYears, format } from 'date-fns';
-import { IUnitLabel } from './interfaces';
+import { IUnitLabel, ISelectItem } from './interfaces';
 import { SUFFIX_DIVISOR_MAP } from './constants';
 
 /**
