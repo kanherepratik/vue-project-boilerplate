@@ -1,29 +1,30 @@
 <template>
-  <div class="singleSelectComponent">
-    <div class="selectHandle" tabindex="1" @click="onFocus" @keydown="onKeyDown">
-      <label class="dropdownLabel">{{ label }}</label>
-      <div class="selectedItem">
+  <div class="single-select">
+    <div class="select-handle" tabindex="1" @click="onFocus" @keydown="onKeyDown">
+      <label class="dropdown-label">{{ label }}</label>
+      <div class="selected-item">
         {{ selectedItem }}
       </div>
     </div>
-    <div v-if="showDropdown" class="filteredList">
-      <div v-if="searchable" class="searchBlock">
-        <div class="inputControl">
+    <div v-if="showDropdown" class="filtered-list">
+      <div v-if="searchable" class="search-block">
+        <div class="input-control">
           <input
+            class="input-field"
             type="text"
             :value="queryValue"
             :placeholder="placeholder"
+            ref="searchInput"
             @input="onInputChange"
             @focus="onFocus"
-            ref="searchInput"
             @keydown="onKeyDown"
           />
         </div>
-        <div v-if="clearable && queryValue.length" class="clearIcon" @click="clearQuery">x</div>
+        <div v-if="clearable && queryValue.length" class="clear-icon" @click="clearQuery">x</div>
       </div>
       <div
-        :class="['filteredItem', { active: listItem.value === selectedItem, selected: searchIndex === index }]"
         v-for="(listItem, index) of filteredItems"
+        :class="['filtered-item', { active: listItem.value === selectedItem, selected: searchIndex === index }]"
         :key="listItem.label"
         @click="onSelection(index)"
       >
@@ -60,7 +61,7 @@ import { getFilteredItems, transformData } from '../shared/utils';
  */
 
 export default Vue.extend({
-  name: 'singleSelect',
+  name: 'SingleSelect',
   data: () => ({
     selectedItem: '',
     queryValue: '',
@@ -187,11 +188,7 @@ export default Vue.extend({
 
       switch (event.keyCode) {
         case NavigationKeys.ARROW_UP:
-          if (this.searchIndex > 0) {
-            this.searchIndex -= 1;
-          } else {
-            this.searchIndex = filteredItemsCount - 1;
-          }
+          this.searchIndex = this.searchIndex > 0 ? this.searchIndex - 1 : filteredItemsCount - 1;
           break;
         case NavigationKeys.ARROW_DOWN:
           this.searchIndex += 1;
@@ -211,12 +208,12 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.singleSelectComponent {
+.single-select {
   display: flex;
   flex-direction: column;
 }
 
-.selectHandle {
+.select-handle {
   display: flex;
   border: 1px solid lightgrey;
   padding-top: 12px;
@@ -224,46 +221,46 @@ export default Vue.extend({
   min-height: 35px;
 }
 
-.inputControl {
+.input-control {
   display: flex;
   flex-grow: 1;
 }
 
-.inputField {
+.input-field {
   display: flex;
   flex-grow: 1;
 }
 
-.searchBlock {
+.search-block {
   display: flex;
   margin: 10px 20px;
   border: 1px solid lightgray;
 }
 
-input {
+.input-field {
   width: 100%;
   padding: 0.6rem;
   border: none;
   outline: none;
 }
 
-.clearIcon {
+.clear-icon {
   display: flex;
   align-items: center;
   cursor: pointer;
   margin: 0px 10px;
 }
 
-.selectedItems {
+.selected-items {
   min-height: 68px;
 }
 
-.selectedItem {
+.selected-item {
   cursor: pointer;
   margin: 5px;
 }
 
-.filteredList {
+.filtered-list {
   display: flex;
   flex-direction: column;
   border-left: 1px solid lightgray;
@@ -271,16 +268,16 @@ input {
   border-bottom: 1px solid lightgray;
 }
 
-.filteredItem {
+.filtered-item {
   display: flex;
   padding: 9px;
 }
 
-.filteredItem:hover {
+.filtered-item:hover {
   background-color: gainsboro;
 }
 
-.selectItem {
+.select-item {
   display: flex;
   padding: 5px 23px;
   font-size: 12px;
