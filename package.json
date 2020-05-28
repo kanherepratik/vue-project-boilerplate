@@ -46,6 +46,7 @@
     "postcss-nested": "^4.2.1",
     "postcss-simple-vars": "^5.0.2",
     "postcss-url": "^8.0.0",
+    "rimraf": "^3.0.2",
     "typedoc": "^0.17.6",
     "typescript": "~3.8.3",
     "vue-styleguidist": "^4.20.0",
