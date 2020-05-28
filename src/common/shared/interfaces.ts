@@ -70,6 +70,11 @@ export interface ICustomToast {
   id: number;
   text: string;
 }
+
+export interface IToastData {
+  toasts: ICustomToast[];
+}
+
 // SingleSingle Component Interfaces
 export interface ISelectItem {
   label: string;

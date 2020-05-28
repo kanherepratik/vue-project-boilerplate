@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ICustomToast, IToast } from '../shared/interfaces';
+import { ICustomToast, IToast, IToastData } from '../shared/interfaces';
 import { AppToastPosition } from '../shared/enum';
 
 /**
@@ -20,8 +20,9 @@ import { AppToastPosition } from '../shared/enum';
  * position {AppToastPosition}: Positions of toast
  * closeable {Boolean}: It makes the toast closeable
  */
+
 export default Vue.extend({
-  data() {
+  data(): IToastData {
     return {
       toasts: [] as ICustomToast[],
     };
@@ -49,6 +50,9 @@ export default Vue.extend({
       default: true,
     },
   },
+  mounted() {
+    this.addToast(this.toast);
+  },
   methods: {
     /**
      * It pushes the toast into toasts array and fires the setTimeout to remove the toast
@@ -66,7 +70,7 @@ export default Vue.extend({
      * @param {number} id Id of the toast to be deleted
      */
     removeToast(id: number): void {
-      this.toasts = this.toasts.filter((toast) => toast.id !== id);
+      this.toasts = this.toasts.filter((toast: ICustomToast) => toast.id !== id);
     },
   },
 });
