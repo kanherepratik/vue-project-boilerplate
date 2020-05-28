@@ -12,6 +12,26 @@ const STATIC_URL = process.env.VUE_APP_STATIC_URL || '/static/';
 module.exports = {
   // baseUrl: STATIC_URL,
   outputDir: './dist/',
+  pluginOptions: {
+    i18n: {
+      locale: 'en',
+      fallbackLocale: 'en',
+      localeDir: 'locales',
+      enableInSFC: true,
+    },
+  },
+  devServer: {
+    writeToDisk: true,
+    port: PORT,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-id, Content-Length, X-Requested-With',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    },
+  },
+  // baseUrl: STATIC_URL,
+  outputDir: './dist/',
   devServer: {
     writeToDisk: true,
     port: PORT,
@@ -29,7 +49,7 @@ module.exports = {
     console.log(chalk.yellow('--------------------------------------'));
     config.module.rules.push({
       test: /\.postcss$/,
-      use: ['style-loader', 'postcss-loader' ]
+      use: ['style-loader', 'postcss-loader'],
     });
 
     config.plugins.push(
