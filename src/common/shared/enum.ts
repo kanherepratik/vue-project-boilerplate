@@ -43,6 +43,7 @@ export enum AppButtonSizes {
   LARGE = 'large',
 }
 
+
 export enum AppToastPosition {
   TOP_LEFT = 'top_left',
   TOP_CENTER = 'top_center',
@@ -50,4 +51,10 @@ export enum AppToastPosition {
   BOTTOM_LEFT = 'bottom_left',
   BOTTOM_CENTER = 'bottom_center',
   BOTTOM_RIGHT = 'bottom_right',
+}
+
+export enum NavigationKeys {
+  ENTER = 13,
+  ARROW_UP = 38,
+  ARROW_DOWN = 40,
 }

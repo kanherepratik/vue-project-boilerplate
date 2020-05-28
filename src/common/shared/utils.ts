@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { subYears, format } from 'date-fns';
-import { IUnitLabel } from './interfaces';
+import { IUnitLabel, ISelectItem } from './interfaces';
 import { SUFFIX_DIVISOR_MAP } from './constants';
 
 /**
@@ -251,7 +251,7 @@ export const objToStr = (data: object): string => {
   return Object.keys(data).reduce(
     (str, key) =>
       `${str}${key}: ${
-        typeof (data as any)[key] === 'object' ? JSON.stringify((data as any)[key]) : (data as any)[key]
+      typeof (data as any)[key] === 'object' ? JSON.stringify((data as any)[key]) : (data as any)[key]
       }\n,,`,
     ','
   );
@@ -314,4 +314,48 @@ export const parseDate = (date: string): string => {
     console.log(error);
     return date;
   }
+};
+
+/**
+ * List all matching results and results matched at zero index are placed first
+ * @param {string} query User Input
+ * @param {ISelectItem} items Array of items
+ *
+ * @return {ISelectItem[]} Returns an array of ISelectItem type
+ */
+export const getFilteredItems = (query: string, items: ISelectItem[]): ISelectItem[] => {
+  const itemsMatchedAtZeroIndex: ISelectItem[] = [];
+  const restMatchedItems: ISelectItem[] = [];
+
+  if (query.length === 0) {
+    return items;
+  }
+  items.forEach((item: ISelectItem) => {
+    const itemLowerCase = item.label.toLowerCase();
+    query = query.toLowerCase();
+    if (itemLowerCase.includes(query)) {
+      if (item.label.startsWith(query)) {
+        itemsMatchedAtZeroIndex.push(item);
+      } else {
+        restMatchedItems.push(item);
+      }
+    }
+  });
+  return itemsMatchedAtZeroIndex.concat(restMatchedItems);
+};
+
+/**
+ * It tranforms the object or string into object having type ISelectItem
+ * @param items It can be array of strings or objects
+ * @param {string} labelKey Key to used in the object to get the label
+ * @param {string} valueKey Key to used in the object to get the value
+ */
+export const transformData = (items: (string | object)[], labelKey = 'label', valueKey = 'value'): ISelectItem[] => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return items.map((item: any) => {
+    if (typeof item === 'object' && item !== null) {
+      return { label: item[labelKey], value: item[valueKey] };
+    }
+    return { label: item, value: item };
+  });
 };
