@@ -59,3 +59,22 @@ export interface IUnitLabel {
   full: string;
   short: string;
 }
+
+// SingleSingle Component Interfaces
+export interface ISelectItem {
+  label: string;
+  value: string;
+}
+
+export interface ISelectItemProps {
+  [value: string]: string;
+}
+
+export interface ISingleSelectData {
+  selectedItem: string;
+  queryValue: string;
+  filteredItems: ISelectItem[];
+  searchIndex: number;
+  showDropdown: boolean;
+  mappedItems: ISelectItem[];
+}
