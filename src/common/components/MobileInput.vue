@@ -7,7 +7,6 @@
       :autofocus="autoFocus"
       :disabled="disabled"
       :placeholder="placeholder"
-      :maxlength="maxLen"
       @input="onChange"
       @focus="onFocus"
       @blur="onBlur"
@@ -23,7 +22,6 @@ import { validationHandler } from '../shared/validations';
 
 // local interface for data properties
 interface IMobileInput {
-  value: string;
   validation: IValidation; // To store the validation object
 }
 
@@ -31,8 +29,17 @@ export default Vue.extend({
   name: 'MobileInput',
   model: {
     prop: 'value',
+    event: 'onBlur',
   },
   props: {
+    /**
+     * value prop for mobileInput
+     * @values String
+     */
+    value: {
+      type: String,
+      default: '',
+    },
     /**
      * Validations array of objects of type IValidationRule to valdiate the input
      * @values Array<IValidationRule>
@@ -67,14 +74,8 @@ export default Vue.extend({
       type: String,
       default: '',
     },
-    /**
-     * Max length of the input
-     * @values Number
-     */
-    maxLen: Number,
   },
   data: (): IMobileInput => ({
-    value: '',
     validation: { isValid: true } as IValidation,
   }),
   methods: {

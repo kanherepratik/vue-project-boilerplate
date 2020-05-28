@@ -6,8 +6,9 @@
       :key="component.id"
       :schema="component"
       :data="data"
+      @onChange="handleChange"
+      @onBlur="handleBlur"
       :ref="component.id"
-      :id="component.id"
     />
 
     <app-button :title="schema.submitText || 'submit'" @click="handleSubmit" />
@@ -32,15 +33,18 @@ export default class FormContainer extends Vue {
   @Prop({ required: true }) private data!: any;
 
   public isValid(showError: boolean = false): boolean {
-    // TODO: check why AppButton is getting validated here
+    this.$emit(signals.ON_BEFORE_VALIDATE);
     return this.schema.children.every((component: IWrapperComponentSchema): boolean => {
-      // console.log((this.$refs[component.id] as any)[0].isValid());
       return (this.$refs[component.id] as any)[0].isValid();
     });
-    // this.schema.children.forEach((component: IWrapperComponentSchema): boolean => {
-    //   // console.log((this.$refs[component.id] as any)[0].isValid());
-    //   return (this.$refs[component.id] as any)[0].isValid();
-    // });
+  }
+
+  private handleChange(fieldId: string, value: any): void {
+    console.log('container', fieldId, value);
+  }
+
+  private handleBlur(fieldId: string, value: any): void {
+    console.log('container', fieldId, value);
   }
 
   private handleSubmit(e: any): void {

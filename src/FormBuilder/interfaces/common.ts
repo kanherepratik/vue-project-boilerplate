@@ -45,4 +45,4 @@ export interface IComponentMap {
 }
 
 // this needs to be derived dynamically
-type ICommonComponentList = 'Radio' | 'Checkbox' | 'Dropdown' | 'TextInput' | 'MobileInput';
+type ICommonComponentList = 'Radio' | 'Checkbox' | 'Dropdown' | 'TextInput' | 'MobileInput' | 'DatePicker';

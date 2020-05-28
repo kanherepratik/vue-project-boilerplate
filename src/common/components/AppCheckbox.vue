@@ -2,19 +2,19 @@
   <div class="appCheckbox">
     <!--
       triggered on click
-      @event onClick
+      @event handleChange
     -->
     <div
       :class="['appCheckbox__box', isSelected && 'appCheckbox__active', disabled && 'appCheckbox__disabled']"
-      @click="onClick"
+      @click="handleChange"
     >
       <div v-if="isSelected" class="appCheckbox__box__tick">{{ '&#x2714;' }}</div>
     </div>
     <!--
       triggered on click
-      @event onClick
+      @event handleChange
     -->
-    <div v-if="label" class="appCheckbox__label" @click="onClick">{{ label }}</div>
+    <div v-if="label" class="appCheckbox__label" @click="handleChange">{{ label }}</div>
   </div>
 </template>
 
@@ -39,7 +39,7 @@ export default Vue.extend({
    */
   model: {
     prop: 'checked',
-    event: 'onClick',
+    event: 'handleChange',
   },
   props: {
     /**
@@ -112,7 +112,7 @@ export default Vue.extend({
      * Gets called when the user clicks on the checkbox or label
      * @public
      */
-    onClick(): void {
+    handleChange(): void {
       // Stop click if the checkbox is disabled
       if (this.disabled) {
         return;
@@ -120,10 +120,10 @@ export default Vue.extend({
       // Toggle the state of the checkbox
       this.isSelected = !this.isSelected;
       /**
-       * onClick event to be called when checkbox is clicked.
-       * @event onClick
+       * handleChange event to be called when checkbox is clicked.
+       * @event handleChange
        */
-      this.$emit('onClick', this.isSelected);
+      this.$emit('onChange', this.isSelected);
     },
   },
 });

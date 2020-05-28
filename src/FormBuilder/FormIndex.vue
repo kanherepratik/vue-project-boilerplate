@@ -7,7 +7,7 @@
       :data="data"
       :ref="container.id"
       :id="container.id"
-      @onAfterSubmit="getData"
+      @onAfterSubmit="getDataOnSubmit"
     >
     </form-container>
   </div>
@@ -28,14 +28,14 @@ import { signals } from './signals';
 export default class FormIndex extends Vue {
   private formSchema: IFormSchema = formStructure;
   private data: any = {
-    name: 'Prateek',
+    name: '',
     gender: '',
     address: '',
     buyerRole: '',
   };
   //example for getting data on after submit from container
-  private getData(containerId: string, data: any): void {
-    console.log(data);
+  private getDataOnSubmit(containerId: string, data: any): void {
+    console.log('getData from index', data, containerId);
   }
   public isValid = () => {
     return false;
