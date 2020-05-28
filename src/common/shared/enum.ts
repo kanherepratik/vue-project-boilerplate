@@ -37,6 +37,12 @@ export enum VALIDATORS {
   MULTIPLE_OF = 'multipleOf',
 }
 
+export enum DatePickerMode {
+  SINGLE = 'single',
+  MULTIPLE = 'multiple',
+  RANGE = 'range',
+}
+
 export enum AppButtonSizes {
   SMALL = 'small',
   NORMAL = 'normal',
