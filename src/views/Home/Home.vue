@@ -7,7 +7,6 @@
 </template>
 
 <script lang="ts">
-// @ is an alias to /src
 import Vue from 'vue';
 // import TodoComponent from '@/components/TodoComponent.vue';
 // import AppCheckbox from '@/common/components/AppCheckbox.vue';
