@@ -10,6 +10,11 @@
 <script lang="ts">
 import Vue from 'vue';
 
+// local interface for data object
+interface IToolTipData {
+  hover: boolean;
+}
+
 /**
  *
  * List of Props
@@ -19,8 +24,17 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'ToolTip',
-  props: ['message'],
-  data: () => ({
+  props: {
+    /**
+     * The message text to represent the tooltip
+     * @values String
+     */
+    message: {
+      type: String,
+      default: '',
+    },
+  },
+  data: (): IToolTipData => ({
     hover: false,
   }),
   methods: {
