@@ -5,6 +5,7 @@ import getters from './rootGetters';
 import actions from './rootActions';
 // Modules
 import { todo } from '../todo';
+import { toast } from '../toast/index';
 
 // State
 const state: IRoot = {
@@ -21,6 +22,7 @@ const mutations: MutationTree<IRoot> = {
 // Modules
 const modules: ModuleTree<IRoot> = {
   todo,
+  toast,
 };
 
 // Root Module

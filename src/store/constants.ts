@@ -15,3 +15,12 @@ export const ROOT_STORE = {
     VERSION: 'version',
   },
 };
+
+export const TOAST_STORE = {
+  MUTATIONS: {
+    ADD_TOAST: 'addToast',
+  },
+  ACTIONS: {
+    GET_TOAST: 'getToast',
+  },
+};

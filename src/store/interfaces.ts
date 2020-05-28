@@ -9,3 +9,12 @@ export interface ITodoState {
 export interface ITodo {
   task: string;
 }
+
+export interface IToast {
+  text: string;
+  duration?: number;
+}
+
+export interface IToastState {
+  toast: IToast;
+}
