@@ -2,14 +2,14 @@
   <div class="checkboxGroup">
     <div v-if="label" class="checkboxGroup__label">{{ label }}</div>
     <ul :class="['checkboxList', align === 'horizontal' && 'checkboxList--horizontal']">
-      <li class="checkboxList__checkboxItem" v-for="(item, index) in checkboxItems" :key="`${index}_${toggleUpdated}`">
+      <li class="checkboxList__checkboxItem" v-for="(item, index) in checkboxItems" :key="index">
         <!--
           triggered on any checkbox click
           @event onChange
         -->
         <app-checkbox
           @onChange="onItemChecked"
-          :isChecked="item.isChecked"
+          :defaultChecked="item.isChecked"
           :value="item.value"
           :disabled="item.disabled"
           :label="item.label"
@@ -87,7 +87,6 @@ export default Vue.extend({
     },
   },
   data: (): ICheckboxGroupData => ({
-    toggleUpdated: false,
     validation: { isValid: true } as IValidation,
   }),
   methods: {
@@ -105,14 +104,6 @@ export default Vue.extend({
      * @param {number} index index of the checkbox on which user has clicked
      */
     onItemChecked(isChecked: boolean, value: string): void {
-      // Update checked state of the checkbox item
-      this.checkboxItems.map((item: ICheckboxData) => {
-        if (item.value === value) {
-          item.isChecked = isChecked;
-        }
-        return item;
-      });
-      this.toggleUpdated = !this.toggleUpdated;
       const itemPos: number = this.selectedValues.indexOf(value);
       // Remove the item if the selectedValues list has already have the checked item
       // else push it in the selectedValues list

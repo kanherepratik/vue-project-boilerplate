@@ -62,12 +62,12 @@ export interface IUnitLabel {
 
 // AppCheckbox Component Interface
 export interface IAppCheckboxData {
+  isChecked: boolean,
   validation: IValidation;
 }
 
 // CheckboxGroup Component Interfaces
 export interface ICheckboxGroupData {
-  toggleUpdated: boolean;
   validation: IValidation;
 }
 

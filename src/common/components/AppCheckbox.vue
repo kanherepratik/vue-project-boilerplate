@@ -28,10 +28,10 @@ export default Vue.extend({
   name: 'AppCheckbox',
   props: {
     /**
-     * The isChecked state of the checkbox
+     * The default checked state of the checkbox
      * @values true, false(default)
      */
-    isChecked: {
+    defaultChecked: {
       type: Boolean,
       default: false,
     },
@@ -77,8 +77,12 @@ export default Vue.extend({
     },
   },
   data: (): IAppCheckboxData => ({
+    isChecked: false,
     validation: { isValid: true } as IValidation,
   }),
+  created(): void {
+    this.isChecked = this.defaultChecked;
+  },
   methods: {
     /**
      * Calls the validationHandler to check the validations, whether the state of checkbox is valid or not
@@ -98,11 +102,12 @@ export default Vue.extend({
         return;
       }
       const value = this.value || this.label;
+      this.isChecked = !this.isChecked;
       /**
        * onChange event to be called when checkbox is clicked.
        * @event onChange
        */
-      this.$emit('onChange', !this.isChecked, value);
+      this.$emit('onChange', this.isChecked, value);
     },
   },
 });
