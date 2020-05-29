@@ -10,6 +10,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { IValidationRule, IValidation } from '../shared/interfaces';
+import { validationHandler } from '../shared/validations';
+
+// local interface for data object
+interface IRadioButtonData {
+  validation: IValidation;
+}
 
 // local interface for items properties
 interface IItemProps {
@@ -41,13 +48,33 @@ export default Vue.extend({
       type: Array as () => Array<IItemProps>,
       default: [],
     },
+    /**
+     * Validations array of objects of type IValidationRule to valdiate
+     * @values Array<IValidationRule>
+     */
+    validations: {
+      type: Array as () => Array<IValidationRule>,
+      default: (): Array<IValidationRule> => [] as Array<IValidationRule>,
+    },
   },
+  data: (): IRadioButtonData => ({
+    validation: { isValid: true } as IValidation,
+  }),
   methods: {
+    /**
+     * Calls the validationHandler to check the validations, whether the state of radio button is valid or not
+     * @returns boolean whether current state of the radio button is valid or not
+     */
+    isValid(value: any): boolean {
+      this.validation = validationHandler(value, this.validations);
+      return this.validation.isValid;
+    },
     onHandleClick(e: number): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
+      this.isValid(this.items[e].value);
       this.$emit('onValueChange', this.items[e].value);
     },
   },
