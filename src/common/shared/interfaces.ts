@@ -96,4 +96,5 @@ export interface IDatePicker {
   configuredDates: Date | string;
   selectedDate: Date | string;
   errorMessage: string;
+  validation: IValidation;
 }
