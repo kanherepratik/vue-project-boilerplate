@@ -78,3 +78,11 @@ export interface ISingleSelectData {
   showDropdown: boolean;
   mappedItems: ISelectItem[];
 }
+
+// Date picker interfaces
+
+export interface IDatePicker {
+  configuredDates: Date | string;
+  selectedDate: Date | string;
+  errorMessage: string;
+}
