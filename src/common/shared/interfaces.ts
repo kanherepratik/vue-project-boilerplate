@@ -60,6 +60,17 @@ export interface IUnitLabel {
   short: string;
 }
 
+// AppCheckbox Component Interface
+
+export interface IOption {
+  label: string;
+  value: string;
+}
+
+export interface ICheckboxOption extends IOption {
+  disabled?: boolean;
+}
+
 // SingleSingle Component Interfaces
 export interface ISelectItem {
   label: string;
