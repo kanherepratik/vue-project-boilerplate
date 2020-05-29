@@ -12,7 +12,6 @@
         :type="inputType"
         :autofocus="autoFocus"
         :placeholder="placeholder"
-        :maxlength="maxlength"
         :disabled="disabled"
         @input="onChange"
         @focus="onFocus"
@@ -32,7 +31,6 @@ import { validationHandler } from '../shared/validations';
 
 // local interface for data properties
 interface IAppTextboxData {
-  value: string;
   validation: IValidation; // To store the validation object
 }
 
@@ -44,8 +42,18 @@ export default Vue.extend({
    */
   model: {
     prop: 'value',
+    event: 'onBlur',
   },
   props: {
+    /**
+     * Type of input
+     * @values String
+     * @default ""
+     */
+    value: {
+      type: String,
+      default: '',
+    },
     /**
      * Type of input
      * @values String
@@ -67,12 +75,6 @@ export default Vue.extend({
     /**
      * Max length of the input
      * @values Number
-     */
-    maxlength: Number,
-    /**
-     * Flag to show the clear input symbol
-     * @values Boolean
-     * @default false
      */
     clearable: {
       type: Boolean,
@@ -130,9 +132,9 @@ export default Vue.extend({
     },
   },
   data: (): IAppTextboxData => ({
-    value: '',
     validation: { isValid: true } as IValidation,
   }),
+
   methods: {
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not
