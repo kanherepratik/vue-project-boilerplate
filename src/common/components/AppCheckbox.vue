@@ -5,10 +5,10 @@
       @event onClick
     -->
     <div
-      :class="['appCheckbox__box', isSelected && 'appCheckbox__active', disabled && 'appCheckbox__disabled']"
+      :class="['appCheckbox__box', checked && 'appCheckbox__active', disabled && 'appCheckbox__disabled']"
       @click="onClick"
     >
-      <div v-if="isSelected" class="appCheckbox__box__tick">{{ '&#x2714;' }}</div>
+      <div v-if="checked" class="appCheckbox__box__tick">{{ '&#x2714;' }}</div>
     </div>
     <!--
       triggered on click
@@ -25,7 +25,6 @@ import { validationHandler } from '../shared/validations';
 
 // local interface for data object
 interface IAppCheckboxData {
-  isSelected: boolean;
   validation: IValidation;
 }
 
@@ -51,15 +50,7 @@ export default Vue.extend({
       default: false,
     },
     /**
-     * The value of the checkbox
-     * @values String
-     */
-    value: {
-      type: String,
-      default: '',
-    },
-    /**
-     * The label text to represent the checkbox
+     * The label of the checkbox
      * @values String
      */
     label: {
@@ -92,20 +83,15 @@ export default Vue.extend({
     },
   },
   data: (): IAppCheckboxData => ({
-    isSelected: false,
     validation: { isValid: true } as IValidation,
   }),
-  created(): void {
-    // Set the initial checked state of the checkbox from the props
-    this.isSelected = this.checked;
-  },
   methods: {
     /**
      * Calls the validationHandler to check the validations, whether the state of checkbox is valid or not
      * @returns boolean whether current state of the checkbox is valid or not
      */
     isValid(): boolean {
-      this.validation = validationHandler(this.value, this.validations);
+      this.validation = validationHandler(this.checked, this.validations);
       return this.validation.isValid;
     },
     /**
@@ -117,13 +103,11 @@ export default Vue.extend({
       if (this.disabled) {
         return;
       }
-      // Toggle the state of the checkbox
-      this.isSelected = !this.isSelected;
       /**
        * onClick event to be called when checkbox is clicked.
        * @event onClick
        */
-      this.$emit('onClick', this.isSelected);
+      this.$emit('onClick', this.checked);
     },
   },
 });
