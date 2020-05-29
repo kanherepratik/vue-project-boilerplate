@@ -23,6 +23,9 @@ const required = (value: any): boolean => {
   if (typeof value === 'string' && value.trim() === '') {
     return false;
   }
+  if (typeof value === 'boolean') {
+    return value;
+  }
   if (value.constructor === Array && value.length <= 0) {
     return false;
   }

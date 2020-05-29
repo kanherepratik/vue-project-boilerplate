@@ -1,20 +1,22 @@
 <template>
-  <ul :class="['checkboxGroup', align === 'horizontal' && 'checkboxGroup--horizontal']">
-    <li class="checkboxGroup__checkboxItem" v-for="(item, index) in chechboxItems" :key="index">
-      <!--
-        triggered on any checkbox click
-        @event onClick
-      -->
-      <app-checkbox
-        @onClick="onItemChecked(index)"
-        :checked="item.checked"
-        :disabled="item.disabled"
-        :value="item.value"
-        :label="item.label"
-        :customCssClasses="item.customCssClasses"
-      />
-    </li>
-  </ul>
+  <div class="checkboxGroup">
+    <div v-if="label" class="checkboxGroup__label">{{ label }}</div>
+    <ul :class="['checkboxList', align === 'horizontal' && 'checkboxList--horizontal']">
+      <li class="checkboxList__checkboxItem" v-for="(item, index) in chechboxItems" :key="index">
+        <!--
+          triggered on any checkbox click
+          @event onClick
+        -->
+        <app-checkbox
+          @onClick="onItemChecked(index)"
+          :checked="item.checked"
+          :disabled="item.disabled"
+          :label="item.label"
+          :customCssClasses="item.customCssClasses"
+        />
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
@@ -25,7 +27,6 @@ import { validationHandler } from '../shared/validations';
 
 // local interface for data object
 interface ICheckboxGroupData {
-  selectedValues: Array<number>;
   validation: IValidation;
 }
 
@@ -65,6 +66,22 @@ export default Vue.extend({
       default: (): Array<ICheckboxData> => [],
     },
     /**
+     * The array of selected values of the checkbox items
+     * @values Array<string>
+     */
+    selectedValues: {
+      type: Array as () => Array<string>,
+      default: (): Array<string> => [],
+    },
+    /**
+     * Label of the checkbox group list
+     * @values String
+     */
+    label: {
+      type: String,
+      default: '',
+    },
+    /**
      * The alignment of the checkbox items
      * @values 'horizontal' or 'vertical'(default)
      */
@@ -90,7 +107,6 @@ export default Vue.extend({
     },
   },
   data: (): ICheckboxGroupData => ({
-    selectedValues: [],
     validation: { isValid: true } as IValidation,
   }),
   methods: {
@@ -108,13 +124,14 @@ export default Vue.extend({
      * @param {number} index index of the checkbox on which user has clicked
      */
     onItemChecked(index: number): void {
-      const itemPos: number = this.selectedValues.indexOf(index + 1);
+      const checkedValue: string = this.chechboxItems[index].value;
+      const itemPos: number = this.selectedValues.indexOf(checkedValue);
       // Remove the item if the selectedValues list has already have the checked item
       // else push it in the selectedValues list
       if (itemPos > -1) {
         this.selectedValues.splice(itemPos, 1);
       } else {
-        this.selectedValues.push(index + 1);
+        this.selectedValues.push(checkedValue);
       }
       /**
        * onClick event to be called when checkbox is clicked.
@@ -127,17 +144,17 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.checkboxGroup {
+.checkboxList {
   list-style: none;
   display: flex;
   flex-direction: column;
 }
 
-.checkboxGroup--horizontal {
+.checkboxList--horizontal {
   flex-direction: row;
 }
 
-.checkboxGroup__checkboxItem {
+.checkboxList__checkboxItem {
   margin: 0;
   padding: 0;
 }
