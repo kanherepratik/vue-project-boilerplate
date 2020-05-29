@@ -4,7 +4,7 @@
       trigered on click
       @event click
     -->
-    <button :class="classNames" :disabled="disabled" @click="emitClick">
+    <button :class="classNames" :disabled="disabled" @click="handleClick">
       <span v-if="isLoading">loading...</span>
       <span v-else>{{ title }}</span>
     </button>
@@ -56,7 +56,7 @@ export default Vue.extend({
      * Gets called when the user clicks on the button
      * @public This is a public method
      */
-    emitClick(): void {
+    handleClick(): void {
       /**
        * click event.
        * @event click
