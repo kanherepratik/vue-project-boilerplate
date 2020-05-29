@@ -26,15 +26,6 @@ import { validationHandler } from '../shared/validations';
 // Checkbox component
 export default Vue.extend({
   name: 'AppCheckbox',
-  /**
-   * Model of the component
-   * prop contains the state of the component
-   * event contains the events of the component
-   */
-  model: {
-    prop: 'checked',
-    event: 'onClick',
-  },
   props: {
     /**
      * The checked state of the checkbox

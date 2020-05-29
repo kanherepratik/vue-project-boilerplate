@@ -35,15 +35,6 @@ export default Vue.extend({
   components: {
     'app-checkbox': AppCheckbox,
   },
-  /**
-   * Model of the component
-   * prop contains the state of the component
-   * event contains the events of the component
-   */
-  model: {
-    prop: 'selectedValues',
-    event: 'onChange',
-  },
   props: {
     /**
      * The array of values of the checkbox items
