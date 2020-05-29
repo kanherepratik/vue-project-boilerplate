@@ -91,3 +91,10 @@ export interface IRegistrationInputData {
   value: string;
   validation: IValidation;
 }
+
+// Date picker interfaces
+export interface IDatePicker {
+  configuredDates: Date | string;
+  selectedDate: Date | string;
+  errorMessage: string;
+}

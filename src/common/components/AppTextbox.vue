@@ -43,9 +43,9 @@ export default Vue.extend({
   },
   props: {
     /**
-     * Value of the input
+     * Type of input
      * @values String
-     * @default text
+     * @default ""
      */
     value: {
       type: String,
