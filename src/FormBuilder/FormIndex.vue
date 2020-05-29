@@ -32,6 +32,7 @@ export default class FormIndex extends Vue {
     gender: '',
     address: '',
     buyerRole: '',
+    tnc: '',
   };
   //example for getting data on after submit from container
   private getDataOnSubmit(containerId: string, data: any): void {

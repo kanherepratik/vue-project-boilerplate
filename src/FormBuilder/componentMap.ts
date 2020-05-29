@@ -1,4 +1,4 @@
-import { RadioButton, AppTextbox, AppCheckbox, MobileInput } from '@/common/components';
+import { RadioButton, AppTextbox, AppCheckbox, MobileInput, SingleSelect } from '@/common/components';
 import { IComponentMap } from './interfaces/common';
 
 const componentMap: IComponentMap = {
@@ -30,6 +30,14 @@ const componentMap: IComponentMap = {
     component: AppCheckbox,
     eventProp: 'onChange',
     valueProp: 'checked',
+    propMap: {
+      disabled: 'isDisabled',
+    },
+  },
+  Dropdown: {
+    component: SingleSelect,
+    eventProp: 'onChange',
+    valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },

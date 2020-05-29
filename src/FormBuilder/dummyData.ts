@@ -33,13 +33,15 @@ export const formStructure: IFormSchema = {
           id: 'gender',
           handler: 'handleChange',
         },
-        // {
-        //   component: 'MobileInput',
-        //   label: 'Mobile',
-        //   id: 'mobile',
-        //   validations: [],
-        //   actions: ['showRegistrationDetails'],
-        // },
+        {
+          component: 'MobileInput',
+          label: 'Mobile',
+          id: 'mobile',
+          otherProps: {
+            validations: [{ name: 'required', message: 'This field is super important' }],
+          },
+          actions: [],
+        },
       ],
     },
     {
@@ -69,6 +71,16 @@ export const formStructure: IFormSchema = {
           },
           label: 'Buyer Role',
           id: 'buyerRole',
+          handler: 'handleChange',
+        },
+        {
+          component: 'Checkbox',
+          selectedItem: '',
+          otherProps: {
+            label: 'I accept terms and conditions',
+            validations: [{ name: 'required', message: 'This field is super important' }],
+          },
+          id: 'tnc',
           handler: 'handleChange',
         },
       ],
