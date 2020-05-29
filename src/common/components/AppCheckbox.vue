@@ -20,9 +20,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { IValidationRule, IValidation } from '../shared/interfaces';
+import { IAppCheckboxData, IValidationRule, IValidation } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
-import { IAppCheckboxData } from '../shared/interfaces';
 
 // Checkbox component
 export default Vue.extend({
@@ -44,6 +43,14 @@ export default Vue.extend({
     checked: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * The value of the checkbox
+     * @values String
+     */
+    value: {
+      type: String,
+      default: '',
     },
     /**
      * The label of the checkbox
@@ -99,11 +106,12 @@ export default Vue.extend({
       if (this.disabled) {
         return;
       }
+      const value = this.value || this.label;
       /**
        * onClick event to be called when checkbox is clicked.
        * @event onClick
        */
-      this.$emit('onClick', this.checked);
+      this.$emit('onClick', !this.checked, value);
     },
   },
 });

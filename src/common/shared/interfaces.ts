@@ -67,6 +67,7 @@ export interface IAppCheckboxData {
 
 // CheckboxGroup Component Interfaces
 export interface ICheckboxGroupData {
+  toggleUpdated: boolean;
   validation: IValidation;
 }
 
@@ -77,7 +78,6 @@ export interface ICheckboxData {
   disabled: boolean;
   customCssClasses: Array<string>;
 }
-
 
 // SingleSingle Component Interfaces
 export interface ISelectItem {

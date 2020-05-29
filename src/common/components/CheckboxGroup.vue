@@ -2,14 +2,14 @@
   <div class="checkboxGroup">
     <div v-if="label" class="checkboxGroup__label">{{ label }}</div>
     <ul :class="['checkboxList', align === 'horizontal' && 'checkboxList--horizontal']">
-      <li class="checkboxList__checkboxItem" v-for="(item, index) in chechboxItems" :key="index">
+      <li class="checkboxList__checkboxItem" v-for="(item, index) in checkboxItems" :key="`${index}_${toggleUpdated}`">
         <!--
           triggered on any checkbox click
           @event onClick
         -->
         <app-checkbox
-          @onClick="onItemChecked(index)"
-          :checked="item.checked"
+          v-model="item.checked"
+          @onClick="onItemChecked"
           :disabled="item.disabled"
           :label="item.label"
           :customCssClasses="item.customCssClasses"
@@ -22,9 +22,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import AppCheckbox from './AppCheckbox.vue';
-import { IValidationRule, IValidation } from '../shared/interfaces';
+import { ICheckboxData, ICheckboxGroupData, IValidationRule, IValidation } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
-import { ICheckboxData, IAppCheckboxData } from '../shared/interfaces';
 
 // CheckboxGroup component
 export default Vue.extend({
@@ -50,7 +49,7 @@ export default Vue.extend({
      * The array of values of the checkbox items
      * @values [{ checked: false, value: '', label: '', disabled: false, customCssClasses: [] }]
      */
-    chechboxItems: {
+    checkboxItems: {
       type: Array as () => Array<ICheckboxData>,
       default: (): Array<ICheckboxData> => [],
     },
@@ -96,6 +95,7 @@ export default Vue.extend({
     },
   },
   data: (): ICheckboxGroupData => ({
+    toggleUpdated: false,
     validation: { isValid: true } as IValidation,
   }),
   methods: {
@@ -112,15 +112,22 @@ export default Vue.extend({
      * @public
      * @param {number} index index of the checkbox on which user has clicked
      */
-    onItemChecked(index: number): void {
-      const checkedValue: string = this.chechboxItems[index].value;
-      const itemPos: number = this.selectedValues.indexOf(checkedValue);
+    onItemChecked(checked: boolean, value: string): void {
+      // Update checked state of the checkbox item
+      this.checkboxItems.map((item: ICheckboxData) => {
+        if (item.value === value) {
+          item.checked = checked;
+        }
+        return item;
+      });
+      this.toggleUpdated = !this.toggleUpdated;
+      const itemPos: number = this.selectedValues.indexOf(value);
       // Remove the item if the selectedValues list has already have the checked item
       // else push it in the selectedValues list
       if (itemPos > -1) {
         this.selectedValues.splice(itemPos, 1);
       } else {
-        this.selectedValues.push(checkedValue);
+        this.selectedValues.push(value);
       }
       /**
        * onClick event to be called when checkbox is clicked.
