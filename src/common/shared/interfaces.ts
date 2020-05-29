@@ -79,3 +79,11 @@ export interface ISingleSelectData {
   mappedItems: ISelectItem[];
   validation: IValidation;
 }
+
+// Date picker interfaces
+
+export interface IDatePicker {
+  configuredDates: Date | string;
+  selectedDate: Date | string;
+  errorMessage: string;
+}
