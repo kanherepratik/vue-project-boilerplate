@@ -19,7 +19,7 @@
         <div class="calendar-icon">&#128197;</div>
       </div>
     </date-picker>
-    <div v-if="errorMessage" class="errormsg">{{ errorMessage }}</div>
+    <div v-if="!validation.isValid" class="errormsg">{{ validation.message }}</div>
   </div>
 </template>
 
@@ -27,7 +27,8 @@
 import Vue from 'vue';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import { DatePickerMode } from '../shared/enum';
-import { IDatePicker } from '../shared/interfaces';
+import { IDatePicker, IValidationRule, IValidation } from '../shared/interfaces';
+import { validationHandler } from '../shared/validations';
 
 /**
  * It is used to select the date
@@ -59,6 +60,7 @@ export default Vue.extend({
       configuredDates: '' as Date | string,
       selectedDate: '' as Date | string,
       errorMessage: '',
+      validation: { isValid: true } as IValidation,
     };
   },
   props: {
@@ -70,6 +72,14 @@ export default Vue.extend({
     maxDate: Date,
     dates: Date,
     placeholder: String,
+    /**
+     * Validations array of objects of type IValidationRule to valdiate the input
+     * @values Array<IValidationRule>
+     */
+    validations: {
+      type: Array as () => Array<IValidationRule>,
+      default: (): Array<IValidationRule> => [] as Array<IValidationRule>,
+    },
   },
   created() {
     /**
@@ -95,6 +105,14 @@ export default Vue.extend({
      */
     getValue(): Date | string {
       return this.selectedDate;
+    },
+    /**
+     * Calls the validationHandler to check the validations, whether the state of input is valid or not
+     * @returns boolean whether current state of the input is valid or not
+     */
+    isValid(): boolean {
+      this.validation = validationHandler(this.selectedDate, this.validations);
+      return this.validation.isValid;
     },
   },
   components: {
