@@ -72,7 +72,7 @@ export interface ICheckboxGroupData {
 }
 
 export interface ICheckboxData {
-  checked: boolean;
+  isChecked: boolean;
   value: string;
   label: string;
   disabled: boolean;

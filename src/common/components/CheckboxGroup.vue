@@ -5,11 +5,12 @@
       <li class="checkboxList__checkboxItem" v-for="(item, index) in checkboxItems" :key="`${index}_${toggleUpdated}`">
         <!--
           triggered on any checkbox click
-          @event onClick
+          @event onChange
         -->
         <app-checkbox
-          v-model="item.checked"
-          @onClick="onItemChecked"
+          @onChange="onItemChecked"
+          :isChecked="item.isChecked"
+          :value="item.value"
           :disabled="item.disabled"
           :label="item.label"
           :customCssClasses="item.customCssClasses"
@@ -38,7 +39,7 @@ export default Vue.extend({
   props: {
     /**
      * The array of values of the checkbox items
-     * @values [{ checked: false, value: '', label: '', disabled: false, customCssClasses: [] }]
+     * @values [{ isChecked: false, value: '', label: '', disabled: false, customCssClasses: [] }]
      */
     checkboxItems: {
       type: Array as () => Array<ICheckboxData>,
@@ -103,11 +104,11 @@ export default Vue.extend({
      * @public
      * @param {number} index index of the checkbox on which user has clicked
      */
-    onItemChecked(checked: boolean, value: string): void {
+    onItemChecked(isChecked: boolean, value: string): void {
       // Update checked state of the checkbox item
       this.checkboxItems.map((item: ICheckboxData) => {
         if (item.value === value) {
-          item.checked = checked;
+          item.isChecked = isChecked;
         }
         return item;
       });
@@ -121,8 +122,8 @@ export default Vue.extend({
         this.selectedValues.push(value);
       }
       /**
-       * onClick event to be called when checkbox is clicked.
-       * @event onClick
+       * onChange event to be called when checkbox is clicked.
+       * @event onChange
        */
       this.$emit('onChange', this.selectedValues);
     },

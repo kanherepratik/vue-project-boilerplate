@@ -2,19 +2,19 @@
   <div class="appCheckbox">
     <!--
       triggered on click
-      @event onClick
+      @event onChange
     -->
     <div
-      :class="['appCheckbox__box', checked && 'appCheckbox__active', disabled && 'appCheckbox__disabled']"
-      @click="onClick"
+      :class="['appCheckbox__box', isChecked && 'appCheckbox__active', disabled && 'appCheckbox__disabled']"
+      @click="onChange"
     >
-      <div v-if="checked" class="appCheckbox__box__tick">{{ '&#x2714;' }}</div>
+      <div v-if="isChecked" class="appCheckbox__box__tick">{{ '&#x2714;' }}</div>
     </div>
     <!--
       triggered on click
-      @event onClick
+      @event onChange
     -->
-    <div v-if="label" class="appCheckbox__label" @click="onClick">{{ label }}</div>
+    <div v-if="label" class="appCheckbox__label" @click="onChange">{{ label }}</div>
   </div>
 </template>
 
@@ -28,10 +28,10 @@ export default Vue.extend({
   name: 'AppCheckbox',
   props: {
     /**
-     * The checked state of the checkbox
+     * The isChecked state of the checkbox
      * @values true, false(default)
      */
-    checked: {
+    isChecked: {
       type: Boolean,
       default: false,
     },
@@ -85,24 +85,24 @@ export default Vue.extend({
      * @returns boolean whether current state of the checkbox is valid or not
      */
     isValid(): boolean {
-      this.validation = validationHandler(this.checked, this.validations);
+      this.validation = validationHandler(this.isChecked, this.validations);
       return this.validation.isValid;
     },
     /**
      * Gets called when the user clicks on the checkbox or label
      * @public
      */
-    onClick(): void {
+    onChange(): void {
       // Stop click if the checkbox is disabled
       if (this.disabled) {
         return;
       }
       const value = this.value || this.label;
       /**
-       * onClick event to be called when checkbox is clicked.
-       * @event onClick
+       * onChange event to be called when checkbox is clicked.
+       * @event onChange
        */
-      this.$emit('onClick', !this.checked, value);
+      this.$emit('onChange', !this.isChecked, value);
     },
   },
 });
