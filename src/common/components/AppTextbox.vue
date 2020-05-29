@@ -8,11 +8,11 @@
       -->
       <input
         class="textboxContainer__input"
-        v-model="value"
+        v-model="inputVal"
         :type="inputType"
         :autofocus="autoFocus"
         :placeholder="placeholder"
-        :maxlength="maxlength"
+        :maxlength="maxLength"
         :disabled="disabled"
         @input="onChange"
         @focus="onFocus"
@@ -27,15 +27,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { IValidationRule, IValidation } from '../shared/interfaces';
+import { IAppTextboxData, IValidationRule, IValidation } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
 
-// local interface for data properties
-interface IAppTextboxData {
-  value: string;
-  validation: IValidation; // To store the validation object
-}
-
+// AppTextbox Component
 export default Vue.extend({
   name: 'AppTextbox',
   /**
@@ -44,8 +39,18 @@ export default Vue.extend({
    */
   model: {
     prop: 'value',
+    event: 'onChange',
   },
   props: {
+    /**
+     * Value of the input
+     * @values String
+     * @default text
+     */
+    value: {
+      type: String,
+      default: '',
+    },
     /**
      * Type of input
      * @values String
@@ -68,7 +73,7 @@ export default Vue.extend({
      * Max length of the input
      * @values Number
      */
-    maxlength: Number,
+    maxLength: Number,
     /**
      * Flag to show the clear input symbol
      * @values Boolean
@@ -130,7 +135,7 @@ export default Vue.extend({
     },
   },
   data: (): IAppTextboxData => ({
-    value: '',
+    inputVal: '',
     validation: { isValid: true } as IValidation,
   }),
   methods: {
@@ -146,34 +151,34 @@ export default Vue.extend({
      * onChange to be called in case of value change of input, emits onChange event
      * @public
      */
-    onChange(): void {
+    onChange(event: any): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
-      this.$emit('onChange', this.value);
+      this.$emit('onChange', event.target.value);
     },
     /**
      * onFocus to be called in case of input gets focus, emits onFocus event
      * @public
      */
-    onFocus(): void {
+    onFocus(event: any): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
-      this.$emit('onFocus', this.value);
+      this.$emit('onFocus', event.target.value);
     },
     /**
      * onBlur to be called in case of input gets blur, emits onBlur event
      * @public
      */
-    onBlur(): void {
+    onBlur(event: any): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
-      this.$emit('onBlur', this.value);
+      this.$emit('onBlur', event.target.value);
     },
   },
 });

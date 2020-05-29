@@ -251,7 +251,7 @@ export const objToStr = (data: object): string => {
   return Object.keys(data).reduce(
     (str, key) =>
       `${str}${key}: ${
-      typeof (data as any)[key] === 'object' ? JSON.stringify((data as any)[key]) : (data as any)[key]
+        typeof (data as any)[key] === 'object' ? JSON.stringify((data as any)[key]) : (data as any)[key]
       }\n,,`,
     ','
   );

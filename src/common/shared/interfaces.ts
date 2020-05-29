@@ -78,3 +78,16 @@ export interface ISingleSelectData {
   showDropdown: boolean;
   mappedItems: ISelectItem[];
 }
+
+// Textbox Component interfaces
+export interface IAppTextboxData {
+  inputVal: string;
+  validation: IValidation;
+}
+
+// Registration Component interfaces
+export interface IRegistrationInputData {
+  registrationValidations: Array<IValidationRule>;
+  value: string;
+  validation: IValidation;
+}
