@@ -24,20 +24,9 @@ import Vue from 'vue';
 import AppCheckbox from './AppCheckbox.vue';
 import { IValidationRule, IValidation } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
+import { ICheckboxData, IAppCheckboxData } from '../shared/interfaces';
 
-// local interface for data object
-interface ICheckboxGroupData {
-  validation: IValidation;
-}
-
-export interface ICheckboxData {
-  checked: boolean;
-  value: string;
-  label: string;
-  disabled: boolean;
-  customCssClasses: Array<string>;
-}
-
+// CheckboxGroup component
 export default Vue.extend({
   name: 'CheckboxGroup',
   /**

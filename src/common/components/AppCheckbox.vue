@@ -22,11 +22,7 @@
 import Vue from 'vue';
 import { IValidationRule, IValidation } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
-
-// local interface for data object
-interface IAppCheckboxData {
-  validation: IValidation;
-}
+import { IAppCheckboxData } from '../shared/interfaces';
 
 // Checkbox component
 export default Vue.extend({

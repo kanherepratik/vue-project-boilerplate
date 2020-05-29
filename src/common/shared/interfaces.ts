@@ -60,6 +60,25 @@ export interface IUnitLabel {
   short: string;
 }
 
+// AppCheckbox Component Interface
+export interface IAppCheckboxData {
+  validation: IValidation;
+}
+
+// CheckboxGroup Component Interfaces
+export interface ICheckboxGroupData {
+  validation: IValidation;
+}
+
+export interface ICheckboxData {
+  checked: boolean;
+  value: string;
+  label: string;
+  disabled: boolean;
+  customCssClasses: Array<string>;
+}
+
+
 // SingleSingle Component Interfaces
 export interface ISelectItem {
   label: string;
