@@ -4,17 +4,17 @@
     <div class="checkbox-input" v-for="item of options" :key="item.label + item.value">
       <input
         type="checkbox"
-        v-model="selectedItems"
-        @change="handleChange"
         :value="item.value"
+        v-model="selectedItems[item.value]"
         :disabled="item.disabled"
-        id="checkboxlabel"
+        @change="handleChange"
+        :id="item.value"
       />
-      <label for="checkboxlabel" class="checkbox-label">
+      <label :for="item.value" class="checkbox-label">
         <span class="checkbox-text" v-html="item.label"></span>
       </label>
     </div>
-    <div v-if="validation.isValid" class="cf-error">{{ validation.message }}</div>
+    <div v-if="!validation.isValid" class="cf-error">{{ validation.message }}</div>
   </div>
 </template>
 
@@ -26,7 +26,6 @@ import { validationHandler } from '../shared/validations';
 // local interface for data object
 interface IAppCheckboxData {
   validation: IValidation;
-  selectedItems: string[] | number[] | boolean[];
 }
 
 // Checkbox component
@@ -38,10 +37,16 @@ export default Vue.extend({
    * event contains the events of the component
    */
   model: {
-    prop: 'checked',
-    event: 'onClick',
+    prop: 'selectedItems',
+    event: 'onChange',
   },
   props: {
+    /**
+     * The model prop of the checkbox
+     */
+    selectedItems: {
+      type: Object,
+    },
     header: {
       type: String,
       default: '',
@@ -71,7 +76,6 @@ export default Vue.extend({
     },
   },
   data: (): IAppCheckboxData => ({
-    selectedItems: [],
     validation: { isValid: true } as IValidation,
   }),
   methods: {
