@@ -12,6 +12,13 @@ import Vue from 'vue';
 // import AppCheckbox from '@/common/components/AppCheckbox.vue';
 import FormIndex from '../../FormBuilder/FormIndex.vue';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IData {
+  options: any[];
+  selectedItems: object;
+  validations?: any[];
+} // local interface for data properties
+
 export default Vue.extend({
   name: 'Home',
   components: {
@@ -19,7 +26,29 @@ export default Vue.extend({
     // 'app-checkbox': AppCheckbox,
     'form-index': FormIndex,
   },
+  data: (): IData => ({
+    selectedItems: { tnc: false, 2: true },
+    validations: [{ name: 'required', message: 'I am super important' }],
+    options: [
+      {
+        value: 'tnc',
+        label: 'I accept terms and conditions.',
+      },
+      {
+        value: 2,
+        label: '2',
+      },
+    ],
+  }),
   computed: {},
-  methods: {},
+  methods: {
+    handleSubmit(): void {
+      (this.$refs.checkboxRef as any).isValid();
+    },
+    handleCheckboxChange(value: string): string {
+      console.log(this.selectedItems);
+      return value;
+    },
+  },
 });
 </script>

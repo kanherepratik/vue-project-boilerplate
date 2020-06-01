@@ -60,6 +60,21 @@ export interface IUnitLabel {
   short: string;
 }
 
+// AppCheckbox Component Interface
+
+export interface IOption {
+  label: string;
+  value: string;
+}
+
+export interface ICheckboxOption extends IOption {
+  disabled?: boolean;
+}
+
+export interface ISelectedItems {
+  [keyof: string]: boolean;
+}
+
 // SingleSingle Component Interfaces
 export interface ISelectItem {
   label: string;
@@ -86,4 +101,5 @@ export interface IDatePicker {
   configuredDates: Date | string;
   selectedDate: Date | string;
   errorMessage: string;
+  validation: IValidation;
 }
