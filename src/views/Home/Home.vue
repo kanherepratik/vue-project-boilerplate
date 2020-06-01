@@ -1,35 +1,15 @@
 <template>
   <div class="home">
     <todo-component />
-    <checkbox-group
-      :chechboxItems="[
-        {
-          value: 'Apple',
-          disabled: false,
-          checked: false,
-          label: 'Apple',
-        },
-        {
-          value: 'Banana',
-          disabled: false,
-          checked: false,
-          label: 'Banana',
-        },
-        {
-          value: 'Grapes',
-          disabled: false,
-          checked: false,
-          label: 'Grapes',
-        },
-        {
-          value: 'Orange',
-          disabled: true,
-          checked: false,
-          label: 'Orange',
-        },
-      ]"
-      align="horizontal"
+    <app-checkbox
+      @onChange="handleCheckboxChange"
+      header="Terms and Conditions"
+      :options="options"
+      v-model="selectedItems"
+      :validations="validations"
+      ref="checkboxRef"
     />
+    <button @click="handleSubmit">Submit</button>
   </div>
 </template>
 
@@ -37,18 +17,44 @@
 import Vue from 'vue';
 // @ is an alias to /src
 import TodoComponent from '@/components/TodoComponent.vue';
-import CheckboxGroup from '@/common/components/CheckboxGroup.vue';
+import AppCheckbox from '@/common/components/AppCheckbox.vue';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IData {} // local interface for data properties
+interface IData {
+  options: any[];
+  selectedItems: object;
+  validations?: any[];
+} // local interface for data properties
 
 export default Vue.extend({
   name: 'Home',
   components: {
     'todo-component': TodoComponent,
-    'checkbox-group': CheckboxGroup,
+    'app-checkbox': AppCheckbox,
   },
+  data: (): IData => ({
+    selectedItems: {},
+    validations: [{ name: 'required', message: 'I am super important' }],
+    options: [
+      {
+        value: 'tnc',
+        label: 'I accept terms and conditions.',
+      },
+      {
+        value: 2,
+        label: '2',
+      },
+    ],
+  }),
   computed: {},
-  methods: {},
+  methods: {
+    handleSubmit(): void {
+      (this.$refs.checkboxRef as any).isValid();
+    },
+    handleCheckboxChange(value: string): string {
+      console.log(this.selectedItems);
+      return value;
+    },
+  },
 });
 </script>
