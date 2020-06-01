@@ -71,6 +71,10 @@ export interface ICheckboxOption extends IOption {
   disabled?: boolean;
 }
 
+export interface ISelectedItems {
+  [keyof: string]: boolean;
+}
+
 // SingleSingle Component Interfaces
 export interface ISelectItem {
   label: string;

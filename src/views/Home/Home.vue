@@ -33,7 +33,7 @@ export default Vue.extend({
     'app-checkbox': AppCheckbox,
   },
   data: (): IData => ({
-    selectedItems: {},
+    selectedItems: { tnc: false, 2: true },
     validations: [{ name: 'required', message: 'I am super important' }],
     options: [
       {

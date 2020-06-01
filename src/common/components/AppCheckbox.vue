@@ -1,26 +1,26 @@
 <template>
-  <div>
-    <div v-if="header" v-html="header"></div>
+  <div class="app-checkbox">
+    <div v-if="header">{{ header }}</div>
     <div class="checkbox-input" v-for="item of options" :key="item.label + item.value">
       <input
         type="checkbox"
         :value="item.value"
-        v-model="selectedItems[item.value]"
         :disabled="item.disabled"
-        @change="handleChange"
         :id="item.value"
+        v-model="selectedItems[item.value]"
+        @change="handleChange"
       />
       <label :for="item.value" class="checkbox-label">
         <span class="checkbox-text" v-html="item.label"></span>
       </label>
     </div>
-    <div v-if="!validation.isValid" class="cf-error">{{ validation.message }}</div>
+    <div v-if="!validation.isValid" class="checkboxErrorMsg">{{ validation.message }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { IValidationRule, IValidation, ICheckboxOption } from '../shared/interfaces';
+import { IValidationRule, IValidation, ICheckboxOption, ISelectedItems } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
 
 // local interface for data object
@@ -45,7 +45,7 @@ export default Vue.extend({
      * The model prop of the checkbox
      */
     selectedItems: {
-      type: Object,
+      type: Object as () => ISelectedItems,
     },
     header: {
       type: String,
