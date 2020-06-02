@@ -60,6 +60,20 @@ export interface IUnitLabel {
   short: string;
 }
 
+// Stepper component interfaces
+export interface IStepperStep {
+  name: string;
+  component: any;
+  icon?: string;
+  title?: string;
+  subtitle?: string;
+  completed?: boolean;
+}
+
+export interface IInitStepperStep {
+  name: string;
+  completed: boolean;
+}
 // AppCheckbox Component Interface
 
 export interface IOption {
@@ -101,4 +115,5 @@ export interface IDatePicker {
   selectedDate: Date | string;
   errorMessage: string;
   validation: IValidation;
+
 }
