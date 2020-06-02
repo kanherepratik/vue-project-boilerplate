@@ -15,7 +15,7 @@ import FormIndex from '../../FormBuilder/FormIndex.vue';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IData {
   options: any[];
-  selectedItems: object;
+  selectedItems: any[];
   validations?: any[];
 } // local interface for data properties
 
@@ -27,7 +27,7 @@ export default Vue.extend({
     'form-index': FormIndex,
   },
   data: (): IData => ({
-    selectedItems: { tnc: false, 2: true },
+    selectedItems: [],
     validations: [{ name: 'required', message: 'I am super important' }],
     options: [
       {

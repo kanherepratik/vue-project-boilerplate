@@ -4,7 +4,7 @@ import { IComponentMap } from './interfaces/common';
 const componentMap: IComponentMap = {
   Radio: {
     component: RadioButton,
-    eventProp: 'onValueChange',
+    eventProp: 'onChange',
     valueProp: 'selectedItem',
     propMap: {
       disabled: 'isDisabled',
@@ -29,7 +29,7 @@ const componentMap: IComponentMap = {
   Checkbox: {
     component: AppCheckbox,
     eventProp: 'onChange',
-    valueProp: 'checked',
+    valueProp: 'selectedItems',
     propMap: {
       disabled: 'isDisabled',
     },

@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import DatePicker from 'v-calendar';
+import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import { DatePickerMode } from '../shared/enum';
 import { IDatePicker, IValidationRule, IValidation } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';

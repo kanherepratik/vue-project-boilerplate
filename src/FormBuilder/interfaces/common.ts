@@ -22,6 +22,14 @@ export interface IContainerSchema {
   children: any[]; //FIXME this with proper type
 }
 
+export interface ISubContainerSchema {
+  component: 'Container' | 'TabbedContainer';
+  id: string;
+  label: string;
+  submitText?: string;
+  children: any[]; //FIXME this with proper type
+}
+
 // see if this needs more properties
 export interface IWrapperComponentSchema {
   id: string;
@@ -29,6 +37,8 @@ export interface IWrapperComponentSchema {
   validations?: IValidation[];
   actions?: IAction[];
   value: string;
+  isHidden: boolean;
+  isDisabled?: boolean;
   otherProps?: Object;
   handler: any;
 }

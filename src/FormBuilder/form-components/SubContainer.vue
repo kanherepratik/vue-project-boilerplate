@@ -1,42 +1,32 @@
 <template>
   <div class="box">
     <div>{{ schema.label }}</div>
-    <div v-for="component in schema.children" :key="component.id">
-      <div v-if="component.children">
-        <sub-container
-          :key="component.id"
-          :schema="component"
-          :data="data"
-          v-on="$listeners"
-          :ref="component.id"
-          v-if="!component.isHidden"
-        />
-      </div>
-      <div v-else>
-        <wrapper-component :key="component.id" :schema="component" :data="data" v-on="$listeners" :ref="component.id" />
-      </div>
-    </div>
-    <app-button :title="schema.submitText || 'submit'" @click="handleSubmit" />
+    <wrapper-component
+      v-for="component in schema.children"
+      :key="component.id"
+      :schema="component"
+      :data="data"
+      v-on="$listeners"
+      :ref="component.id"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
-import SubContainer from './SubContainer.vue';
-import { IContainerSchema, IWrapperComponentSchema } from '../interfaces/common';
+import { ISubContainerSchema, IWrapperComponentSchema } from '../interfaces/common';
 import { AppButton, RadioButton } from '@/common/components';
 import { signals } from '../signals';
 
 @Component({
   components: {
     'wrapper-component': WrapperComponent,
-    'sub-container': SubContainer,
     'app-button': AppButton,
   },
 })
-export default class FormContainer extends Vue {
-  @Prop({ required: true }) private schema!: IContainerSchema;
+export default class SubContainer extends Vue {
+  @Prop({ required: true }) private schema!: ISubContainerSchema;
   @Prop({ required: true }) private data!: any;
 
   public isValid(showError: boolean = false): boolean {
@@ -56,7 +46,6 @@ export default class FormContainer extends Vue {
   }
 
   private created(): void {
-    // console.log(this.schema);
     this.$emit(signals.ON_CONTAINER_LOAD);
   }
 }

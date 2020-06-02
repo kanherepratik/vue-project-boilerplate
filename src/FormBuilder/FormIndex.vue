@@ -7,6 +7,8 @@
       :data="data"
       :ref="container.id"
       :id="container.id"
+      @onChange="handleChange"
+      @onBlur="handleBlur"
       @onAfterSubmit="getDataOnSubmit"
     >
     </form-container>
@@ -32,8 +34,21 @@ export default class FormIndex extends Vue {
     gender: '',
     address: '',
     buyerRole: '',
-    tnc: '',
+    panCard: '',
+    tnc: [],
+    containerRadio: 'c1',
   };
+  private handleChange(fieldId: string, value: any): void {
+    switch (fieldId) {
+      case 'containerRadio': {
+      }
+    }
+    console.log('container', fieldId, value);
+  }
+
+  private handleBlur(fieldId: string, value: any): void {
+    console.log('container', fieldId, value);
+  }
   //example for getting data on after submit from container
   private getDataOnSubmit(containerId: string, data: any): void {
     console.log('getData from index', data, containerId);

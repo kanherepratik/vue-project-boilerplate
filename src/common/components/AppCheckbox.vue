@@ -7,7 +7,7 @@
         :value="item.value"
         :disabled="item.disabled"
         :id="item.value"
-        v-model="selectedItems[item.value]"
+        v-model="values"
         @change="handleChange"
       />
       <label :for="item.value" class="checkbox-label">
@@ -20,12 +20,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { IValidationRule, IValidation, ICheckboxOption, ISelectedItems } from '../shared/interfaces';
+import { IValidationRule, IValidation, ICheckboxOption } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
 
 // local interface for data object
 interface IAppCheckboxData {
   validation: IValidation;
+  values: any[];
 }
 
 // Checkbox component
@@ -45,7 +46,7 @@ export default Vue.extend({
      * The model prop of the checkbox
      */
     selectedItems: {
-      type: Object as () => ISelectedItems,
+      type: Array as () => Array<string>,
     },
     header: {
       type: String,
@@ -76,15 +77,21 @@ export default Vue.extend({
     },
   },
   data: (): IAppCheckboxData => ({
+    values: [],
     validation: { isValid: true } as IValidation,
   }),
+  watch: {
+    value(): void {
+      this.values = [...this.selectedItems];
+    },
+  },
   methods: {
     /**
      * Calls the validationHandler to check the validations, whether the state of checkbox is valid or not
      * @returns boolean whether current state of the checkbox is valid or not
      */
     isValid(): boolean {
-      this.validation = validationHandler(this.selectedItems, this.validations);
+      this.validation = validationHandler(this.values, this.validations);
       return this.validation.isValid;
     },
     /**
@@ -100,7 +107,7 @@ export default Vue.extend({
        * onClick event to be called when checkbox is clicked.
        * @event onChange
        */
-      this.$emit('onChange', this.selectedItems);
+      this.$emit('onChange', this.values);
     },
   },
 });

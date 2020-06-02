@@ -1,10 +1,11 @@
 <template>
   <div>
     <component
-      v-if="schema.component"
       :is="componentMap[schema.component].component"
-      v-model="data[schema.id]"
+      v-if="isFieldHidden"
+      :disabled="isFieldDisabled"
       v-on:[componentMap[schema.component].eventProp]="(value) => handleEvent(schema.handler, value)"
+      v-model="data[schema.id]"
       v-bind="schema.otherProps"
       :ref="schema.id"
     />
@@ -29,17 +30,26 @@ export default class WrapperComponent extends Vue {
   private componentMap: IComponentMap = componentMap;
   private value!: any;
 
-  public mounted() {}
+  public mounted() {
+    // console.log(this.schema as any);
+  }
 
   public getValue = () => {
     // return value
     return this.value;
   };
 
-  private getComponentValue = (value: any) => {
-    // switch 'Calendar':
-    //     return value.value;
-  };
+  // private getComponentValue = (value: any) => {
+  //   // switch 'Calendar':
+  //   //     return value.value;
+  // };
+  private get isFieldHidden(): boolean {
+    return !(this.schema as any).isHidden;
+  }
+  private get isFieldDisabled(): boolean {
+    return (this.schema as any).isDisabled;
+  }
+  private handleFieldActions(fieldId: string): void {}
 
   public handleEvent(fn: any, value: any): void {
     this.value = value;
@@ -48,10 +58,9 @@ export default class WrapperComponent extends Vue {
   }
 
   public handleChange(value: any) {
-    if ((this.$refs[this.schema.id] as any).isValid()) {
+    if (this.isValid(true)) {
       this.$emit('onChange', this.schema.id, value);
     }
-    // value = this.getComponentValue(value);
   }
 
   public handleBlur(value: any) {
@@ -60,12 +69,10 @@ export default class WrapperComponent extends Vue {
     }
   }
 
+  public toggleFieldVisibilty(): void {}
+
   public isValid = (showError: boolean = false): boolean => {
     return (this.$refs[this.schema.id] as any).isValid(showError);
   };
-
-  // setValue = (value: any) => {
-  //   return true;
-  // };
 }
 </script>

@@ -10,9 +10,7 @@
 </template>
 
 <script>
-export default {
-  name: 'AppSpinner',
-};
+export default {};
 </script>
 
 <style scoped>
