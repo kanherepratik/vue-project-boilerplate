@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="radioButton__header" v-if="header">{{ header }}</div>
     <div v-for="radioItem in items" :key="radioItem.value" class="radioButton">
       <div class="radioButton__box" @click="handleChange(radioItem.value)">
         <div v-if="selectedItem === radioItem.value" class="radioButton--tick">{{ '&#x2714;' }}</div>
@@ -22,6 +23,7 @@ interface IItemProps {
 }
 
 interface IRadioButtonData {
+  inputValue: string;
   validation: IValidation; // To store the validation object
 }
 
@@ -45,6 +47,10 @@ export default Vue.extend({
       type: String,
       default: '',
     },
+    header: {
+      type: String,
+      default: '',
+    },
     items: {
       type: Array as () => Array<IItemProps>,
       default: (): Array<IItemProps> => [],
@@ -59,14 +65,24 @@ export default Vue.extend({
     },
   },
   data: (): IRadioButtonData => ({
+    inputValue: '',
     validation: { isValid: true } as IValidation,
   }),
+  watch: {
+    value(): void {
+      this.inputValue = this.$props.selectedItem;
+    },
+  },
+  mounted(): void {
+    this.inputValue = this.$props.selectedItem;
+  },
   methods: {
     handleChange(value: string): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
+      this.inputValue = value;
       this.$emit('onChange', value);
     },
     /**
@@ -74,7 +90,7 @@ export default Vue.extend({
      * @returns boolean whether current state of the input is valid or not
      */
     isValid(): boolean {
-      this.validation = validationHandler(this.selectedItem, this.validations);
+      this.validation = validationHandler(this.inputValue, this.validations);
       return this.validation.isValid;
     },
   },
@@ -86,6 +102,9 @@ export default Vue.extend({
   display: flex;
   flex: 1;
   margin: 10px;
+}
+.radioButton__header {
+  text-align: left;
 }
 .radioButton__box {
   min-width: 20px;
