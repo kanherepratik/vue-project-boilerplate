@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="text" v-model="task" />
+    <app-textbox v-model="task" inputType="text" />
     <button @click="onAddTodo()">Add Task</button>
     <div>
       <p>Todo List</p>
@@ -31,6 +31,7 @@
 import mixins from '@/mixins/mixinHelper';
 import todoMixin from '@/mixins/todoMixin';
 import AppDialog from '@/common/components/AppDialog.vue';
+import AppTextbox from '@/common/components/AppTextbox.vue';
 
 // local interface for data object
 interface IData {
@@ -42,6 +43,7 @@ export default mixins(todoMixin).extend({
   name: 'TodoComponent',
   components: {
     'app-dialog': AppDialog,
+    'app-textbox': AppTextbox,
   },
   data: (): IData => ({
     task: '',
