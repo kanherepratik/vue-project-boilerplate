@@ -36,3 +36,21 @@ export enum VALIDATORS {
   ALPHANUMERIC_WITH_SPACE = 'alphaNumericWithSpace',
   MULTIPLE_OF = 'multipleOf',
 }
+
+export enum DatePickerMode {
+  SINGLE = 'single',
+  MULTIPLE = 'multiple',
+  RANGE = 'range',
+}
+
+export enum AppButtonSizes {
+  SMALL = 'small',
+  NORMAL = 'normal',
+  LARGE = 'large',
+}
+
+export enum NavigationKeys {
+  ENTER = 13,
+  ARROW_UP = 38,
+  ARROW_DOWN = 40,
+}
