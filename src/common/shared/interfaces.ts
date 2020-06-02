@@ -60,6 +60,12 @@ export interface IUnitLabel {
   short: string;
 }
 
+// Interfaces related to AppTabs components
+export interface IAppTab {
+  title: string;
+  component: any;
+  active?: boolean;
+}
 // Stepper component interfaces
 export interface IStepperStep {
   name: string;
@@ -115,5 +121,4 @@ export interface IDatePicker {
   selectedDate: Date | string;
   errorMessage: string;
   validation: IValidation;
-
 }
