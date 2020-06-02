@@ -138,6 +138,10 @@ export default Vue.extend({
     inputVal: '',
     validation: { isValid: true } as IValidation,
   }),
+  created(): void {
+    // Sets the initial value of the input as sent by parent
+    this.inputVal = this.value;
+  },
   methods: {
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not
