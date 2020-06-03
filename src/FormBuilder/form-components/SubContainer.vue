@@ -15,7 +15,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
-import { ISubContainerSchema, IWrapperComponentSchema } from '../interfaces/common';
+import { ISubContainerSchema, IWrapperComponentSchema, IWrapperComponent } from '../interfaces/common';
 import { AppButton, RadioButton } from '@/common/components';
 import { signals } from '../signals';
 
@@ -34,6 +34,10 @@ export default class SubContainer extends Vue {
     return this.schema.children.every((component: IWrapperComponentSchema): boolean => {
       return (this.$refs[component.id] as any)[0].isValid();
     });
+  }
+
+  public getFieldRef(fieldId: string): any {
+    return this.$refs[fieldId];
   }
 
   private handleSubmit(e: any): void {

@@ -7,8 +7,7 @@
       :data="data"
       :ref="container.id"
       :id="container.id"
-      @onChange="handleChange"
-      @onBlur="handleBlur"
+      v-on="$listeners"
       @onAfterSubmit="getDataOnSubmit"
     >
     </form-container>
@@ -16,9 +15,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import FormContainer from './form-components/FormContainer.vue';
-import { IFormSchema } from './interfaces/common';
+import { IFormSchema, IWrapperComponent } from './interfaces/common';
 import { formStructure } from './dummyData';
 import { signals } from './signals';
 
@@ -38,17 +37,19 @@ export default class FormIndex extends Vue {
     tnc: [],
     containerRadio: 'c1',
   };
-  private handleChange(fieldId: string, value: any): void {
-    switch (fieldId) {
-      case 'containerRadio': {
-      }
-    }
-    console.log('container', fieldId, value);
-  }
+  // private handleChange(fieldId: string, value: any): void {
+  //   switch (fieldId) {
+  //     case 'tnc': {
+  //       // debugger;
+  //       // console.log(this.getFieldRef('panCard'));
+  //     }
+  //   }
+  //   // console.log('container', fieldId, value);
+  // }
 
-  private handleBlur(fieldId: string, value: any): void {
-    console.log('container', fieldId, value);
-  }
+  // private handleBlur(fieldId: string, value: any): void {
+  //   console.log('container', fieldId, value);
+  // }
   //example for getting data on after submit from container
   private getDataOnSubmit(containerId: string, data: any): void {
     console.log('getData from index', data, containerId);
@@ -56,5 +57,13 @@ export default class FormIndex extends Vue {
   public isValid = () => {
     return false;
   };
+
+  public getFieldRef(fieldId: string): IWrapperComponent | undefined {
+    for (let container of this.formSchema.children) {
+      if ((this.$refs[container.id] as any)[0].$refs[fieldId]) {
+        return (this.$refs[container.id] as any)[0].$refs[fieldId][0];
+      }
+    }
+  }
 }
 </script>

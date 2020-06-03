@@ -54,5 +54,21 @@ export interface IComponentMap {
   };
 }
 
+export interface IWrapperComponent {
+  getValue: () => void;
+  isValid: (showError: boolean) => boolean;
+  showField: () => void;
+  hideField: () => void;
+  disableField: () => void;
+  getFieldRef: (fieldId: string) => IWrapperComponent;
+}
+
+export interface ISubContainer {
+  isValid: (showError: boolean) => boolean;
+  showSubContainer: () => void;
+  hideSubContainer: () => void;
+  disableFields: () => void;
+}
+
 // this needs to be derived dynamically
 type ICommonComponentList = 'Radio' | 'Checkbox' | 'Dropdown' | 'TextInput' | 'MobileInput' | 'DatePicker';

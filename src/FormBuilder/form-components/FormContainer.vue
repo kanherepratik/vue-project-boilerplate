@@ -4,12 +4,12 @@
     <div v-for="component in schema.children" :key="component.id">
       <div v-if="component.children">
         <sub-container
+          v-if="!component.isHidden"
           :key="component.id"
           :schema="component"
           :data="data"
           v-on="$listeners"
           :ref="component.id"
-          v-if="!component.isHidden"
         />
       </div>
       <div v-else>
@@ -24,7 +24,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
 import SubContainer from './SubContainer.vue';
-import { IContainerSchema, IWrapperComponentSchema } from '../interfaces/common';
+import { IContainerSchema, IWrapperComponentSchema, IWrapperComponent } from '../interfaces/common';
 import { AppButton, RadioButton } from '@/common/components';
 import { signals } from '../signals';
 
@@ -42,6 +42,7 @@ export default class FormContainer extends Vue {
   public isValid(showError: boolean = false): boolean {
     this.$emit(signals.ON_BEFORE_VALIDATE);
     return this.schema.children.every((component: IWrapperComponentSchema): boolean => {
+      // console.log(this.$refs[component.id]);
       return (this.$refs[component.id] as any)[0].isValid();
     });
   }
@@ -51,9 +52,11 @@ export default class FormContainer extends Vue {
       return;
     }
     this.$emit(signals.ON_BEFORE_SUBMIT);
-    console.log('submit clicked', this.data);
+    // console.log('submit clicked', this.data);
     this.$emit(signals.ON_AFTER_SUBMIT, this.schema.id, this.data);
   }
+
+  private mounted(): void {}
 
   private created(): void {
     // console.log(this.schema);

@@ -24,8 +24,8 @@ export const formStructure: IFormSchema = {
           handler: 'handleChange',
         },
         {
-          component: 'Container',
-          label: 'Container1',
+          component: 'subContainer',
+          label: 'subContainer1',
           id: 'c1',
           isHidden: false,
           isDisabled: false,
@@ -71,10 +71,10 @@ export const formStructure: IFormSchema = {
           ],
         },
         {
-          component: 'Container',
-          label: 'Container2',
+          component: 'subContainer',
+          label: 'subContainer2',
           id: 'c2',
-          isHidden: true,
+          isHidden: false,
           isDisabled: false,
           children: [
             {

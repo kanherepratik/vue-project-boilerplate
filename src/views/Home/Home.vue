@@ -2,7 +2,7 @@
   <div class="home">
     <!-- <todo-component />
     <app-checkbox /> -->
-    <form-index />
+    <form-index @onBlur="handleBlur" @onChange="handleChange" ref="formRef" />
   </div>
 </template>
 
@@ -42,9 +42,23 @@ export default Vue.extend({
   }),
   computed: {},
   methods: {
-    handleSubmit(): void {
-      (this.$refs.checkboxRef as any).isValid();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    handleChange(fieldId: string, value: any): void {
+      switch (fieldId) {
+        case 'tnc': {
+          // eslint-disable-next-line no-unused-expressions
+          console.log((this.$refs.formRef as any).getFieldRef('panCard').disableField());
+          // this.bus.$emit('disableField', 'panCard');
+          break;
+        }
+        default:
+      }
     },
+
+    handleBlur(fieldId: string, value: any): void {
+      console.log('container', fieldId, value);
+    },
+
     handleCheckboxChange(value: string): string {
       console.log(this.selectedItems);
       return value;

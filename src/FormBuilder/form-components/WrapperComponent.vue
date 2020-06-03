@@ -2,8 +2,8 @@
   <div>
     <component
       :is="componentMap[schema.component].component"
-      v-if="isFieldHidden"
-      :disabled="isFieldDisabled"
+      v-if="!hidden"
+      :disabled="disabled"
       v-on:[componentMap[schema.component].eventProp]="(value) => handleEvent(schema.handler, value)"
       v-model="data[schema.id]"
       v-bind="schema.otherProps"
@@ -14,14 +14,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { IWrapperComponentSchema, IComponentMap } from '../interfaces/common';
+import { IWrapperComponentSchema, IComponentMap, IWrapperComponent } from '../interfaces/common';
 import componentMap from '../componentMap';
-
-interface IWrapperComponent {
-  getValue: () => void;
-  isValid: (showError: boolean) => boolean;
-  setValue: (value: any) => boolean;
-}
 
 @Component
 export default class WrapperComponent extends Vue {
@@ -29,27 +23,53 @@ export default class WrapperComponent extends Vue {
   @Prop({ required: true }) private data!: any;
   private componentMap: IComponentMap = componentMap;
   private value!: any;
+  private isDisabled!: boolean;
+  private isHidden!: boolean;
 
-  public mounted() {
-    // console.log(this.schema as any);
+  private get hidden(): boolean {
+    return this.isHidden;
   }
 
-  public getValue = () => {
-    // return value
-    return this.value;
+  private set hidden(value: boolean) {
+    this.isHidden = value;
+  }
+
+  private get disabled(): boolean {
+    return this.isDisabled;
+  }
+
+  private set disabled(value: boolean) {
+    this.isDisabled = value;
+  }
+
+  public isValid = (showError: boolean = false): boolean => {
+    return (this.$refs[this.schema.id] as any).isValid(showError);
   };
 
-  // private getComponentValue = (value: any) => {
-  //   // switch 'Calendar':
-  //   //     return value.value;
-  // };
-  private get isFieldHidden(): boolean {
-    return !(this.schema as any).isHidden;
+  public getValue(): any {
+    // return value
+    return this.value;
   }
-  private get isFieldDisabled(): boolean {
-    return (this.schema as any).isDisabled;
+
+  public getFieldRef(fieldId: string): IWrapperComponent {
+    return (this.$refs as any)[fieldId];
   }
-  private handleFieldActions(fieldId: string): void {}
+
+  public showField(): void {
+    this.hidden = false;
+  }
+
+  public hideField(): void {
+    this.hidden = true;
+  }
+
+  public disableField(): void {
+    this.isDisabled = true;
+  }
+
+  public enableField(): void {
+    this.disabled = false;
+  }
 
   public handleEvent(fn: any, value: any): void {
     this.value = value;
@@ -69,10 +89,10 @@ export default class WrapperComponent extends Vue {
     }
   }
 
-  public toggleFieldVisibilty(): void {}
-
-  public isValid = (showError: boolean = false): boolean => {
-    return (this.$refs[this.schema.id] as any).isValid(showError);
-  };
+  private created() {
+    this.isDisabled = this.schema.isDisabled || false;
+    this.isHidden = this.schema.isHidden || false;
+    // console.log(this.schema as any);
+  }
 }
 </script>
