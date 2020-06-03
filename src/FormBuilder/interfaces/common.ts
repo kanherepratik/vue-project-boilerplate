@@ -47,10 +47,10 @@ export interface IComponentMap {
   [key: string]: {
     component: any;
     valueProp: string;
-    eventProp: string;
+    eventProp?: string[];
     componentPath?: string;
     propMap?: Object;
-    eventMap?: Object;
+    eventMap: string[];
   };
 }
 
@@ -72,3 +72,7 @@ export interface ISubContainer {
 
 // this needs to be derived dynamically
 type ICommonComponentList = 'Radio' | 'Checkbox' | 'Dropdown' | 'TextInput' | 'MobileInput' | 'DatePicker';
+
+export interface IEventMap {
+  [key: string]: (event: any, value: any) => void;
+}

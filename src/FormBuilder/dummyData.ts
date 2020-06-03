@@ -21,7 +21,6 @@ export const formStructure: IFormSchema = {
             ],
           },
           id: 'containerRadio',
-          handler: 'handleChange',
         },
         {
           component: 'subContainer',
@@ -34,7 +33,6 @@ export const formStructure: IFormSchema = {
               component: 'TextInput',
               isHidden: false,
               isDisabled: false,
-              handler: 'handleBlur',
               otherProps: {
                 label: 'Name',
                 validations: [{ name: 'required', message: 'This field is super important' }],
@@ -54,7 +52,6 @@ export const formStructure: IFormSchema = {
                 validations: [{ name: 'required', message: 'This field is super important' }],
               },
               id: 'gender',
-              handler: 'handleChange',
             },
             {
               component: 'MobileInput',
@@ -65,8 +62,6 @@ export const formStructure: IFormSchema = {
                 validations: [{ name: 'required', message: 'This field is super important' }],
               },
               id: 'mobile',
-              handler: 'handleBlur',
-              actions: [],
             },
           ],
         },
@@ -81,7 +76,7 @@ export const formStructure: IFormSchema = {
               component: 'TextInput',
               isHidden: false,
               isDisabled: false,
-              handler: 'handleBlur',
+
               otherProps: {
                 label: 'Name',
                 validations: [{ name: 'required', message: 'This field is super important' }],
@@ -101,7 +96,6 @@ export const formStructure: IFormSchema = {
                 validations: [{ name: 'required', message: 'This field is super important' }],
               },
               id: 'gender',
-              handler: 'handleChange',
             },
             {
               component: 'MobileInput',
@@ -112,7 +106,7 @@ export const formStructure: IFormSchema = {
                 validations: [{ name: 'required', message: 'This field is super important' }],
               },
               id: 'mobile',
-              handler: 'handleBlur',
+
               actions: [],
             },
           ],
@@ -133,11 +127,10 @@ export const formStructure: IFormSchema = {
             validations: [{ name: 'required', message: 'This field is super important' }],
           },
           id: 'tnc',
-          handler: 'handleChange',
         },
         {
           component: 'TextInput',
-          handler: 'handleBlur',
+
           isDisabled: false,
           isHidden: false,
           otherProps: {
@@ -148,7 +141,7 @@ export const formStructure: IFormSchema = {
         },
         {
           component: 'TextInput',
-          handler: 'handleBlur',
+
           isDisabled: false,
           isHidden: false,
           otherProps: {
@@ -171,7 +164,6 @@ export const formStructure: IFormSchema = {
             validations: [{ name: 'required', message: 'This field is super important' }],
           },
           id: 'buyerRole',
-          handler: 'handleChange',
         },
       ],
     },

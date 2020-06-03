@@ -4,7 +4,7 @@
       :is="componentMap[schema.component].component"
       v-if="!hidden"
       :disabled="disabled"
-      v-on:[componentMap[schema.component].eventProp]="(value) => handleEvent(schema.handler, value)"
+      v-on="massagedEventMap"
       v-model="data[schema.id]"
       v-bind="schema.otherProps"
       :ref="schema.id"
@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { IWrapperComponentSchema, IComponentMap, IWrapperComponent } from '../interfaces/common';
+import { IWrapperComponentSchema, IComponentMap, IWrapperComponent, IEventMap } from '../interfaces/common';
 import componentMap from '../componentMap';
 
 @Component
@@ -25,6 +25,14 @@ export default class WrapperComponent extends Vue {
   private value!: any;
   private isDisabled!: boolean;
   private isHidden!: boolean;
+  private eventMap: IEventMap = {};
+
+  private get massagedEventMap(): IEventMap {
+    for (let event of componentMap[this.schema.component].eventMap) {
+      this.eventMap[event] = this.handleEvent;
+    }
+    return this.eventMap;
+  }
 
   private get hidden(): boolean {
     return this.isHidden;
@@ -71,23 +79,28 @@ export default class WrapperComponent extends Vue {
     this.disabled = false;
   }
 
-  public handleEvent(fn: any, value: any): void {
-    this.value = value;
-    // TODO: find a better way of calling handlers
-    (this as any)[fn](value);
+  public handleEvent(value: any, event: any): void {
+    this.$emit('emit', event.type, this.schema.id, value);
   }
 
-  public handleChange(value: any) {
-    if (this.isValid(true)) {
-      this.$emit('onChange', this.schema.id, value);
-    }
-  }
+  // public handleEvent(fn: any, value: any): void {
 
-  public handleBlur(value: any) {
-    if (this.isValid(true)) {
-      this.$emit('onBlur', this.schema.id, value);
-    }
-  }
+  //   this.value = value;
+  //   // TODO: find a better way of calling handlers
+  //   (this as any)[fn](value);
+  // }
+
+  // public handleChange(value: any) {
+  //   if (this.isValid(true)) {
+  //     this.$emit('onChange', this.schema.id, value);
+  //   }
+  // }
+
+  // public handleBlur(value: any) {
+  //   if (this.isValid(true)) {
+  //     this.$emit('onBlur', this.schema.id, value);
+  //   }
+  // }
 
   private created() {
     this.isDisabled = this.schema.isDisabled || false;
