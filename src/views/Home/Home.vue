@@ -2,7 +2,7 @@
   <div class="home">
     <!-- <todo-component />
     <app-checkbox /> -->
-    <form-index @onBlur="handleBlur" @onChange="handleChange" ref="formRef" />
+    <form-index @emit="handleEvent" ref="formRef" />
   </div>
 </template>
 
@@ -43,20 +43,23 @@ export default Vue.extend({
   computed: {},
   methods: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    handleChange(fieldId: string, value: any): void {
-      switch (fieldId) {
-        case 'tnc': {
-          // eslint-disable-next-line no-unused-expressions
-          console.log((this.$refs.formRef as any).getFieldRef('panCard').disableField());
-          // this.bus.$emit('disableField', 'panCard');
-          break;
-        }
-        default:
-      }
-    },
+    // handleChange(fieldId: string, value: any): void {
+    //   switch (fieldId) {
+    //     case 'tnc': {
+    //       // eslint-disable-next-line no-unused-expressions
+    //       console.log((this.$refs.formRef as any).getFieldRef('panCard').disableField());
+    //       // this.bus.$emit('disableField', 'panCard');
+    //       break;
+    //     }
+    //     default:
+    //   }
+    // },
 
-    handleBlur(fieldId: string, value: any): void {
-      console.log('container', fieldId, value);
+    // handleBlur(fieldId: string, value: any): void {
+    //   console.log('container', fieldId, value);
+    // },
+    handleEvent(eventName: string, fieldId: string, value?: any): void {
+      console.log(eventName, fieldId, value);
     },
 
     handleCheckboxChange(value: string): string {

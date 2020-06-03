@@ -154,34 +154,34 @@ export default Vue.extend({
      * onChange to be called in case of value change of input, emits onChange event
      * @public
      */
-    onChange(): void {
+    onChange(event: any): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
-      this.$emit('input', this.inputValue);
+      this.$emit('input', this.inputValue, event);
     },
     /**
      * onFocus to be called in case of input gets focus, emits onFocus event
      * @public
      */
-    onFocus(): void {
+    onFocus(event: any): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
-      this.$emit('onFocus', this.inputValue);
+      this.$emit('onFocus', this.inputValue, event);
     },
     /**
      * onBlur to be called in case of input gets blur, emits onBlur event
      * @public
      */
-    onBlur(): void {
+    onBlur(event: any): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
-      this.$emit('onBlur', this.inputValue);
+      this.$emit('onBlur', this.inputValue, event);
     },
   },
 });

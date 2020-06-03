@@ -2,7 +2,7 @@
   <div>
     <div class="radioButton__header" v-if="header">{{ header }}</div>
     <div v-for="radioItem in items" :key="radioItem.value" class="radioButton">
-      <div class="radioButton__box" @click="handleChange(radioItem.value)">
+      <div class="radioButton__box" @click="handleChange($event, radioItem.value)">
         <div v-if="selectedItem === radioItem.value" class="radioButton--tick">{{ '&#x2714;' }}</div>
       </div>
       <div class="radioButton__label">{{ radioItem.label }}</div>
@@ -77,13 +77,13 @@ export default Vue.extend({
     this.inputValue = this.$props.selectedItem;
   },
   methods: {
-    handleChange(value: string): void {
+    handleChange(event, value: string): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
       this.inputValue = value;
-      this.$emit('onChange', value);
+      this.$emit('onChange', value, event);
     },
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not

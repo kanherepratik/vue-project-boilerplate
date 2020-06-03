@@ -3,10 +3,11 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import storeHelper from './store/plugins/storeHelper';
+import register from './config';
 
 Vue.config.productionTip = false;
 Vue.use(storeHelper);
-
+register();
 // if (SENTRY_ENV !== 'development') {
 //     import(/* webpackChunkName: "sentry" */ '@sentry/browser').then((Sentry) => {
 //         Sentry.init({

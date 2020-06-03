@@ -3,40 +3,40 @@ import { IComponentMap } from './interfaces/common';
 
 const componentMap: IComponentMap = {
   Radio: {
-    component: RadioButton,
-    eventProp: 'onChange',
+    component: 'RadioButton',
+    eventMap: ['onChange'],
     valueProp: 'selectedItem',
     propMap: {
       disabled: 'isDisabled',
     },
   },
   TextInput: {
-    component: AppTextbox,
-    eventProp: 'onBlur',
+    component: 'AppTextbox',
+    eventMap: ['onBlur', 'onFocus', 'onChange'],
     valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },
   },
   MobileInput: {
-    component: MobileInput,
-    eventProp: 'onBlur',
+    component: 'MobileInput',
+    eventMap: ['onBlur'],
     valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },
   },
   Checkbox: {
-    component: AppCheckbox,
-    eventProp: 'onChange',
+    component: 'AppCheckbox',
+    eventMap: ['onChange'],
     valueProp: 'selectedItems',
     propMap: {
       disabled: 'isDisabled',
     },
   },
   Dropdown: {
-    component: SingleSelect,
-    eventProp: 'onChange',
+    component: 'SingleSelect',
+    eventMap: ['onChange'],
     valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
