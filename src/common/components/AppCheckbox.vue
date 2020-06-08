@@ -98,7 +98,7 @@ export default Vue.extend({
      * Gets called when the user clicks on the checkbox or label
      * @public
      */
-    handleChange(): void {
+    handleChange(event: any): void {
       // Stop click if the checkbox is disabled
       if (this.disabled) {
         return;
@@ -107,7 +107,7 @@ export default Vue.extend({
        * onClick event to be called when checkbox is clicked.
        * @event onChange
        */
-      this.$emit('onChange', this.values);
+      this.$emit('onChange', event, this.values);
     },
   },
 });

@@ -10,7 +10,7 @@
       :ref="schema.id"
     />
   </div>
-</template> 
+</template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -79,7 +79,7 @@ export default class WrapperComponent extends Vue {
     this.disabled = false;
   }
 
-  public handleEvent(value: any, event: any): void {
+  public handleEvent(event: any, value?: any): void {
     this.$emit('emit', event.type, this.schema.id, value);
   }
 

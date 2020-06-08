@@ -56,12 +56,12 @@ export default Vue.extend({
      * Gets called when the user clicks on the button
      * @public This is a public method
      */
-    handleClick(): void {
+    handleClick(event: any): void {
       /**
        * click event.
        * @event click
        */
-      this.$emit('click');
+      this.$emit('click', event);
     },
   },
   computed: {

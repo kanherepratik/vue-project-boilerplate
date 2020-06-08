@@ -42,29 +42,8 @@ export default Vue.extend({
   }),
   computed: {},
   methods: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // handleChange(fieldId: string, value: any): void {
-    //   switch (fieldId) {
-    //     case 'tnc': {
-    //       // eslint-disable-next-line no-unused-expressions
-    //       console.log((this.$refs.formRef as any).getFieldRef('panCard').disableField());
-    //       // this.bus.$emit('disableField', 'panCard');
-    //       break;
-    //     }
-    //     default:
-    //   }
-    // },
-
-    // handleBlur(fieldId: string, value: any): void {
-    //   console.log('container', fieldId, value);
-    // },
     handleEvent(eventName: string, fieldId: string, value?: any): void {
       console.log(eventName, fieldId, value);
-    },
-
-    handleCheckboxChange(value: string): string {
-      console.log(this.selectedItems);
-      return value;
     },
   },
 });

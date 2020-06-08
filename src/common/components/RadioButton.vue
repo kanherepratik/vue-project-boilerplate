@@ -83,7 +83,7 @@ export default Vue.extend({
         return;
       }
       this.inputValue = value;
-      this.$emit('onChange', value, event);
+      this.$emit('onChange', event, value);
     },
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not

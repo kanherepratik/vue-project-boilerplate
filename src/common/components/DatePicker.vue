@@ -7,6 +7,7 @@
       :max-date="maxDate"
       :value="configuredDates"
       @input="onDateChange"
+      event:any,
     >
       <div class="input-slot" slot-scope="{ inputProps, inputEvents }">
         <input
@@ -93,12 +94,12 @@ export default Vue.extend({
      * It is called when the user selects the date
      * @param {Date} date User selected date
      */
-    onDateChange(date: Date | string): void {
+    onDateChange(event: any, date: Date | string): void {
       this.selectedDate = date;
       /**
        * It emits the date selected by the user
        */
-      this.$emit('change', date);
+      this.$emit('change', event, date);
     },
     /**
      * This method is to be used by the parent component to get the current selected date
