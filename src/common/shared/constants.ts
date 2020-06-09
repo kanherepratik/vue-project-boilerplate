@@ -7,4 +7,4 @@ export const SUFFIX_DIVISOR_MAP: ISuffixDivisorMap = {
   crore: 10000000,
 };
 
-export const MOTOR_REGISTRATION_REGEX = '^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$';
+export const MOTOR_REGISTRATION_REGEX = '^[A-Za-z]{2}[-]{0,1}[0-9]{1,2}[-]{0,1}[A-Za-z]{0,3}[-]{0,1}[0-9]{2,4}$';

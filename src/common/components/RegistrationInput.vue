@@ -130,18 +130,18 @@ export default Vue.extend({
   },
   methods: {
     /**
-     * To get the registration number using ref of the component
+     * To get the sanitized registration number using ref of the component
      * @return string value of the registration number
      */
     getRegistrationNumber(): string {
-      return `${this.registrationPrefix}${this.value}`;
+      return `${this.registrationPrefix}${this.value}`.replace(/[^A-Z0-9]/ig, '');
     },
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not
      * @returns boolean whether current state of the input is valid or not
      */
     isValid(): boolean {
-      this.validation = validationHandler(`${this.registrationPrefix}${this.value}`, this.registrationValidations);
+      this.validation = validationHandler(this.getRegistrationNumber(), this.registrationValidations);
       return this.validation.isValid;
     },
   },
