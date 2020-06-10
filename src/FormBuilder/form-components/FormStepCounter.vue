@@ -10,7 +10,7 @@
 					active: container.isActive,
 					'is-routable': canNavigate(index, container.isHidden),
 				}"
-        @click="onStepClick(container, index);"
+        @click="onStepClick($event, container, index);"
       >
         <div class="step-no">
           <!--
@@ -101,13 +101,14 @@ export default class FormStepCounter extends Vue {
     return this.containerList.filter((form: IContainerSchema) => !form.isHidden);
   }
 
-  private onStepClick(container: IContainerSchema, index: number): void {
+  private onStepClick(event: any, container: IContainerSchema, index: number): void {
     // Fired when a step is clicked
     // @arg `:IStepClickEvent`<br/>Form properties of the form clicked on
     this.$emit('stepClick', {
       containerId: container.id,
       containerIndex: index,
       canNavigate: this.canNavigate(index, container.isHidden),
+      event,
     } as IStepClickEvent);
   }
 }

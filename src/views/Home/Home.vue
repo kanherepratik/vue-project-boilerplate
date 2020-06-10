@@ -2,7 +2,14 @@
   <div class="home">
     <!-- <todo-component />
     <app-checkbox />-->
-    <form-index :formSchema="formSchema" :formData="formData" @emit="handleEvent" ref="formRef" />
+    <form-index
+      :formSchema="formSchema"
+      :formData="formData"
+      v-model="activeFormId"
+      @stepClick="onStepClick($event);"
+      @emit="handleEvent"
+      ref="formRef"
+    />
   </div>
 </template>
 
@@ -12,6 +19,7 @@ import Vue from 'vue';
 // import AppCheckbox from '@/common/components/AppCheckbox.vue';
 import FormIndex from '../../FormBuilder/FormIndex.vue';
 import { get } from '../../services/api';
+import { IStepClickEvent } from '../../FormBuilder/interfaces/common';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IData {
@@ -20,6 +28,7 @@ interface IData {
   validations?: any[];
   formData?: object;
   formSchema?: any[];
+  activeFormId: string;
 } // local interface for data properties
 
 export default Vue.extend({
@@ -30,6 +39,7 @@ export default Vue.extend({
     'form-index': FormIndex,
   },
   data: (): IData => ({
+    activeFormId: '',
     selectedItems: [],
     validations: [{ name: 'required', message: 'I am super important' }],
     options: [
@@ -60,6 +70,9 @@ export default Vue.extend({
   },
   computed: {},
   methods: {
+    onStepClick(event: IStepClickEvent): void {
+      this.activeFormId = event.containerId;
+    },
     handleEvent(eventName: string, fieldId: string, value?: any): void {
       console.log(eventName, fieldId, value);
     },

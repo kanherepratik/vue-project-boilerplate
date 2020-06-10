@@ -89,4 +89,5 @@ export interface INavigateClickEvent {
 export interface IStepClickEvent extends INavigateClickEvent {
   /** Indicates if the form can be navigated or not. */
   canNavigate: boolean;
+  event?: any;
 }
