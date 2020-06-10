@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="popup-box" v-show="hover">{{ message }}</p>
-    <div @mouseover="mouseOver">
+    <div @mouseleave="hover = false" @mouseover="hover = true">
       <slot />
     </div>
   </div>
@@ -37,14 +37,6 @@ export default Vue.extend({
   data: (): IToolTipData => ({
     hover: false,
   }),
-  methods: {
-    /**
-     * To Hide tooltip on mover over
-     */
-    mouseOver(): void {
-      this.hover = !this.hover;
-    },
-  },
 });
 </script>
 <style scoped>
