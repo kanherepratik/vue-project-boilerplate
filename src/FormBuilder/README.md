@@ -91,6 +91,20 @@
 - [ ] Build parser to parse backend json
 - [ ] Implementation of above
 
+## Stepper Form
+
+> To show the form in steppered manner, this component takes steps as props.
+
+```
+ISteps:
+name: string;
+  component: formContainer;
+  icon?: string;
+  title?: string;
+  subtitle?: string;
+  completed?: boolean;
+```
+
 ## Todo Later
 
 - [ ] Make subContainer more robust by adding functionality to control wrapperComponent inside it.

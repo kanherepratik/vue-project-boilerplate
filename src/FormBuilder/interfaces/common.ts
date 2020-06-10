@@ -19,6 +19,9 @@ export interface IContainerSchema {
   id: string;
   label: string;
   submitText?: string;
+  isHidden: boolean;
+  isSubmitted: boolean;
+  isActive: boolean;
   children: any[]; //FIXME this with proper type
 }
 
@@ -75,4 +78,15 @@ type ICommonComponentList = 'Radio' | 'Checkbox' | 'Dropdown' | 'TextInput' | 'M
 
 export interface IEventMap {
   [key: string]: (event: any, value: any) => void;
+}
+
+export interface INavigateClickEvent {
+  /** Unique identifier form */
+  containerId: string;
+  /** index position of the form within form array */
+  containerIndex: number;
+}
+export interface IStepClickEvent extends INavigateClickEvent {
+  /** Indicates if the form can be navigated or not. */
+  canNavigate: boolean;
 }

@@ -107,7 +107,7 @@ export default Vue.extend({
        * onClick event to be called when checkbox is clicked.
        * @event onChange
        */
-      this.$emit('onChange', event, this.values);
+      this.$emit('onChange', this.values, event);
     },
   },
 });

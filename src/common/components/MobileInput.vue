@@ -107,7 +107,7 @@ export default Vue.extend({
       if (this.disabled) {
         return;
       }
-      this.$emit('input', event, this.inputValue);
+      this.$emit('input', this.inputValue, event);
     },
     /**
      * onFocus to be called in case of input gets focus, emits onFocus event
@@ -118,7 +118,7 @@ export default Vue.extend({
       if (this.disabled) {
         return;
       }
-      this.$emit('onFocus', event, this.inputValue);
+      this.$emit('onFocus', this.inputValue, event);
     },
     /**
      * onBlur to be called in case of input gets blur, emits onBlur event
@@ -129,7 +129,7 @@ export default Vue.extend({
       if (this.disabled) {
         return;
       }
-      this.$emit('onBlur', event, this.inputValue);
+      this.$emit('onBlur', this.inputValue, event);
     },
   },
 });

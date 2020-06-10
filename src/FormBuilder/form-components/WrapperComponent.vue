@@ -79,7 +79,7 @@ export default class WrapperComponent extends Vue {
     this.disabled = false;
   }
 
-  public handleEvent(event: any, value?: any): void {
+  public handleEvent(value: any, event: any): void {
     this.$emit('emit', event.type, this.schema.id, value);
   }
 

@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <!-- <todo-component />
-    <app-checkbox /> -->
-    <form-index @emit="handleEvent" ref="formRef" />
+    <app-checkbox />-->
+    <form-index :formSchema="formSchema" :formData="formData" @emit="handleEvent" ref="formRef" />
   </div>
 </template>
 
@@ -11,12 +11,15 @@ import Vue from 'vue';
 // import TodoComponent from '@/components/TodoComponent.vue';
 // import AppCheckbox from '@/common/components/AppCheckbox.vue';
 import FormIndex from '../../FormBuilder/FormIndex.vue';
+import { get } from '../../services/api';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IData {
-  options: any[];
-  selectedItems: any[];
+  options?: any[];
+  selectedItems?: any[];
   validations?: any[];
+  formData?: object;
+  formSchema?: any[];
 } // local interface for data properties
 
 export default Vue.extend({
@@ -39,7 +42,22 @@ export default Vue.extend({
         label: '2',
       },
     ],
+    formData: {
+      name: '',
+      gender: '',
+      address: '',
+      buyerRole: '',
+      panCard: '',
+      tnc: [],
+      containerRadio: 'c1',
+    },
+    formSchema: [],
   }),
+  created(): void {
+    get('https://jsonblob.com/api/d1ab0271-aa12-11ea-a88a-e3742b354a00', true).then((res) => {
+      this.formSchema = res;
+    });
+  },
   computed: {},
   methods: {
     handleEvent(eventName: string, fieldId: string, value?: any): void {

@@ -8,6 +8,9 @@ export const formStructure: IFormSchema = {
       component: 'Container',
       label: 'Personal Details',
       id: 'personal-details',
+      isHidden: false,
+      isSubmitted: false,
+      isActive: false,
       children: [
         {
           component: 'Radio',
@@ -117,6 +120,9 @@ export const formStructure: IFormSchema = {
       component: 'Container',
       label: 'Nominee Details',
       id: 'nominee-details',
+      isHidden: false,
+      isSubmitted: false,
+      isActive: false,
       children: [
         {
           component: 'Checkbox',

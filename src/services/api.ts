@@ -17,9 +17,9 @@ axios.defaults.headers = HEADERS;
  * Get request
  * @param url url for get request
  */
-export const get = <T = never>(url: string): Promise<T> => {
+export const get = <T = never>(url: string, absoluteUrl = false): Promise<T> => {
   return axios
-    .get(`${BASE_URL}${url}`)
+    .get(absoluteUrl ? url : `${BASE_URL}${url}`)
     .then((response: any) => response.data)
     .catch((error: any) => console.error(error));
 };

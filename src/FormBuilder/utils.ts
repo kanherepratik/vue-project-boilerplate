@@ -22,3 +22,12 @@
 //     }
 //     public getSchema = () => this.formSchema
 // }
+/**
+ * Determines if a form is accessible and can be navigated to.
+ * A form is accessible when it is placed before the active form.
+ * @param index Index position of a form which is within a form array
+ * @param activeIndex Index position of the active form which is within a form array
+ */
+export const canNavigate = (index: number, activeIndex: number, isFormHidden: boolean): boolean => {
+  return !isFormHidden && index < activeIndex;
+};
