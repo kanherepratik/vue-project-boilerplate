@@ -4,8 +4,8 @@
       trigered on click
       @event click
     -->
-    <button :class="classNames" :disabled="disabled" @click="emitClick">
-      <span v-if="loading">loading...</span>
+    <button :class="classNames" :disabled="disabled" @click="handleClick">
+      <span v-if="isLoading">loading...</span>
       <span v-else>{{ title }}</span>
     </button>
   </div>
@@ -14,14 +14,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { AppButtonSizes } from '../shared/enum';
-
-/**
- *
- * List of Props
- * 1. disabled: true or false (Default value - true)
- * 2. size {Enum AppButtonSizes}: small, normal, large (Default value - normal)
- * 3. customCssClasses: An array of classes to apply on button
- */
 
 export default Vue.extend({
   name: 'AppButton',
@@ -49,7 +41,7 @@ export default Vue.extend({
     /**
      * This will show the loading text in the button
      */
-    loading: Boolean,
+    isLoading: Boolean,
     /**
      * The css to apply to button
      * @values css class names
@@ -64,7 +56,7 @@ export default Vue.extend({
      * Gets called when the user clicks on the button
      * @public This is a public method
      */
-    emitClick(): void {
+    handleClick(): void {
       /**
        * click event.
        * @event click

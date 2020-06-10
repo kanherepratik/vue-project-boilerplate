@@ -1,15 +1,20 @@
 <template>
   <div>
-    <div v-for="(radioItems, index) in items" :key="radioItems.value" class="radioButton">
-      <div class="radioButton__box" @click="onHandleClick(index)"></div>
-      <div v-if="selectedItem === radioItems.value" class="radioButton--tick">{{ '&#x2714;' }}</div>
-      <div class="radioButton__label">{{ radioItems.label }}</div>
+    <div class="radioButton__header" v-if="header">{{ header }}</div>
+    <div v-for="radioItem in items" :key="radioItem.value" class="radioButton">
+      <div class="radioButton__box" @click="handleChange(radioItem.value)">
+        <div v-if="selectedItem === radioItem.value" class="radioButton--tick">{{ '&#x2714;' }}</div>
+      </div>
+      <div class="radioButton__label">{{ radioItem.label }}</div>
     </div>
+    <div v-if="!validation.isValid" class="textboxErrorMsg">{{ validation.message }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { IValidation, IValidationRule } from '../shared/interfaces';
+import { validationHandler } from '../shared/validations';
 
 // local interface for items properties
 interface IItemProps {
@@ -17,11 +22,16 @@ interface IItemProps {
   label: string;
 }
 
+interface IRadioButtonData {
+  inputValue: string;
+  validation: IValidation; // To store the validation object
+}
+
 export default Vue.extend({
   name: 'RadioButton',
   model: {
     prop: 'selectedItem',
-    event: 'onValueChange',
+    event: 'onChange',
   },
   props: {
     /**
@@ -37,18 +47,51 @@ export default Vue.extend({
       type: String,
       default: '',
     },
+    header: {
+      type: String,
+      default: '',
+    },
     items: {
       type: Array as () => Array<IItemProps>,
-      default: [],
+      default: (): Array<IItemProps> => [],
+    },
+    /**
+     * Validations array of objects of type IValidationRule to valdiate the input
+     * @values Array<IValidationRule>
+     */
+    validations: {
+      type: Array as () => Array<IValidationRule>,
+      default: (): Array<IValidationRule> => [] as Array<IValidationRule>,
     },
   },
+  data: (): IRadioButtonData => ({
+    inputValue: '',
+    validation: { isValid: true } as IValidation,
+  }),
+  watch: {
+    value(): void {
+      this.inputValue = this.$props.selectedItem;
+    },
+  },
+  mounted(): void {
+    this.inputValue = this.$props.selectedItem;
+  },
   methods: {
-    onHandleClick(e: number): void {
+    handleChange(value: string): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
       }
-      this.$emit('onValueChange', this.items[e].value);
+      this.inputValue = value;
+      this.$emit('onChange', value);
+    },
+    /**
+     * Calls the validationHandler to check the validations, whether the state of input is valid or not
+     * @returns boolean whether current state of the input is valid or not
+     */
+    isValid(): boolean {
+      this.validation = validationHandler(this.inputValue, this.validations);
+      return this.validation.isValid;
     },
   },
 });
@@ -59,6 +102,9 @@ export default Vue.extend({
   display: flex;
   flex: 1;
   margin: 10px;
+}
+.radioButton__header {
+  text-align: left;
 }
 .radioButton__box {
   min-width: 20px;

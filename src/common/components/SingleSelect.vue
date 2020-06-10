@@ -8,24 +8,22 @@
     </div>
     <div v-if="showDropdown" class="filtered-list">
       <div v-if="searchable" class="search-block">
-        <div class="input-control">
-          <input
-            class="input-field"
-            type="text"
-            :value="queryValue"
-            :placeholder="placeholder"
-            ref="searchInput"
-            @input="onInputChange"
-            @focus="onFocus"
-            @keydown="onKeyDown"
-          />
-        </div>
+        <input
+          class="input-field"
+          type="text"
+          :value="queryValue"
+          :placeholder="placeholder"
+          ref="searchInput"
+          @input="onInputChange"
+          @focus="onFocus"
+          @keydown="onKeyDown"
+        />
         <div v-if="clearable && queryValue.length" class="clear-icon" @click="clearQuery">x</div>
       </div>
       <div
         v-for="(listItem, index) of filteredItems"
         :class="['filtered-item', { active: listItem.value === selectedItem, selected: searchIndex === index }]"
-        :key="listItem.label"
+        :key="listItem.value"
         @click="onSelection(index)"
       >
         {{ listItem.label }}
@@ -219,11 +217,6 @@ export default Vue.extend({
   padding-top: 12px;
   margin-top: 4px;
   min-height: 35px;
-}
-
-.input-control {
-  display: flex;
-  flex-grow: 1;
 }
 
 .input-field {
