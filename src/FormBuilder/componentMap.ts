@@ -42,5 +42,11 @@ const componentMap: IComponentMap = {
       disabled: 'isDisabled',
     },
   },
+  DatePicker: {
+    component: 'DatePicker',
+    eventMap: ['change'],
+    valueProp: 'value',
+    propMap: {},
+  },
 };
 export default componentMap;

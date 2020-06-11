@@ -26,7 +26,7 @@ export interface IContainerSchema {
 }
 
 export interface ISubContainerSchema {
-  component: 'Container' | 'TabbedContainer';
+  component: 'SubContainer';
   id: string;
   label: string;
   submitText?: string;

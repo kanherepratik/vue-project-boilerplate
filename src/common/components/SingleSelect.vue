@@ -2,9 +2,7 @@
   <div class="single-select">
     <div class="select-handle" tabindex="1" @click="onFocus" @keydown="onKeyDown">
       <label class="dropdown-label">{{ label }}</label>
-      <div class="selected-item">
-        {{ selectedItem }}
-      </div>
+      <div class="selected-item">{{ selectedItem }}</div>
     </div>
     <div v-if="showDropdown" class="filtered-list">
       <div v-if="searchable" class="search-block">
@@ -25,9 +23,7 @@
         :class="['filtered-item', { active: listItem.value === selectedItem, selected: searchIndex === index }]"
         :key="listItem.value"
         @click="onSelection(index)"
-      >
-        {{ listItem.label }}
-      </div>
+      >{{ listItem.label }}</div>
     </div>
   </div>
 </template>
@@ -152,7 +148,7 @@ export default Vue.extend({
         return;
       }
       const selectedItem = this.filteredItems[itemIndex];
-      this.updateAndNotifySelection(selectedItem.value);
+      this.updateAndNotifySelection(selectedItem);
       this.queryValue = '';
       this.filteredItems = [];
       this.searchIndex = 0;
@@ -162,8 +158,8 @@ export default Vue.extend({
      * On change of selected Item, it updates the selected Item and emits the selection event
      * @param {string} selectedItem
      */
-    updateAndNotifySelection(selectedItem = ''): void {
-      this.selectedItem = selectedItem;
+    updateAndNotifySelection(selectedItem: ISelectItem | null = null): void {
+      this.selectedItem = selectedItem ? selectedItem.label : '';
       this.$emit('selection', selectedItem);
     },
     /**
@@ -178,10 +174,9 @@ export default Vue.extend({
      */
     onKeyDown(event: any): void {
       const filteredItemsCount = this.filteredItems.length;
-
       // if filtered Items count is zero then disable navigation
-      if (filteredItemsCount < 0) {
-        return;
+      if (!filteredItemsCount) {
+        this.showDropdown = true;
       }
 
       switch (event.keyCode) {

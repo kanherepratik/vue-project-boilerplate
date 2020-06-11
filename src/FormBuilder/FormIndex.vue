@@ -32,13 +32,21 @@
           >{{ slotProps.container.label }}</slot>
         </template>
       </form-step-counter>
-
-      <form-container
-        :key="formSchema[activeFormIndex].id"
-        :schema="formSchema[activeFormIndex]"
+      <form-tabbed-container
+        v-if="formSchema[activeContainerIndex].component === 'TabbedContainer'"
+        :schema="formSchema[activeContainerIndex]"
         :data="formData"
-        :ref="formSchema[activeFormIndex].id"
-        :id="formSchema[activeFormIndex].id"
+        :ref="formSchema[activeContainerIndex].id"
+        :id="formSchema[activeContainerIndex].id"
+        v-on="$listeners"
+        @onAfterSubmit="getDataOnSubmit"
+      />
+      <form-container
+        v-else
+        :schema="formSchema[activeContainerIndex]"
+        :data="formData"
+        :ref="formSchema[activeContainerIndex].id"
+        :id="formSchema[activeContainerIndex].id"
         v-on="$listeners"
         @onAfterSubmit="getDataOnSubmit"
       ></form-container>
@@ -49,14 +57,16 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import FormContainer from './form-components/FormContainer.vue';
+import FormStepCounter from './form-components/FormStepCounter.vue';
+import FormTabbedContainer from './form-components/FormTabbedContainer.vue';
 import { IWrapperComponent, IContainerSchema, IStepClickEvent } from './interfaces/common';
 import { signals } from './signals';
-import FormStepCounter from './form-components/FormStepCounter.vue';
 
 @Component({
   components: {
     'form-container': FormContainer,
     'form-step-counter': FormStepCounter,
+    'form-tabbed-container': FormTabbedContainer,
   },
 })
 export default class FormIndex extends Vue {
@@ -70,12 +80,12 @@ export default class FormIndex extends Vue {
     console.log('getData from index', data, containerId);
   }
 
-  protected get activeFormId(): string {
+  protected get activeContainerId(): string {
     return this.value;
   }
-  protected set activeFormId(activeFormId: string) {
-    this.setActiveForm(activeFormId);
-    this.$emit('input', activeFormId);
+  protected set activeContainerId(activeContainerId: string) {
+    this.setActiveContainer(activeContainerId);
+    this.$emit('input', activeContainerId);
   }
 
   // public isValid = () => {
@@ -90,22 +100,22 @@ export default class FormIndex extends Vue {
     }
   }
 
-  public get activeFormIndex(): number {
+  public get activeContainerIndex(): number {
     const index: number = this.formSchema.findIndex(
-      (container: IContainerSchema) => container.id === this.activeFormId && !container.isHidden
+      (container: IContainerSchema) => container.id === this.activeContainerId && !container.isHidden
     );
     if (index === -1) {
-      return this.firstVisibleFormIndex === -1 ? 0 : this.firstVisibleFormIndex;
+      return this.firstVisibleContainerIndex === -1 ? 0 : this.firstVisibleContainerIndex;
     }
     return index;
   }
 
-  public get firstVisibleFormIndex(): number {
+  public get firstVisibleContainerIndex(): number {
     const index: number = this.formSchema.findIndex((container: IContainerSchema) => !container.isHidden);
     return index === -1 ? 0 : index;
   }
 
-  public get lastVisibleFormIndex(): number {
+  public get lastVisibleContainerIndex(): number {
     const reverseContainers: IContainerSchema[] = [...this.formSchema].reverse();
     const reverseContainerIndex: number = reverseContainers.findIndex(
       (container: IContainerSchema) => !container.isHidden
@@ -115,22 +125,11 @@ export default class FormIndex extends Vue {
       : Math.abs(reverseContainerIndex - (this.formSchema.length - 1));
   }
 
-  // private goToPreviousForm(): void {
-  //   // Fired when `previous` navigation button is clicked
-  //   // @arg `:INavigateClickEvent`<br/>Form properties of the previous form
-  //   const previousIndex: number = this.previousFormIndex(this.activeFormIndex);
-  //   if (previousIndex > -1 && previousIndex < this.activeFormIndex) {
-  //     this.$emit('previousFormClick', {
-  //       formId: this.forms[previousIndex].formId,
-  //       formIndex: previousIndex,
-  //     } as INavigateClickEvent);
-  //   }
-  // }
   private get isPreviousVisible(): boolean {
-    return this.firstVisibleFormIndex > -1 && this.activeFormIndex > this.firstVisibleFormIndex;
+    return this.firstVisibleContainerIndex > -1 && this.activeContainerIndex > this.firstVisibleContainerIndex;
   }
 
-  private previousFormIndex(formIndex: number): number {
+  private previousContainerIndex(formIndex: number): number {
     const reverseContainers: IContainerSchema[] = [...this.formSchema].reverse();
     const reverseContainerIndex: number = Math.abs(formIndex - (this.formSchema.length - 1));
     const reverseNextFormIndex: number = reverseContainers.findIndex(
@@ -140,26 +139,28 @@ export default class FormIndex extends Vue {
   }
   s;
 
-  private setActiveForm(activeFormId: string): void {
+  private setActiveContainer(activeContainerId: string): void {
     const index: number = this.formSchema.findIndex(
-      (container: IContainerSchema) => container.id === activeFormId && !container.isHidden
+      (container: IContainerSchema) => container.id === activeContainerId && !container.isHidden
     );
     // Error message in case of invalid form id
-    if (activeFormId && index === -1) {
+    if (activeContainerId && index === -1) {
       console.error(
-        'Form Id: "' + activeFormId + '" cannot be active as it is either hidden or does not exist in the form schema'
+        'Form Id: "' +
+          activeContainerId +
+          '" cannot be active as it is either hidden or does not exist in the form schema'
       );
     }
     if (
-      activeFormId &&
+      activeContainerId &&
       index > -1 &&
-      (index === this.firstVisibleFormIndex ||
+      (index === this.firstVisibleContainerIndex ||
         this.formSchema[index].isSubmitted ||
-        this.formSchema[this.previousFormIndex(index)].isSubmitted)
+        this.formSchema[this.previousContainerIndex(index)].isSubmitted)
     ) {
       this.formSchema.forEach((container: IContainerSchema) => {
         container.isActive = false;
-        if (container.id === activeFormId) {
+        if (container.id === activeContainerId) {
           container.isActive = true;
         }
       });
@@ -169,16 +170,16 @@ export default class FormIndex extends Vue {
       );
       if (incompleteFormIndex > -1) {
         // Make first un-submitted and visible form active
-        this.activeFormId = this.formSchema[incompleteFormIndex].id;
+        this.activeContainerId = this.formSchema[incompleteFormIndex].id;
       } else {
         let activeIndex: number = this.formSchema.findIndex(
           (container: IContainerSchema) => container.isActive === true && !container.isHidden
         );
         if (activeIndex === -1) {
           // Make last submitted form active if all formSchema are submitted and no form is active
-          activeIndex = this.lastVisibleFormIndex;
+          activeIndex = this.lastVisibleContainerIndex;
         }
-        this.activeFormId = this.formSchema[activeIndex].id;
+        this.activeContainerId = this.formSchema[activeIndex].id;
       }
     }
   }
@@ -187,14 +188,14 @@ export default class FormIndex extends Vue {
     // @arg `:IStepClickEvent`<br/>Form properties of the form clicked on
     console.log('step clicked', event);
     // FIXME: this will be handled from parent, need to fix this
-    this.setActiveForm(event.containerId);
+    this.setActiveContainer(event.containerId);
     this.$emit('stepClick', event);
   }
 
   // @Watch('value')
   // private onValueChange(newValue: string): void {
   //   debugger;
-  //   this.setActiveForm(newValue);
+  //   this.setActiveContainer(newValue);
   // }
 }
 </script>

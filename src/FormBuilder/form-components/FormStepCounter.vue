@@ -113,3 +113,13 @@ export default class FormStepCounter extends Vue {
   }
 }
 </script>
+<style scoped>
+.steps-ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+.steps-ul .steps-ul-step {
+  margin-right: 50px;
+}
+</style>

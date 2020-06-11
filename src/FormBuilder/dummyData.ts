@@ -6,170 +6,369 @@ export const formStructure: IFormSchema = {
   children: [
     {
       component: 'Container',
-      label: 'Personal Details',
-      id: 'personal-details',
+      label: 'Bike Owner Details',
+      id: 'bike-owner-details',
+      submitText: 'NEXT: Communication Address',
       isHidden: false,
       isSubmitted: false,
-      isActive: false,
+      isActive: true,
       children: [
+        {
+          component: 'TextInput',
+          isHidden: false,
+          isDisabled: false,
+          otherProps: {
+            label: 'Owner name as RC',
+            validations: [
+              {
+                name: 'required',
+                message: 'This field is super important',
+              },
+            ],
+          },
+          id: 'ownerName',
+        },
         {
           component: 'Radio',
           isHidden: false,
           isDisabled: false,
           otherProps: {
-            header: 'Container Selection',
+            header: 'Gender',
             items: [
-              { value: 'c1', label: 'container 1' },
-              { value: 'c2', label: 'container 2' },
+              {
+                value: 'male',
+                label: 'Male',
+              },
+              {
+                value: 'female',
+                label: 'Female',
+              },
+            ],
+            validations: [
+              {
+                name: 'required',
+                message: 'This field is super important',
+              },
             ],
           },
-          id: 'containerRadio',
+          id: 'gender',
         },
         {
-          component: 'subContainer',
-          label: 'subContainer1',
-          id: 'c1',
+          component: 'DatePicker',
           isHidden: false,
           isDisabled: false,
-          children: [
-            {
-              component: 'TextInput',
-              isHidden: false,
-              isDisabled: false,
-              otherProps: {
-                label: 'Name',
-                validations: [{ name: 'required', message: 'This field is super important' }],
+          otherProps: {
+            validations: [
+              {
+                name: 'required',
+                message: 'This field is super important',
               },
-              id: 'name',
-            },
-            {
-              component: 'Radio',
-              isHidden: false,
-              isDisabled: false,
-              otherProps: {
-                header: 'Gender',
-                items: [
-                  { value: 'male', label: 'Male' },
-                  { value: 'female', label: 'Female' },
-                ],
-                validations: [{ name: 'required', message: 'This field is super important' }],
-              },
-              id: 'gender',
-            },
-            {
-              component: 'MobileInput',
-              isHidden: false,
-              isDisabled: false,
-              otherProps: {
-                label: 'Mobile',
-                validations: [{ name: 'required', message: 'This field is super important' }],
-              },
-              id: 'mobile',
-            },
-          ],
+            ],
+          },
+          id: 'dob',
         },
         {
-          component: 'subContainer',
-          label: 'subContainer2',
-          id: 'c2',
+          component: 'MobileInput',
           isHidden: false,
           isDisabled: false,
-          children: [
-            {
-              component: 'TextInput',
-              isHidden: false,
-              isDisabled: false,
-
-              otherProps: {
-                label: 'Name',
-                validations: [{ name: 'required', message: 'This field is super important' }],
+          otherProps: {
+            label: 'Mobile',
+            validations: [
+              {
+                name: 'required',
+                message: 'This field is super important',
               },
-              id: 'name',
-            },
-            {
-              component: 'Radio',
-              isHidden: false,
-              isDisabled: false,
-              otherProps: {
-                header: 'Gender',
-                items: [
-                  { value: 'male', label: 'Male' },
-                  { value: 'female', label: 'Female' },
-                ],
-                validations: [{ name: 'required', message: 'This field is super important' }],
+            ],
+          },
+          id: 'mobile',
+        },
+        {
+          component: 'TextInput',
+          isHidden: false,
+          isDisabled: false,
+          otherProps: {
+            label: 'Email Address',
+            validations: [
+              {
+                name: 'required',
+                message: 'This field is super important',
               },
-              id: 'gender',
-            },
-            {
-              component: 'MobileInput',
-              isHidden: false,
-              isDisabled: false,
-              otherProps: {
-                label: 'Mobile',
-                validations: [{ name: 'required', message: 'This field is super important' }],
-              },
-              id: 'mobile',
-
-              actions: [],
-            },
-          ],
+            ],
+          },
+          id: 'emailId',
         },
       ],
     },
     {
       component: 'Container',
-      label: 'Nominee Details',
-      id: 'nominee-details',
+      label: 'Communication Address',
+      id: 'communication-address',
+      submitText: 'NEXT: Vehicle Details',
       isHidden: false,
       isSubmitted: false,
       isActive: false,
       children: [
         {
-          component: 'Checkbox',
-          isHidden: false,
+          component: 'TextInput',
           isDisabled: false,
+          isHidden: false,
           otherProps: {
-            options: [{ label: 'terms and condition', value: 'tnc' }],
-            validations: [{ name: 'required', message: 'This field is super important' }],
+            label: 'Area Pincode',
+            validations: [
+              {
+                name: 'required',
+                message: 'This field is super important',
+              },
+            ],
           },
-          id: 'tnc',
+          id: 'pincode',
         },
         {
           component: 'TextInput',
-
           isDisabled: false,
           isHidden: false,
           otherProps: {
-            label: 'address',
-            validations: [{ name: 'required', message: 'This field is super important' }],
+            label: 'Postal Address',
+            validations: [
+              {
+                name: 'required',
+                message: 'This field is super important',
+              },
+            ],
           },
           id: 'address',
         },
         {
-          component: 'TextInput',
-
+          component: 'Dropdown',
           isDisabled: false,
           isHidden: false,
           otherProps: {
-            label: 'Pan Card',
-            validations: [{ name: 'required', message: 'This field is super important' }],
+            label: 'State',
+            items: [
+              {
+                label: 'Maharastra',
+                value: 'mh',
+              },
+              {
+                label: 'Delhi',
+                value: 'delhi',
+              },
+              {
+                label: 'Tamil Nadu',
+                value: 'tn',
+              },
+            ],
+            validations: [
+              {
+                name: 'required',
+                message: 'This field is super important',
+              },
+            ],
           },
-          id: 'panCard',
-          actions: ['onPanCardBlur'],
+          id: 'state',
         },
         {
-          component: 'Radio',
-          isHidden: false,
+          component: 'Dropdown',
           isDisabled: false,
+          isHidden: false,
           otherProps: {
-            header: 'Buyer Role',
+            label: 'City',
             items: [
-              { value: 'self', label: 'Self' },
-              { value: 'proposer', label: 'Proposer' },
+              {
+                label: 'Mumbai',
+                value: 'mumbai',
+              },
+              {
+                label: 'Delhi',
+                value: 'delhi',
+              },
+              {
+                label: 'Pune',
+                value: 'pune',
+              },
             ],
-            validations: [{ name: 'required', message: 'This field is super important' }],
+            validations: [
+              {
+                name: 'required',
+                message: 'This field is super important',
+              },
+            ],
           },
-          id: 'buyerRole',
+          id: 'city',
+        },
+      ],
+    },
+    {
+      component: 'TabbedContainer',
+      label: 'Vehicle Details',
+      id: 'vehicle-policy-details',
+      submitText: 'NEXT: Review and Pay',
+      isHidden: false,
+      isSubmitted: false,
+      isActive: false,
+      children: [
+        {
+          component: 'SubContainer',
+          label: 'Vehicle Details',
+          id: 'vehicle-details',
+          isHidden: false,
+          isSubmitted: false,
+          isActive: true,
+          children: [
+            {
+              component: 'TextInput',
+              isDisabled: false,
+              isHidden: false,
+              otherProps: {
+                label: 'Your Bike Number',
+                validations: [
+                  {
+                    name: 'required',
+                    message: 'This field is super important',
+                  },
+                ],
+              },
+              id: 'registrationNumber',
+            },
+            {
+              component: 'DatePicker',
+              isHidden: false,
+              isDisabled: false,
+              otherProps: {
+                validations: [
+                  {
+                    name: 'required',
+                    message: 'This field is super important',
+                  },
+                ],
+              },
+              id: 'regDate',
+            },
+            {
+              component: 'TextInput',
+              isDisabled: false,
+              isHidden: false,
+              otherProps: {
+                label: 'Engine Number',
+                validations: [
+                  {
+                    name: 'required',
+                    message: 'This field is super important',
+                  },
+                ],
+              },
+              id: 'engineNumber',
+            },
+            {
+              component: 'TextInput',
+              isDisabled: false,
+              isHidden: false,
+              otherProps: {
+                label: 'Chassis Number',
+                validations: [
+                  {
+                    name: 'required',
+                    message: 'This field is super important',
+                  },
+                ],
+              },
+              id: 'chassisNumber',
+            },
+          ],
+        },
+        {
+          component: 'SubContainer',
+          label: 'Past Policy Details',
+          id: 'policy-details',
+          isHidden: false,
+          isSubmitted: false,
+          isActive: false,
+          children: [
+            {
+              component: 'DatePicker',
+              isHidden: false,
+              isDisabled: false,
+              otherProps: {
+                validations: [
+                  {
+                    name: 'required',
+                    message: 'This field is super important',
+                  },
+                ],
+              },
+              id: 'expiryDate',
+            },
+            {
+              component: 'Dropdown',
+              isDisabled: false,
+              isHidden: false,
+              otherProps: {
+                label: 'Previous Policy Insurer',
+                validations: [
+                  {
+                    name: 'required',
+                    message: 'This field is super important',
+                  },
+                ],
+              },
+              id: 'prevPolicyInsurer',
+            },
+            {
+              component: 'TextInput',
+              isDisabled: false,
+              isHidden: false,
+              otherProps: {
+                label: 'Previous Policy Number',
+                validations: [
+                  {
+                    name: 'required',
+                    message: 'This field is super important',
+                  },
+                ],
+              },
+              id: 'prevPolicyNumber',
+            },
+            {
+              component: 'Radio',
+              isHidden: false,
+              isDisabled: false,
+              otherProps: {
+                header: 'Claimed in the past year?',
+                items: [
+                  {
+                    value: 'true',
+                    label: 'Yes',
+                  },
+                  {
+                    value: 'false',
+                    label: 'No',
+                  },
+                ],
+                validations: [
+                  {
+                    name: 'required',
+                    message: 'This field is super important',
+                  },
+                ],
+              },
+              id: 'claimInPastYear',
+            },
+            {
+              component: 'Dropdown',
+              isDisabled: false,
+              isHidden: false,
+              otherProps: {
+                label: 'Previous No Claim bonus (NCB)',
+                validations: [
+                  {
+                    name: 'required',
+                    message: 'This field is super important',
+                  },
+                ],
+              },
+              id: 'prevNCB',
+            },
+          ],
         },
       ],
     },
