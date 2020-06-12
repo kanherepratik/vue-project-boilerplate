@@ -38,7 +38,8 @@
         :data="formData"
         :ref="formSchema[activeContainerIndex].id"
         :id="formSchema[activeContainerIndex].id"
-        v-on="$listeners"
+        v-model="activeTab"
+        @tabChange="handleTabChange"
         @onAfterSubmit="getDataOnSubmit"
       />
       <form-container
@@ -74,6 +75,7 @@ export default class FormIndex extends Vue {
   @Prop({}) formData!: { [key: string]: any };
   @Prop(String) value!: string;
   @Prop({ type: Boolean, default: false }) private showNavigation!: boolean;
+  private activeTab: string = '';
 
   //example for getting data on after submit from container
   private getDataOnSubmit(containerId: string, data: any): void {
@@ -84,7 +86,6 @@ export default class FormIndex extends Vue {
     return this.value;
   }
   protected set activeContainerId(activeContainerId: string) {
-    this.setActiveContainer(activeContainerId);
     this.$emit('input', activeContainerId);
   }
 
@@ -188,9 +189,12 @@ export default class FormIndex extends Vue {
     // Fired when a step on the `FormStepCounter` is clicked
     // @arg `:IStepClickEvent`<br/>Form properties of the form clicked on
     console.log('step clicked', event);
-    // FIXME: this will be handled from parent, need to fix this
     this.setActiveContainer(event.containerId);
     this.$emit('stepClick', event);
+  }
+
+  private handleTabChange(event: IStepClickEvent): void {
+    this.activeTab = event.containerId;
   }
 
   // @Watch('value')

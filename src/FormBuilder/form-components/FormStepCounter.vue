@@ -25,7 +25,6 @@
             v-bind:containerList="containerList"
           >
             <!-- Form index + 1 -->
-            {{ index + 1 }}
           </slot>
         </div>
         <span class="step-label">
