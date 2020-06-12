@@ -94,8 +94,9 @@ export default class FormIndex extends Vue {
 
   public getFieldRef(fieldId: string): IWrapperComponent | undefined {
     for (let container of this.formSchema) {
-      if ((this.$refs[container.id] as any)[0].$refs[fieldId]) {
-        return (this.$refs[container.id] as any)[0].$refs[fieldId][0];
+      if ((this.$refs[container.id] as any).$refs[fieldId]) {
+        console.log((this.$refs[container.id] as any).$refs[fieldId]);
+        return (this.$refs[container.id] as any).$refs[fieldId][0];
       }
     }
   }

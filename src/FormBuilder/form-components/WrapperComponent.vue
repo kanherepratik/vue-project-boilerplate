@@ -72,7 +72,7 @@ export default class WrapperComponent extends Vue {
   }
 
   public disableField(): void {
-    this.isDisabled = true;
+    this.disabled = true;
   }
 
   public enableField(): void {
@@ -82,25 +82,6 @@ export default class WrapperComponent extends Vue {
   public handleEvent(value: any, event: any): void {
     this.$emit('emit', event.type, this.schema.id, value);
   }
-
-  // public handleEvent(fn: any, value: any): void {
-
-  //   this.value = value;
-  //   // TODO: find a better way of calling handlers
-  //   (this as any)[fn](value);
-  // }
-
-  // public handleChange(value: any) {
-  //   if (this.isValid(true)) {
-  //     this.$emit('onChange', this.schema.id, value);
-  //   }
-  // }
-
-  // public handleBlur(value: any) {
-  //   if (this.isValid(true)) {
-  //     this.$emit('onBlur', this.schema.id, value);
-  //   }
-  // }
 
   private created() {
     this.isDisabled = this.schema.isDisabled || false;

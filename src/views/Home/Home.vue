@@ -53,13 +53,25 @@ export default Vue.extend({
       },
     ],
     formData: {
-      name: '',
+      ownerName: '',
       gender: '',
       address: '',
-      buyerRole: '',
-      panCard: '',
+      dob: '',
+      mobile: '',
       tnc: [],
-      containerRadio: 'c1',
+      emailId: '',
+      pincode: '',
+      state: '',
+      city: '',
+      registrationNumber: '',
+      regDate: '',
+      engineNumber: '',
+      chassisNumber: '',
+      expiryDate: '',
+      prevPolicyInsurer: '',
+      prevPolicyNumber: '',
+      claimInPastYear: '',
+      prevNCB: '',
     },
     formSchema: [],
   }),
@@ -75,6 +87,13 @@ export default Vue.extend({
     },
     handleEvent(eventName: string, fieldId: string, value?: any): void {
       console.log(eventName, fieldId, value);
+      switch (fieldId) {
+        case 'gender': {
+          (this.$refs.formRef as any).getFieldRef('mobile').disableField();
+          break;
+        }
+        default:
+      }
     },
   },
 });
