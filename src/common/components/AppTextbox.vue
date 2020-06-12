@@ -12,6 +12,7 @@
         :type="inputType"
         :autofocus="autoFocus"
         :placeholder="placeholder"
+        :maxlength="maxLength"
         :disabled="disabled"
         @input="onChange"
         @focus="onFocus"
@@ -26,8 +27,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { IValidationRule, IValidation } from '../shared/interfaces';
+import { IAppTextboxData, IValidationRule, IValidation } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
+
 
 // local interface for data properties
 interface IAppTextboxData {
@@ -37,10 +39,6 @@ interface IAppTextboxData {
 
 export default Vue.extend({
   name: 'AppTextbox',
-  /**
-   * Model of the component
-   * prop contains the state of the component
-   */
   props: {
     /**
      * Type of input
@@ -72,6 +70,12 @@ export default Vue.extend({
     /**
      * Max length of the input
      * @values Number
+     */
+    maxLength: Number,
+    /**
+     * Flag to show the clear input symbol
+     * @values Boolean
+     * @default false
      */
     clearable: {
       type: Boolean,
@@ -140,7 +144,6 @@ export default Vue.extend({
   mounted(): void {
     this.inputValue = String(this.$props.value || '');
   },
-
   methods: {
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not
@@ -154,7 +157,7 @@ export default Vue.extend({
      * onChange to be called in case of value change of input, emits onChange event
      * @public
      */
-    onChange(): void {
+    onChange(event: any): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
@@ -165,7 +168,7 @@ export default Vue.extend({
      * onFocus to be called in case of input gets focus, emits onFocus event
      * @public
      */
-    onFocus(): void {
+    onFocus(event: any): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
@@ -176,7 +179,7 @@ export default Vue.extend({
      * onBlur to be called in case of input gets blur, emits onBlur event
      * @public
      */
-    onBlur(): void {
+    onBlur(event: any): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;

@@ -114,8 +114,20 @@ export interface ISingleSelectData {
   mappedItems: ISelectItem[];
 }
 
-// Date picker interfaces
+// Textbox Component interfaces
+export interface IAppTextboxData {
+  inputVal: string;
+  validation: IValidation;
+}
 
+// Registration Component interfaces
+export interface IRegistrationInputData {
+  registrationValidations: Array<IValidationRule>;
+  value: string;
+  validation: IValidation;
+}
+
+// Date picker interfaces
 export interface IDatePicker {
   configuredDates: Date | string;
   selectedDate: Date | string;
