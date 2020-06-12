@@ -23,8 +23,8 @@ export default class WrapperComponent extends Vue {
   @Prop({ required: true }) private data!: any;
   private componentMap: IComponentMap = componentMap;
   private value!: any;
-  private isDisabled!: boolean;
-  private isHidden!: boolean;
+  private isDisabled: boolean = false;
+  private isHidden: boolean = false;
   private eventMap: IEventMap = {};
 
   private get massagedEventMap(): IEventMap {
