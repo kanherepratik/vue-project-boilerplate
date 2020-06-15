@@ -40,6 +40,7 @@
         :id="formSchema[activeContainerIndex].id"
         v-model="activeTab"
         @tabChange="handleTabChange"
+        @emit="handleContainerEmit"
         @onAfterSubmit="getDataOnSubmit"
       />
       <form-container
@@ -48,7 +49,7 @@
         :data="formData"
         :ref="formSchema[activeContainerIndex].id"
         :id="formSchema[activeContainerIndex].id"
-        v-on="$listeners"
+        @emit="handleContainerEmit"
         @onAfterSubmit="getDataOnSubmit"
       ></form-container>
     </div>
@@ -186,6 +187,9 @@ export default class FormIndex extends Vue {
 
   private handleTabChange(event: IStepClickEvent): void {
     this.activeTab = event.containerId;
+  }
+  private handleContainerEmit(eventName: string, fieldId: string, value?: any): void {
+    this.$emit('emit', eventName, fieldId, value);
   }
 
   public getFieldRef(fieldId: string): any {
