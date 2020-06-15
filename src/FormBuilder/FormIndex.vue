@@ -61,8 +61,8 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import FormContainer from './form-components/FormContainer.vue';
 import FormStepCounter from './form-components/FormStepCounter.vue';
 import FormTabbedContainer from './form-components/FormTabbedContainer.vue';
-import { IWrapperComponent, IContainerSchema, IStepClickEvent } from './interfaces/common';
-import { signals } from './signals';
+import { IWrapperComponent, IContainerSchema, IStepClickEvent } from './shared/interfaces';
+import { signals } from './shared/signals';
 
 @Component({
   components: {

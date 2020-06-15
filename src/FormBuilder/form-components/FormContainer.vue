@@ -17,7 +17,7 @@
         <wrapper-component
           :key="component.id"
           :schema="component"
-          :data="data"
+          v-model="data[component.id]"
           v-on="$listeners"
           :ref="component.id"
         />
@@ -31,9 +31,9 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
 import SubContainer from './SubContainer.vue';
-import { IContainerSchema, IWrapperComponentSchema, IWrapperComponent } from '../interfaces/common';
+import { IContainerSchema, IWrapperComponentSchema, IWrapperComponent } from '../shared/interfaces';
 import { AppButton, RadioButton } from '@/common/components';
-import { signals } from '../signals';
+import { signals } from '../shared/signals';
 
 @Component({
   components: {

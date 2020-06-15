@@ -20,9 +20,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import SubContainer from './SubContainer.vue';
-import { IContainerSchema, IWrapperComponentSchema, IWrapperComponent, IStepClickEvent } from '../interfaces/common';
+import { IContainerSchema, IWrapperComponentSchema, IWrapperComponent, IStepClickEvent } from '../shared/interfaces';
 import { AppButton, RadioButton } from '@/common/components';
-import { signals } from '../signals';
+import { signals } from '../shared/signals';
 import FormStepCounter from './FormStepCounter.vue';
 
 @Component({

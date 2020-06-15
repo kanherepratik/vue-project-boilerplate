@@ -1,11 +1,11 @@
 <template>
-  <div class="box" v-if="!hidden">
+  <div class="box" v-if="!isHidden">
     <div>{{ schema.label }}</div>
     <wrapper-component
       v-for="component in schema.children"
       :key="component.id"
       :schema="component"
-      :data="data"
+      v-model="data[component.id]"
       v-on="$listeners"
       :ref="component.id"
     />
@@ -15,8 +15,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
-import { ISubContainerSchema, IWrapperComponentSchema, IWrapperComponent } from '../interfaces/common';
-import { signals } from '../signals';
+import { ISubContainerSchema, IWrapperComponentSchema, IWrapperComponent } from '../shared/interfaces';
+import { signals } from '../shared/signals';
 
 @Component({
   components: {
@@ -29,20 +29,20 @@ export default class SubContainer extends Vue {
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
 
-  private get hidden(): boolean {
-    return this.isHidden;
-  }
+  // private get hidden(): boolean {
+  //   return this.isHidden;
+  // }
 
-  private set hidden(value: boolean) {
-    this.isHidden = value;
-  }
+  // private set hidden(value: boolean) {
+  //   this.isHidden = value;
+  // }
 
   public showSubContainer(): void {
-    this.hidden = false;
+    this.isHidden = false;
   }
 
   public hideSubContainer(): void {
-    this.hidden = true;
+    this.isHidden = true;
   }
 
   public disableSubContainer(): void {
@@ -59,20 +59,11 @@ export default class SubContainer extends Vue {
   }
 
   public getFieldRef(fieldId: string): any {
-    return this.$refs[fieldId][0];
-  }
-
-  private handleSubmit(e: any): void {
-    if (!this.isValid(true)) {
-      return;
-    }
-    this.$emit(signals.ON_BEFORE_SUBMIT);
-    console.log('submit clicked', this.data);
-    this.$emit(signals.ON_AFTER_SUBMIT, this.schema.id, this.data);
-  }
-
-  private created(): void {
-    this.$emit(signals.ON_CONTAINER_LOAD);
+    return this.schema.children.every((component: IWrapperComponentSchema) => {
+      if (component.id === fieldId) {
+        return this.$refs[component.id][0];
+      }
+    });
   }
 }
 </script>

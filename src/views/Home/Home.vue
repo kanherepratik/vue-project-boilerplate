@@ -17,9 +17,9 @@
 import Vue from 'vue';
 // import TodoComponent from '@/components/TodoComponent.vue';
 // import AppCheckbox from '@/common/components/AppCheckbox.vue';
+import { get } from '@/services/api';
+import { IStepClickEvent } from '@/FormBuilder/shared/interfaces';
 import FormIndex from '../../FormBuilder/FormIndex.vue';
-import { get } from '../../services/api';
-import { IStepClickEvent } from '../../FormBuilder/interfaces/common';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IData {
@@ -54,7 +54,7 @@ export default Vue.extend({
     ],
     formData: {
       ownerName: '',
-      gender: '',
+      gender: 'female',
       address: '',
       dob: '',
       mobile: '',

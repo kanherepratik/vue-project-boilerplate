@@ -1,4 +1,4 @@
-import { IFormSchema } from './interfaces/common';
+import { IFormSchema } from './shared/interfaces';
 
 export const formStructure: IFormSchema = {
   label: 'Proposal Form',

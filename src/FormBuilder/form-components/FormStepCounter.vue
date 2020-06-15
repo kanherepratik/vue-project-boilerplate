@@ -50,8 +50,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { IContainerSchema, IStepClickEvent } from '../interfaces/common';
-import { canNavigate } from '../utils';
+import { IContainerSchema, IStepClickEvent } from '../shared/interfaces';
+import { canNavigate } from '../shared/utils';
 // import { IForm, IFormSection, IFormField, IStepClickEvent } from './shared/interfaces';
 // import { canNavigate } from './shared/utils';
 
