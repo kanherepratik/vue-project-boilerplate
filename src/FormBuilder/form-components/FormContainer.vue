@@ -9,6 +9,7 @@
           :schema="component"
           :data="data"
           v-on="$listeners"
+          :id="component.id"
           :ref="component.id"
         />
       </div>
@@ -52,6 +53,18 @@ export default class FormContainer extends Vue {
       // console.log(this.$refs[component.id]);
       return (this.$refs[component.id] as any)[0].isValid();
     });
+  }
+
+  public getFieldRef(fieldId: string): any {
+    if (this.$refs[fieldId]) {
+      return this.$refs[fieldId][0];
+    } else {
+      for (let item of this.containerSchema.children) {
+        if ((this.$refs[item.id] as any)[0].getFieldRef(fieldId)) {
+          return (this.$refs[item.id] as any)[0].getFieldRef(fieldId);
+        }
+      }
+    }
   }
 
   private handleSubmit(e: any): void {

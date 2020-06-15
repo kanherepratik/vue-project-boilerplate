@@ -1,5 +1,5 @@
 <template>
-  <div class="date-picker">
+  <div class="date-picker" :class="{'disabled-field': disabled}">
     <date-picker
       :mode="mode"
       :popover="{ placement: 'auto', visibility: 'click' }"
@@ -12,6 +12,7 @@
         <input
           id="date"
           :class="['input-field', { 'border-red-600': errorMessage }]"
+          :disabled="disabled"
           v-bind="inputProps"
           :placeholder="placeholder"
           v-on="inputEvents"
@@ -72,6 +73,10 @@ export default Vue.extend({
     maxDate: Date,
     dates: Date,
     placeholder: String,
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     /**
      * Validations array of objects of type IValidationRule to valdiate the input
      * @values Array<IValidationRule>
@@ -137,5 +142,8 @@ export default Vue.extend({
 }
 .calendar-icon {
   cursor: pointer;
+}
+.disabled-field {
+  pointer-events: none;
 }
 </style>

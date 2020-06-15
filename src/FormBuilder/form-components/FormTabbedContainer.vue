@@ -45,6 +45,18 @@ export default class FormTabbedContainer extends Vue {
     this.$emit('input', activeContainerId);
   }
 
+  public getFieldRef(fieldId: string): any {
+    if (this.$refs[fieldId]) {
+      return this.$refs[fieldId][0];
+    } else {
+      for (let item of this.tabbedContainerSchema.children) {
+        if ((this.$refs[item.id] as any)[0].getFieldRef(fieldId)) {
+          return (this.$refs[item.id] as any)[0].getFieldRef(fieldId);
+        }
+      }
+    }
+  }
+
   public get activeContainerIndex(): number {
     const index: number = this.tabbedContainerSchema.children.findIndex(
       (container: IContainerSchema) => container.id === this.activeContainerId && !container.isHidden

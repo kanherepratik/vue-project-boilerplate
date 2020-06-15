@@ -93,15 +93,6 @@ export default class FormIndex extends Vue {
   //   return false;
   // };
 
-  public getFieldRef(fieldId: string): IWrapperComponent | undefined {
-    for (let container of this.formSchema) {
-      if ((this.$refs[container.id] as any).$refs[fieldId]) {
-        console.log((this.$refs[container.id] as any).$refs[fieldId]);
-        return (this.$refs[container.id] as any).$refs[fieldId][0];
-      }
-    }
-  }
-
   public get activeContainerIndex(): number {
     const index: number = this.formSchema.findIndex(
       (container: IContainerSchema) => container.id === this.activeContainerId && !container.isHidden
@@ -197,10 +188,12 @@ export default class FormIndex extends Vue {
     this.activeTab = event.containerId;
   }
 
-  // @Watch('value')
-  // private onValueChange(newValue: string): void {
-  //   debugger;
-  //   this.setActiveContainer(newValue);
-  // }
+  public getFieldRef(fieldId: string): any {
+    for (let container of this.formSchema) {
+      if (this.$refs[container.id]) {
+        return (this.$refs[container.id] as any).getFieldRef(fieldId);
+      }
+    }
+  }
 }
 </script>
