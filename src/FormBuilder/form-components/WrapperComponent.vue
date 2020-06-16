@@ -21,7 +21,7 @@ import componentMap from '../config/componentMap';
 export default class WrapperComponent extends Vue {
   @Prop({ type: Object, required: true }) private schema!: IWrapperComponentSchema;
   @Prop({ required: true }) private value!: unknown;
-  private componentMap: IComponentMap = componentMap;
+  private componentMap: { [key: string]: IComponentMap } = componentMap;
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
   private valueInput!: unknown;
