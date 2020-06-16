@@ -1,11 +1,11 @@
 <template>
-  <div class="box" v-if="!hidden">
+  <div class="box" v-if="!isHidden">
     <div>{{ schema.label }}</div>
     <wrapper-component
       v-for="component in schema.children"
       :key="component.id"
       :schema="component"
-      :data="data"
+      v-model="data[component.id]"
       v-on="$listeners"
       :ref="component.id"
     />
@@ -15,8 +15,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
-import { ISubContainerSchema, IWrapperComponentSchema, IWrapperComponent } from '../interfaces/common';
-import { signals } from '../signals';
+import { ISubContainerSchema, IWrapperComponentSchema } from '../shared/interfaces';
+import { signals } from '../shared/signals';
 
 @Component({
   components: {
@@ -29,50 +29,57 @@ export default class SubContainer extends Vue {
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
 
-  private get hidden(): boolean {
-    return this.isHidden;
-  }
-
-  private set hidden(value: boolean) {
-    this.isHidden = value;
-  }
-
+  /**
+   * Gets called when parent wants to show a hidden subContainer
+   * @public
+   */
   public showSubContainer(): void {
-    this.hidden = false;
+    this.isHidden = false;
   }
-
+  /**
+   * Gets called when parent wants to hide a subContainer
+   * @public
+   */
   public hideSubContainer(): void {
-    this.hidden = true;
+    this.isHidden = true;
   }
 
+  /**
+   * Gets called when parent wants to disable all the fields of a subContainer
+   * @public
+   */
   public disableSubContainer(): void {
     this.schema.children.forEach((component: IWrapperComponentSchema): void => {
       (this.$refs[component.id] as any)[0].disableField();
     });
   }
 
+  /**
+   * Gets called when parent wants to validate the component
+   * @param {boolean} showError
+   * @returns {boolean}
+   * @public
+   */
   public isValid(showError: boolean = false): boolean {
     this.$emit(signals.ON_BEFORE_VALIDATE);
     return this.schema.children.every((component: IWrapperComponentSchema): boolean => {
-      return (this.$refs[component.id] as any)[0].isValid();
+      return (this.$refs[component.id] as any)[0].isValid(showError);
     });
   }
 
+  /**
+   * Gets called when parent wants to access ref of the components.
+   * It will return ref of wrapperComponent
+   * @param {string} fieldId
+   * @returns {any}
+   * @public
+   */
   public getFieldRef(fieldId: string): any {
-    return this.$refs[fieldId][0];
-  }
-
-  private handleSubmit(e: any): void {
-    if (!this.isValid(true)) {
-      return;
+    for (let component of this.schema.children) {
+      if (this.$refs[fieldId] && component.id === fieldId) {
+        return this.$refs[fieldId][0];
+      }
     }
-    this.$emit(signals.ON_BEFORE_SUBMIT);
-    console.log('submit clicked', this.data);
-    this.$emit(signals.ON_AFTER_SUBMIT, this.schema.id, this.data);
-  }
-
-  private created(): void {
-    this.$emit(signals.ON_CONTAINER_LOAD);
   }
 }
 </script>

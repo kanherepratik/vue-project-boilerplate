@@ -9,29 +9,7 @@
         :data="formData"
         :activeContainerId="value"
         @stepClick="onStepClick($event);"
-      >
-        <template slot="stepNumber" slot-scope="slotProps">
-          <slot
-            name="stepNumber"
-            v-bind:index="slotProps.index"
-            v-bind:counter="slotProps.index + 1"
-            v-bind:container="slotProps.container"
-            v-bind:canNavigate="slotProps.canNavigate"
-            v-bind:data="slotProps.data"
-            v-bind:containerList="slotProps.containerList"
-          >{{ slotProps.index + 1 }}</slot>
-        </template>
-        <template slot="stepLabel" slot-scope="slotProps">
-          <slot
-            name="stepLabel"
-            v-bind:index="slotProps.index"
-            v-bind:container="slotProps.container"
-            v-bind:canNavigate="slotProps.canNavigate"
-            v-bind:data="slotProps.data"
-            v-bind:containerList="slotProps.containerList"
-          >{{ slotProps.container.label }}</slot>
-        </template>
-      </form-step-counter>
+      ></form-step-counter>
       <form-tabbed-container
         v-if="formSchema[activeContainerIndex].component === 'TabbedContainer'"
         :schema="formSchema[activeContainerIndex]"
@@ -61,8 +39,8 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import FormContainer from './form-components/FormContainer.vue';
 import FormStepCounter from './form-components/FormStepCounter.vue';
 import FormTabbedContainer from './form-components/FormTabbedContainer.vue';
-import { IWrapperComponent, IContainerSchema, IStepClickEvent } from './interfaces/common';
-import { signals } from './signals';
+import { IContainerSchema, IStepClickEvent } from './shared/interfaces';
+import { signals } from './shared/signals';
 
 @Component({
   components: {
@@ -181,7 +159,7 @@ export default class FormIndex extends Vue {
     // Fired when a step on the `FormStepCounter` is clicked
     // @arg `:IStepClickEvent`<br/>Form properties of the form clicked on
     console.log('step clicked', event);
-    this.setActiveContainer(event.containerId);
+    this.activeContainerId = event.containerId;
     this.$emit('stepClick', event);
   }
 

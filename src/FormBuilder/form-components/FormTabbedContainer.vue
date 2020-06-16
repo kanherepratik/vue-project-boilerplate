@@ -1,34 +1,34 @@
 <template>
   <div class>
     <form-step-counter
-      :containerList="tabbedContainerSchema.children"
+      :containerList="schema.children"
       :activeContainerId="value"
       @stepClick="handleTabChange($event);"
     ></form-step-counter>
     <sub-container
-      :schema="tabbedContainerSchema.children[activeContainerIndex]"
+      :schema="schema.children[activeContainerIndex]"
       :data="data"
       v-on="$listeners"
-      :ref="tabbedContainerSchema.children[activeContainerIndex].id"
-      :id="tabbedContainerSchema.children[activeContainerIndex].id"
-      :key="tabbedContainerSchema.children[activeContainerIndex].id"
+      :ref="schema.children[activeContainerIndex].id"
+      :id="schema.children[activeContainerIndex].id"
+      :key="schema.children[activeContainerIndex].id"
     />
-    <app-button :title="tabbedContainerSchema.submitText || 'submit'" @click="handleSubmit" />
+    <slot name="formButtons">
+      <app-button :title="schema.submitText || 'submit'" @click="handleSubmit" />
+    </slot>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import SubContainer from './SubContainer.vue';
-import { IContainerSchema, IWrapperComponentSchema, IWrapperComponent, IStepClickEvent } from '../interfaces/common';
-import { AppButton, RadioButton } from '@/common/components';
-import { signals } from '../signals';
+import { IContainerSchema, IWrapperComponentSchema, IStepClickEvent } from '../shared/interfaces';
+import { signals } from '../shared/signals';
 import FormStepCounter from './FormStepCounter.vue';
 
 @Component({
   components: {
     'sub-container': SubContainer,
-    'app-button': AppButton,
     'form-step-counter': FormStepCounter,
   },
 })
@@ -36,7 +36,6 @@ export default class FormTabbedContainer extends Vue {
   @Prop({ required: true }) private schema!: IContainerSchema;
   @Prop({ required: true }) private data!: any;
   @Prop(String) value!: string;
-  private tabbedContainerSchema!: IContainerSchema;
 
   protected get activeContainerId(): string {
     return this.value;
@@ -45,20 +44,24 @@ export default class FormTabbedContainer extends Vue {
     this.$emit('input', activeContainerId);
   }
 
+  private created(): void {
+    this.$emit(signals.ON_CONTAINER_LOAD);
+  }
+
   public getFieldRef(fieldId: string): any {
     if (this.$refs[fieldId]) {
-      return this.$refs[fieldId][0];
+      return this.$refs[fieldId];
     } else {
-      for (let item of this.tabbedContainerSchema.children) {
-        if ((this.$refs[item.id] as any)[0].getFieldRef(fieldId)) {
-          return (this.$refs[item.id] as any)[0].getFieldRef(fieldId);
+      for (let item of this.schema.children) {
+        if (this.$refs[item.id]) {
+          return (this.$refs[item.id] as any).getFieldRef(fieldId);
         }
       }
     }
   }
 
   public get activeContainerIndex(): number {
-    const index: number = this.tabbedContainerSchema.children.findIndex(
+    const index: number = this.schema.children.findIndex(
       (container: IContainerSchema) => container.id === this.activeContainerId && !container.isHidden
     );
     if (index === -1) {
@@ -68,20 +71,18 @@ export default class FormTabbedContainer extends Vue {
   }
 
   public get firstVisibleContainerIndex(): number {
-    const index: number = this.tabbedContainerSchema.children.findIndex(
-      (container: IContainerSchema) => !container.isHidden
-    );
+    const index: number = this.schema.children.findIndex((container: IContainerSchema) => !container.isHidden);
     return index === -1 ? 0 : index;
   }
 
   public get lastVisibleContainerIndex(): number {
-    const reverseContainers: IContainerSchema[] = [...this.tabbedContainerSchema.children].reverse();
+    const reverseContainers: IContainerSchema[] = [...this.schema.children].reverse();
     const reverseContainerIndex: number = reverseContainers.findIndex(
       (container: IContainerSchema) => !container.isHidden
     );
     return reverseContainerIndex === -1
-      ? this.tabbedContainerSchema.children.length - 1
-      : Math.abs(reverseContainerIndex - (this.tabbedContainerSchema.children.length - 1));
+      ? this.schema.children.length - 1
+      : Math.abs(reverseContainerIndex - (this.schema.children.length - 1));
   }
 
   private get isPreviousVisible(): boolean {
@@ -89,18 +90,16 @@ export default class FormTabbedContainer extends Vue {
   }
 
   private previousContainerIndex(formIndex: number): number {
-    const reverseContainers: IContainerSchema[] = [...this.tabbedContainerSchema.children].reverse();
-    const reverseContainerIndex: number = Math.abs(formIndex - (this.tabbedContainerSchema.children.length - 1));
+    const reverseContainers: IContainerSchema[] = [...this.schema.children].reverse();
+    const reverseContainerIndex: number = Math.abs(formIndex - (this.schema.children.length - 1));
     const reverseNextFormIndex: number = reverseContainers.findIndex(
       (container: IContainerSchema, index: number) => index > reverseContainerIndex && !container.isHidden
     );
-    return reverseNextFormIndex === -1
-      ? formIndex
-      : Math.abs(reverseNextFormIndex - (this.tabbedContainerSchema.children.length - 1));
+    return reverseNextFormIndex === -1 ? formIndex : Math.abs(reverseNextFormIndex - (this.schema.children.length - 1));
   }
 
   private setActiveContainer(activeContainerId: string): void {
-    const index: number = this.tabbedContainerSchema.children.findIndex(
+    const index: number = this.schema.children.findIndex(
       (container: IContainerSchema) => container.id === activeContainerId && !container.isHidden
     );
     // Error message in case of invalid form id
@@ -108,76 +107,58 @@ export default class FormTabbedContainer extends Vue {
       console.error(
         'Form Id: "' +
           activeContainerId +
-          '" cannot be active as it is either hidden or does not exist in the form tabbedContainerSchema'
+          '" cannot be active as it is either hidden or does not exist in the form schema'
       );
     }
     if (
       activeContainerId &&
       index > -1 &&
       (index === this.firstVisibleContainerIndex ||
-        this.tabbedContainerSchema.children[index].isSubmitted ||
-        this.tabbedContainerSchema.children[this.previousContainerIndex(index)].isSubmitted)
+        this.schema.children[index].isSubmitted ||
+        this.schema.children[this.previousContainerIndex(index)].isSubmitted)
     ) {
-      this.tabbedContainerSchema.children.forEach((container: IContainerSchema) => {
+      this.schema.children.forEach((container: IContainerSchema) => {
         container.isActive = false;
         if (container.id === activeContainerId) {
           container.isActive = true;
         }
       });
     } else {
-      const incompleteFormIndex: number = this.tabbedContainerSchema.children.findIndex(
+      const incompleteFormIndex: number = this.schema.children.findIndex(
         (container: IContainerSchema) => !container.isSubmitted && !container.isHidden
       );
-      // if (incompleteFormIndex > -1) {
-      //   // Make first un-submitted and visible form active
-      //   this.activeContainerId = this.tabbedContainerSchema.children[incompleteFormIndex].id;
-      // } else {
-      let activeIndex: number = this.tabbedContainerSchema.children.findIndex(
+
+      let activeIndex: number = this.schema.children.findIndex(
         (container: IContainerSchema) => container.isActive === true && !container.isHidden
       );
       if (activeIndex === -1) {
-        // Make last submitted form active if all tabbedContainerSchema.children are submitted and no form is active
+        // Make last submitted form active if all schema.children are submitted and no form is active
         activeIndex = this.lastVisibleContainerIndex;
       }
-      this.activeContainerId = this.tabbedContainerSchema.children[activeIndex].id;
-      // }
+      this.activeContainerId = this.schema.children[activeIndex].id;
     }
   }
   private handleTabChange(event: IStepClickEvent): void {
     // Fired when a step on the `FormStepCounter` is clicked
     // @arg `:IStepClickEvent`<br/>Form properties of the form clicked on
     console.log('tab changed', event);
-    this.setActiveContainer(event.containerId);
+    this.activeContainerId = event.containerId;
     this.$emit('tabChange', event);
   }
 
   public isValid(showError: boolean = false): boolean {
     this.$emit(signals.ON_BEFORE_VALIDATE);
-    return this.tabbedContainerSchema.children.every((component: IWrapperComponentSchema): boolean => {
-      return (this.$refs[component.id] as any)[0].isValid();
+    return this.schema.children.every((component: IWrapperComponentSchema): boolean => {
+      return (this.$refs[component.id] as any)[0].isValid(showError);
     });
   }
 
-  private handleSubmit(e: any): void {
+  private handleSubmit(): void {
     if (!this.isValid(true)) {
       return;
     }
     this.$emit(signals.ON_BEFORE_SUBMIT);
-    // console.log('submit clicked', this.data);
-    this.$emit(signals.ON_AFTER_SUBMIT, this.tabbedContainerSchema.id, this.data);
-  }
-
-  @Watch('schema')
-  private onSchemaChange(newValue: IContainerSchema): void {
-    this.tabbedContainerSchema = newValue;
-  }
-
-  private mounted(): void {}
-
-  private created(): void {
-    this.tabbedContainerSchema = this.$props.schema;
-    // this.value = this.tabbedContainerSchema.children[0].id;
-    this.$emit(signals.ON_CONTAINER_LOAD);
+    this.$emit(signals.ON_AFTER_SUBMIT, this.schema.id, this.data);
   }
 }
 </script>

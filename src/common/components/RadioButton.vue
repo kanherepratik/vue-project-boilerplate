@@ -1,13 +1,20 @@
 <template>
-  <div>
+  <div class="radio-button">
     <div class="radioButton__header" v-if="header">{{ header }}</div>
-    <div v-for="radioItem in items" :key="radioItem.value" class="radioButton">
-      <div class="radioButton__box" @click="handleChange($event, radioItem.value)">
-        <div v-if="selectedItem === radioItem.value" class="radioButton--tick">{{ '&#x2714;' }}</div>
-      </div>
-      <div class="radioButton__label">{{ radioItem.label }}</div>
+    <div v-for="radioItem in items" :key="radioItem.value">
+      <input
+        type="radio"
+        :value="radioItem.value"
+        :disabled="disabled"
+        :id="radioItem.value"
+        v-model="inputValue"
+        @change="handleChange($event, radioItem.value)"
+      />
+      <label :for="radioItem.value" class="radio-label">
+        <span class="radio-text" v-html="radioItem.label"></span>
+      </label>
     </div>
-    <div v-if="!validation.isValid" class="textboxErrorMsg">{{ validation.message }}</div>
+    <div v-if="!validation.isValid" class="radioButtonErrorMsg">{{ validation.message }}</div>
   </div>
 </template>
 
@@ -29,10 +36,6 @@ interface IRadioButtonData {
 
 export default Vue.extend({
   name: 'RadioButton',
-  model: {
-    prop: 'selectedItem',
-    event: 'onChange',
-  },
   props: {
     /**
      * Disabled state of input
@@ -43,7 +46,7 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
-    selectedItem: {
+    value: {
       type: String,
       default: '',
     },
@@ -70,11 +73,11 @@ export default Vue.extend({
   }),
   watch: {
     value(): void {
-      this.inputValue = this.$props.selectedItem;
+      this.inputValue = this.$props.value;
     },
   },
   mounted(): void {
-    this.inputValue = this.$props.selectedItem;
+    this.inputValue = this.$props.value;
   },
   methods: {
     handleChange(event, value: string): void {
@@ -82,8 +85,8 @@ export default Vue.extend({
       if (this.disabled) {
         return;
       }
-      this.inputValue = value;
-      this.$emit('onChange', value, event);
+      // this.inputValue = value;
+      this.$emit('input', value, event);
     },
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not
@@ -98,7 +101,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.radioButton {
+.radio-button {
   display: flex;
   flex: 1;
   margin: 10px;

@@ -2,10 +2,10 @@
   <div>
     <component
       :is="componentMap[schema.component].component"
-      v-if="!hidden"
-      :disabled="disabled"
+      v-if="!isHidden"
+      :disabled="isDisabled"
       v-on="massagedEventMap"
-      v-model="data[schema.id]"
+      v-model="valueInput"
       v-bind="schema.otherProps"
       :ref="schema.id"
     />
@@ -13,19 +13,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { IWrapperComponentSchema, IComponentMap, IWrapperComponent, IEventMap } from '../interfaces/common';
-import componentMap from '../componentMap';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { IWrapperComponentSchema, IComponentMap, IEventMap } from '../shared/interfaces';
+import componentMap from '../config/componentMap';
 
 @Component
 export default class WrapperComponent extends Vue {
   @Prop({ type: Object, required: true }) private schema!: IWrapperComponentSchema;
-  @Prop({ required: true }) private data!: any;
+  @Prop({ required: true }) private value!: unknown;
   private componentMap: IComponentMap = componentMap;
-  private value!: any;
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
+  private valueInput!: unknown;
   private eventMap: IEventMap = {};
+
+  private created() {
+    this.isDisabled = this.schema.isDisabled || false;
+    this.isHidden = this.schema.isHidden || false;
+    this.valueInput = this.$props.value;
+  }
 
   private get massagedEventMap(): IEventMap {
     for (let event of componentMap[this.schema.component].eventMap) {
@@ -34,59 +40,69 @@ export default class WrapperComponent extends Vue {
     return this.eventMap;
   }
 
-  private get hidden(): boolean {
-    return this.isHidden;
+  @Watch('value')
+  private onValueChange(newValue: unknown): void {
+    this.valueInput = newValue;
   }
 
-  private set hidden(value: boolean) {
-    this.isHidden = value;
+  private handleEvent(value: any, event: any): void {
+    this.$emit('emit', event.type, this.schema.id, value);
   }
 
-  private get disabled(): boolean {
-    return this.isDisabled;
-  }
-
-  private set disabled(value: boolean) {
-    this.isDisabled = value;
-  }
-
+  /* exposed methods of WrapperComponent */
+  /**
+   * Gets called when parent wants to validate the component
+   * @param {boolean} showError
+   * @public
+   */
   public isValid = (showError: boolean = false): boolean => {
     return (this.$refs[this.schema.id] as any).isValid(showError);
   };
 
+  /**
+   * Gets called when parent wants the value of the component bound with v-model.
+   * @public
+   */
   public getValue(): any {
-    // return value
-    return this.value;
+    return this.valueInput;
   }
 
-  public getFieldRef(fieldId: string): IWrapperComponent {
-    return (this.$refs as any)[fieldId];
+  /**
+   * Gets called when parent wants the `ref` of the component.
+   * @public
+   */
+  public getFieldRef(): any {
+    return (this.$refs as any)[this.schema.id];
   }
 
+  /**
+   * Gets called when parent wants to show field which is already hidden.
+   * @public
+   */
   public showField(): void {
-    this.hidden = false;
+    this.isHidden = false;
   }
-
+  /**
+   * Gets called when parent wants to hide field.
+   * @public
+   */
   public hideField(): void {
-    this.hidden = true;
+    this.isHidden = true;
   }
-
+  /**
+   * Gets called when parent wants to disable field.
+   * @public
+   */
   public disableField(): void {
-    this.disabled = true;
+    this.isDisabled = true;
   }
-
+  /**
+   * Gets called when parent wants to enable field.
+   * @public
+   */
   public enableField(): void {
-    this.disabled = false;
+    this.isDisabled = false;
   }
-
-  public handleEvent(value: any, event: any): void {
-    this.$emit('emit', event.type, this.schema.id, value);
-  }
-
-  private created() {
-    this.isDisabled = this.schema.isDisabled || false;
-    this.isHidden = this.schema.isHidden || false;
-    // console.log(this.schema as any);
-  }
+  /* exposed methods of WrapperComponent till here */
 }
 </script>
