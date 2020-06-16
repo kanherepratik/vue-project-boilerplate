@@ -15,7 +15,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
-import { ISubContainerSchema, IWrapperComponentSchema, IWrapperComponent } from '../shared/interfaces';
+import { ISubContainerSchema, IWrapperComponentSchema } from '../shared/interfaces';
 import { signals } from '../shared/signals';
 
 @Component({
@@ -28,14 +28,6 @@ export default class SubContainer extends Vue {
   @Prop({ required: true }) private data!: any;
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
-
-  // private get hidden(): boolean {
-  //   return this.isHidden;
-  // }
-
-  // private set hidden(value: boolean) {
-  //   this.isHidden = value;
-  // }
 
   public showSubContainer(): void {
     this.isHidden = false;

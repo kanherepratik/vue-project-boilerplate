@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { IWrapperComponentSchema, IComponentMap, IWrapperComponent, IEventMap } from '../shared/interfaces';
+import { IWrapperComponentSchema, IComponentMap, IEventMap } from '../shared/interfaces';
 import componentMap from '../config/componentMap';
 
 @Component
@@ -40,6 +40,15 @@ export default class WrapperComponent extends Vue {
     return this.eventMap;
   }
 
+  @Watch('value')
+  private onValueChange(newValue: unknown): void {
+    this.valueInput = newValue;
+  }
+
+  private handleEvent(value: any, event: any): void {
+    this.$emit('emit', event.type, this.schema.id, value);
+  }
+
   /* exposed methods of WrapperComponent */
   /**
    * Gets called when parent wants to validate the component
@@ -60,10 +69,9 @@ export default class WrapperComponent extends Vue {
 
   /**
    * Gets called when parent wants the `ref` of the component.
-   * @returns {IWrapperComponent}
    * @public
    */
-  public getFieldRef(): IWrapperComponent {
+  public getFieldRef(): any {
     return (this.$refs as any)[this.schema.id];
   }
 
@@ -96,14 +104,5 @@ export default class WrapperComponent extends Vue {
     this.isDisabled = false;
   }
   /* exposed methods of WrapperComponent till here */
-
-  @Watch('value')
-  private onValueChange(newValue: unknown): void {
-    this.valueInput = newValue;
-  }
-
-  private handleEvent(value: any, event: any): void {
-    this.$emit('emit', event.type, this.schema.id, value);
-  }
 }
 </script>

@@ -33,7 +33,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
 import SubContainer from './SubContainer.vue';
-import { IContainerSchema, IWrapperComponentSchema, IWrapperComponent } from '../shared/interfaces';
+import { IContainerSchema, IWrapperComponentSchema } from '../shared/interfaces';
 import { signals } from '../shared/signals';
 
 @Component({

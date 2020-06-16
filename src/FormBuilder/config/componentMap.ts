@@ -1,4 +1,3 @@
-import { RadioButton, AppTextbox, AppCheckbox, MobileInput, SingleSelect } from '@/common/components';
 import { IComponentMap } from '../shared/interfaces';
 
 const componentMap: IComponentMap = {

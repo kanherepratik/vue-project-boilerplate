@@ -22,7 +22,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import SubContainer from './SubContainer.vue';
-import { IContainerSchema, IWrapperComponentSchema, IWrapperComponent, IStepClickEvent } from '../shared/interfaces';
+import { IContainerSchema, IWrapperComponentSchema, IStepClickEvent } from '../shared/interfaces';
 import { signals } from '../shared/signals';
 import FormStepCounter from './FormStepCounter.vue';
 
