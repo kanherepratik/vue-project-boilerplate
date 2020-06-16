@@ -29,20 +29,37 @@ export default class SubContainer extends Vue {
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
 
+  /**
+   * Gets called when parent wants to show a hidden subContainer
+   * @public
+   */
   public showSubContainer(): void {
     this.isHidden = false;
   }
-
+  /**
+   * Gets called when parent wants to hide a subContainer
+   * @public
+   */
   public hideSubContainer(): void {
     this.isHidden = true;
   }
 
+  /**
+   * Gets called when parent wants to disable all the fields of a subContainer
+   * @public
+   */
   public disableSubContainer(): void {
     this.schema.children.forEach((component: IWrapperComponentSchema): void => {
       (this.$refs[component.id] as any)[0].disableField();
     });
   }
 
+  /**
+   * Gets called when parent wants to validate the component
+   * @param {boolean} showError
+   * @returns {boolean}
+   * @public
+   */
   public isValid(showError: boolean = false): boolean {
     this.$emit(signals.ON_BEFORE_VALIDATE);
     return this.schema.children.every((component: IWrapperComponentSchema): boolean => {
@@ -50,6 +67,13 @@ export default class SubContainer extends Vue {
     });
   }
 
+  /**
+   * Gets called when parent wants to access ref the components inside subContainer.
+   * It will return ref of wrapperComponent
+   * @param {string} fieldId
+   * @returns {any}
+   * @public
+   */
   public getFieldRef(fieldId: string): any {
     for (let component of this.schema.children) {
       if (this.$refs[fieldId] && component.id === fieldId) {
