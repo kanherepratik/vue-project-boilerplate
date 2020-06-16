@@ -92,8 +92,8 @@ export default Vue.extend({
           (this.$refs.formRef as any).getFieldRef('mobile').disableField();
           break;
         }
-        case 'hideSub': {
-          (this.$refs.formRef as any).getFieldRef('vehicle-details').disableSubContainer();
+        case 'claimInPastYear': {
+          (this.$refs.formRef as any).getFieldRef('as').disableField();
           break;
         }
         default:

@@ -59,11 +59,11 @@ export default class SubContainer extends Vue {
   }
 
   public getFieldRef(fieldId: string): any {
-    return this.schema.children.every((component: IWrapperComponentSchema) => {
-      if (component.id === fieldId) {
-        return this.$refs[component.id][0];
+    for (let component of this.schema.children) {
+      if (this.$refs[fieldId] && component.id === fieldId) {
+        return this.$refs[fieldId][0];
       }
-    });
+    }
   }
 }
 </script>

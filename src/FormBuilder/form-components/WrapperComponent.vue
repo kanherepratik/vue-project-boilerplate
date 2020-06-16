@@ -41,30 +41,57 @@ export default class WrapperComponent extends Vue {
   }
 
   /* exposed methods of WrapperComponent */
+  /**
+   * Gets called when parent wants to validate the component
+   * @param {boolean} showError
+   * @public
+   */
   public isValid = (showError: boolean = false): boolean => {
     return (this.$refs[this.schema.id] as any).isValid(showError);
   };
 
+  /**
+   * Gets called when parent wants the value of the component bound with v-model.
+   * @public
+   */
   public getValue(): any {
     return this.valueInput;
   }
 
+  /**
+   * Gets called when parent wants the `ref` of the component.
+   * @returns {IWrapperComponent}
+   * @public
+   */
   public getFieldRef(): IWrapperComponent {
     return (this.$refs as any)[this.schema.id];
   }
 
+  /**
+   * Gets called when parent wants to show field which is already hidden.
+   * @public
+   */
   public showField(): void {
     this.isHidden = false;
   }
-
+  /**
+   * Gets called when parent wants to hide field.
+   * @public
+   */
   public hideField(): void {
     this.isHidden = true;
   }
-
+  /**
+   * Gets called when parent wants to disable field.
+   * @public
+   */
   public disableField(): void {
     this.isDisabled = true;
   }
-
+  /**
+   * Gets called when parent wants to enable field.
+   * @public
+   */
   public enableField(): void {
     this.isDisabled = false;
   }

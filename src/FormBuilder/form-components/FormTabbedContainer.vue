@@ -50,11 +50,11 @@ export default class FormTabbedContainer extends Vue {
 
   public getFieldRef(fieldId: string): any {
     if (this.$refs[fieldId]) {
-      return this.$refs[fieldId][0];
+      return this.$refs[fieldId];
     } else {
       for (let item of this.schema.children) {
-        if ((this.$refs[item.id] as any)[0].getFieldRef(fieldId)) {
-          return (this.$refs[item.id] as any)[0].getFieldRef(fieldId);
+        if (this.$refs[item.id]) {
+          return (this.$refs[item.id] as any).getFieldRef(fieldId);
         }
       }
     }
