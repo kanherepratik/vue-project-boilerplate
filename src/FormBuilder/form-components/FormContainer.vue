@@ -45,7 +45,6 @@ import { signals } from '../shared/signals';
 export default class FormContainer extends Vue {
   @Prop({ required: true }) private schema!: IContainerSchema;
   @Prop({ required: true }) private data!: any;
-  // private containerSchema!: IContainerSchema;
 
   private created(): void {
     this.$emit(signals.ON_CONTAINER_LOAD);
@@ -56,18 +55,29 @@ export default class FormContainer extends Vue {
       return;
     }
     this.$emit(signals.ON_BEFORE_SUBMIT);
-    // console.log('submit clicked', this.data);
     this.$emit(signals.ON_AFTER_SUBMIT, this.schema.id, this.data);
   }
 
+  /**
+   * Gets called to validate the component
+   * @param {boolean} showError
+   * @returns {boolean}
+   * @public
+   */
   public isValid(showError: boolean = false): boolean {
     this.$emit(signals.ON_BEFORE_VALIDATE);
     return this.schema.children.every((component: IWrapperComponentSchema): boolean => {
-      // console.log(this.$refs[component.id]);
       return (this.$refs[component.id] as any)[0].isValid(showError);
     });
   }
 
+  /**
+   * Gets called when parent wants to access ref of the components.
+   * It will return ref of wrapperComponent/subContainer
+   * @param {string} fieldId
+   * @returns {any}
+   * @public
+   */
   public getFieldRef(fieldId: string): any {
     if (this.$refs[fieldId]) {
       return this.$refs[fieldId][0];
@@ -79,11 +89,6 @@ export default class FormContainer extends Vue {
       }
     }
   }
-
-  // @Watch('schema')
-  // private onSchemaChange(newValue: IContainerSchema): void {
-  //   this.containerSchema = newValue;
-  // }
 }
 </script>
 

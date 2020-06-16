@@ -68,7 +68,7 @@ export default class SubContainer extends Vue {
   }
 
   /**
-   * Gets called when parent wants to access ref the components inside subContainer.
+   * Gets called when parent wants to access ref of the components.
    * It will return ref of wrapperComponent
    * @param {string} fieldId
    * @returns {any}
