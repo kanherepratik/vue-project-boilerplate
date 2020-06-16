@@ -24,7 +24,6 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import SubContainer from './SubContainer.vue';
 import {
   IContainerSchema,
-  IWrapperComponentSchema,
   IStepClickEvent,
   ISubContainerSchema,
   IContainerComponentParentSchema,

@@ -41,19 +41,16 @@ export interface ISubContainerSchema extends IContainerComponentParentSchema {
 export interface IWrapperComponentSchema extends IContainerComponentParentSchema {
   component: WrapperComponentType;
   validations?: IValidation[];
-  value: string;
   isDisabled?: boolean;
   otherProps?: Object;
 }
 
 export interface IComponentMap {
   component: string;
-  valueProp: string;
   propMap?: Object;
   eventMap: string[];
 }
 
-// where is this used?
 export interface IEventMap {
   [key: string]: (event: any, value: any) => void;
 }
