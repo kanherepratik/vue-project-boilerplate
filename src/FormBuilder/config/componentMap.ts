@@ -5,7 +5,6 @@ const componentMap: { [key: string]: IComponentMap } = { // {[key: stringEnum] :
   [WrapperComponentType.Radio]: {
     component: 'RadioButton',
     eventMap: ['input'],
-    valueProp: 'value',
     propMap: {
       disabled: 'isDisabled', // is this common with all components?
     },
@@ -13,7 +12,6 @@ const componentMap: { [key: string]: IComponentMap } = { // {[key: stringEnum] :
   [WrapperComponentType.TextInput]: {
     component: 'AppTextbox',
     eventMap: ['onBlur', 'onFocus', 'onChange'],
-    valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },
@@ -21,7 +19,6 @@ const componentMap: { [key: string]: IComponentMap } = { // {[key: stringEnum] :
   [WrapperComponentType.MobileInput]: {
     component: 'MobileInput',
     eventMap: ['onBlur'],
-    valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },
@@ -29,7 +26,6 @@ const componentMap: { [key: string]: IComponentMap } = { // {[key: stringEnum] :
   [WrapperComponentType.Checkbox]: {
     component: 'AppCheckbox',
     eventMap: ['onChange'],
-    valueProp: 'selectedItems',
     propMap: {
       disabled: 'isDisabled',
     },
@@ -37,7 +33,6 @@ const componentMap: { [key: string]: IComponentMap } = { // {[key: stringEnum] :
   [WrapperComponentType.Dropdown]: {
     component: 'SingleSelect',
     eventMap: ['onChange'],
-    valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },
@@ -45,7 +40,6 @@ const componentMap: { [key: string]: IComponentMap } = { // {[key: stringEnum] :
   [WrapperComponentType.DatePicker]: {
     component: 'DatePicker',
     eventMap: ['change'],
-    valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },
