@@ -1,11 +1,9 @@
+import { ContainerType, WrapperComponentType } from './enums';
+
 interface IValidation {
   name: string;
   expression?: RegExp;
   value?: string | number;
-}
-
-interface IAction {
-  name: string;
 }
 
 export interface IFormSchema {
@@ -15,57 +13,43 @@ export interface IFormSchema {
 }
 
 export interface IContainerSchema {
-  component: 'Container' | 'TabbedContainer';
+  component: ContainerType;
   id: string;
   label: string;
   submitText?: string;
   isHidden: boolean;
   isSubmitted: boolean;
   isActive: boolean;
-  children: any[]; //FIXME this with proper type
+  children: IContainerComponentParentSchema[];
 }
 
-export interface ISubContainerSchema {
-  component: 'SubContainer';
+export interface IContainerComponentParentSchema {
   id: string;
+  isHidden: boolean;
+  component: string;
+}
+
+export interface ISubContainerSchema extends IContainerComponentParentSchema {
+  component: 'SubContainer';
   label: string;
-  submitText?: string;
-  children: any[]; //FIXME this with proper type
+  isSubmitted: boolean;
+  isActive: boolean;
+  children: IWrapperComponentSchema[];
 }
 
 // see if this needs more properties
-export interface IWrapperComponentSchema {
-  id: string;
-  component: ICommonComponentList;
+export interface IWrapperComponentSchema extends IContainerComponentParentSchema {
+  component: WrapperComponentType;
   validations?: IValidation[];
-  actions?: IAction[];
-  value: string;
-  isHidden: boolean;
   isDisabled?: boolean;
   otherProps?: Object;
-  handler: any;
 }
 
 export interface IComponentMap {
-  [key: string]: {
-    component: any;
-    valueProp: string;
-    eventProp?: string[];
-    componentPath?: string;
-    propMap?: Object;
-    eventMap: string[];
-  };
+  component: string;
+  propMap?: Object;
+  eventMap: string[];
 }
-
-export interface ISubContainer {
-  isValid: (showError: boolean) => boolean;
-  showSubContainer: () => void;
-  hideSubContainer: () => void;
-  disableFields: () => void;
-}
-
-// this needs to be derived dynamically
-type ICommonComponentList = 'Radio' | 'Checkbox' | 'Dropdown' | 'TextInput' | 'MobileInput' | 'DatePicker';
 
 export interface IEventMap {
   [key: string]: (event: any, value: any) => void;

@@ -9,7 +9,9 @@
         :data="formData"
         :activeContainerId="value"
         @stepClick="onStepClick($event);"
-      ></form-step-counter>
+      >
+        <template slot="stepNumber" slot-scope="slotProps">{{ slotProps.index + 1 }}</template>
+      </form-step-counter>
       <form-tabbed-container
         v-if="formSchema[activeContainerIndex].component === 'TabbedContainer'"
         :schema="formSchema[activeContainerIndex]"
@@ -50,7 +52,7 @@ import { signals } from './shared/signals';
   },
 })
 export default class FormIndex extends Vue {
-  @Prop({}) formSchema!: IContainerSchema[];
+  @Prop({ default: () => [] }) formSchema!: IContainerSchema[];
   @Prop({}) formData!: { [key: string]: any };
   @Prop(String) value!: string;
   @Prop({ type: Boolean, default: false }) private showNavigation!: boolean;

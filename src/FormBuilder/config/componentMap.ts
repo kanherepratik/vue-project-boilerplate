@@ -1,50 +1,45 @@
 import { IComponentMap } from '../shared/interfaces';
+import { WrapperComponentType } from '../shared/enums';
 
-const componentMap: IComponentMap = {
-  Radio: {
+const componentMap: { [key: string]: IComponentMap } = { // {[key: stringEnum] : IComponentMap}
+  [WrapperComponentType.Radio]: {
     component: 'RadioButton',
     eventMap: ['input'],
-    valueProp: 'value',
     propMap: {
-      disabled: 'isDisabled',
+      disabled: 'isDisabled', // is this common with all components?
     },
   },
-  TextInput: {
+  [WrapperComponentType.TextInput]: {
     component: 'AppTextbox',
     eventMap: ['onBlur', 'onFocus', 'onChange'],
-    valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },
   },
-  MobileInput: {
+  [WrapperComponentType.MobileInput]: {
     component: 'MobileInput',
     eventMap: ['onBlur'],
-    valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },
   },
-  Checkbox: {
+  [WrapperComponentType.Checkbox]: {
     component: 'AppCheckbox',
     eventMap: ['onChange'],
-    valueProp: 'selectedItems',
     propMap: {
       disabled: 'isDisabled',
     },
   },
-  Dropdown: {
+  [WrapperComponentType.Dropdown]: {
     component: 'SingleSelect',
     eventMap: ['onChange'],
-    valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },
   },
-  DatePicker: {
+  [WrapperComponentType.DatePicker]: {
     component: 'DatePicker',
     eventMap: ['change'],
-    valueProp: 'value',
     propMap: {
       disabled: 'isDisabled',
     },

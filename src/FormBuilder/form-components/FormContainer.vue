@@ -2,7 +2,7 @@
   <div class="box">
     <div>{{ schema.label }}</div>
     <div v-for="componentSchema in schema.children" :key="componentSchema.id">
-      <div v-if="componentSchema.children">
+      <div v-if="componentSchema['children']">
         <sub-container
           v-if="!componentSchema.isHidden"
           :key="componentSchema.id"
@@ -33,7 +33,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
 import SubContainer from './SubContainer.vue';
-import { IContainerSchema, IWrapperComponentSchema } from '../shared/interfaces';
+import { IContainerSchema, IWrapperComponentSchema, IContainerComponentParentSchema } from '../shared/interfaces';
 import { signals } from '../shared/signals';
 
 @Component({
@@ -66,7 +66,7 @@ export default class FormContainer extends Vue {
    */
   public isValid(showError: boolean = false): boolean {
     this.$emit(signals.ON_BEFORE_VALIDATE);
-    return this.schema.children.every((component: IWrapperComponentSchema): boolean => {
+    return this.schema.children.every((component: IContainerComponentParentSchema): boolean => {
       return (this.$refs[component.id] as any)[0].isValid(showError);
     });
   }
