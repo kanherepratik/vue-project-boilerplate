@@ -76,7 +76,7 @@ export default Vue.extend({
     formSchema: [],
   }),
   created(): void {
-    get('https://jsonblob.com/api/d1ab0271-aa12-11ea-a88a-e3742b354a00', true).then((res) => {
+    get('https://run.mocky.io/v3/38a3f30a-3f05-45ce-b0b1-23111761a9c1', true).then((res) => {
       this.formSchema = res;
     });
   },
