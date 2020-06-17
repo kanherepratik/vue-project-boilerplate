@@ -5,7 +5,6 @@
     <form-index
       :formSchema="formSchema"
       :formData="formData"
-      v-model="activeFormId"
       @stepClick="onStepClick($event)"
       @emit="handleEvent"
       ref="formRef"
@@ -28,7 +27,6 @@ interface IData {
   validations?: any[];
   formData?: object;
   formSchema?: any[];
-  activeFormId: string;
 } // local interface for data properties
 
 export default Vue.extend({
@@ -39,7 +37,6 @@ export default Vue.extend({
     'form-index': FormIndex,
   },
   data: (): IData => ({
-    activeFormId: '',
     selectedItems: [],
     validations: [{ name: 'required', message: 'I am super important' }],
     options: [
@@ -82,9 +79,7 @@ export default Vue.extend({
   },
   computed: {},
   methods: {
-    onStepClick(event: IStepClickEvent): void {
-      this.activeFormId = event.containerId;
-    },
+    onStepClick(event: IStepClickEvent): void {},
     handleEvent(eventName: string, fieldId: string, value?: any): void {
       console.log(eventName, fieldId, value);
       switch (fieldId) {

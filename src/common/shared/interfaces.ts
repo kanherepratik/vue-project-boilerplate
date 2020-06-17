@@ -108,6 +108,7 @@ export interface ISingleSelectData {
   searchIndex: number;
   showDropdown: boolean;
   mappedItems: ISelectItem[];
+  validation: IValidation;
 }
 
 // Date picker interfaces

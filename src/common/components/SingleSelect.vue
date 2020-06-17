@@ -23,16 +23,20 @@
         :class="['filtered-item', { active: listItem.value === selectedItem, selected: searchIndex === index }]"
         :key="listItem.value"
         @click="onSelection(index)"
-      >{{ listItem.label }}</div>
+      >
+        {{ listItem.label }}
+      </div>
     </div>
+    <div v-if="!validation.isValid" class="radioButtonErrorMsg">{{ validation.message }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { NavigationKeys } from '../shared/enum';
-import { ISelectItem, ISelectItemProps, ISingleSelectData } from '../shared/interfaces';
+import { ISelectItem, ISelectItemProps, ISingleSelectData, IValidation, IValidationRule } from '../shared/interfaces';
 import { getFilteredItems, transformData } from '../shared/utils';
+import { validationHandler } from '../shared/validations';
 
 /**
  * Props
@@ -63,6 +67,7 @@ export default Vue.extend({
     searchIndex: 0,
     showDropdown: false,
     mappedItems: [] as ISelectItem[],
+    validation: { isValid: true } as IValidation,
   }),
   props: {
     label: String,
@@ -78,6 +83,14 @@ export default Vue.extend({
     items: {
       type: Array as () => Array<ISelectItemProps | string>,
       default: [],
+    },
+    /**
+     * Validations array of objects of type IValidationRule to valdiate the input
+     * @values Array<IValidationRule>
+     */
+    validations: {
+      type: Array as () => Array<IValidationRule>,
+      default: (): Array<IValidationRule> => [] as Array<IValidationRule>,
     },
     clearable: {
       type: Boolean,
@@ -104,6 +117,10 @@ export default Vue.extend({
     document.removeEventListener('click', this.onBlur);
   },
   methods: {
+    isValid(): boolean {
+      this.validation = validationHandler(this.selectedItem, this.validations);
+      return this.validation.isValid;
+    },
     /**
      * On clicking on out of dropdown it will close the suggestions dropdown
      */

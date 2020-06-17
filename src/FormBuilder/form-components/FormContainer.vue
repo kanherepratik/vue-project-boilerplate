@@ -75,9 +75,11 @@ export default class FormContainer extends Vue {
    */
   public isValid(showError: boolean = false): boolean {
     this.$emit(signals.ON_BEFORE_VALIDATE);
-    return this.schema.children.every((component: IContainerComponentParentSchema): boolean => {
-      return (this.$refs[component.id] as any)[0].isValid(showError);
+    let isValid = true;
+    this.schema.children.forEach((component: IContainerComponentParentSchema): void => {
+      isValid = (this.$refs[component.id] as any) ? (this.$refs[component.id] as any)[0].isValid(showError) : true;
     });
+    return isValid;
   }
 
   /**

@@ -68,9 +68,11 @@ export default class SubContainer extends Vue {
    */
   public isValid(showError: boolean = false): boolean {
     this.$emit(signals.ON_BEFORE_VALIDATE);
-    return this.schema.children.every((component: IWrapperComponentSchema): boolean => {
-      return (this.$refs[component.id] as any)[0].isValid(showError);
+    let isValid = true;
+    this.schema.children.forEach((component: IWrapperComponentSchema): boolean => {
+      return (this.$refs[component.id] as any)[0] ? (this.$refs[component.id] as any)[0].isValid(showError) : true;
     });
+    return isValid;
   }
 
   /**

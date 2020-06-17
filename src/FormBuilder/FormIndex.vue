@@ -7,7 +7,7 @@
       <form-step-counter
         :containerList="formSchema"
         :data="formData"
-        :activeContainerId="value"
+        :activeContainerId="activeContainerId"
         @stepClick="onStepClick($event)"
       >
         <template slot="stepNumber" slot-scope="slotProps">{{ slotProps.index + 1 }}</template>
@@ -18,7 +18,6 @@
         :data="formData"
         :ref="formSchema[activeContainerIndex].id"
         :id="formSchema[activeContainerIndex].id"
-        v-model="activeTab"
         @tabChange="handleTabChange"
         @emit="handleContainerEmit"
         @onAfterSubmit="getDataOnSubmit"
@@ -62,15 +61,46 @@ export default class FormIndex extends Vue {
    * Used to prefill the fields with user data.
    */
   @Prop({}) formData!: { [key: string]: any };
-  @Prop(String) value!: string;
   /**
    * flag to show/hide navigation buttons.
    */
   @Prop({ type: Boolean, default: false }) private showNavigation!: boolean;
-  private activeTab: string = '';
+  private activeStep: string = '';
 
   private getDataOnSubmit(containerId: string, data: any): void {
     console.log('getData from index', data, containerId);
+  }
+
+  private get activeContainerId(): string {
+    return this.activeStep;
+  }
+  private set activeContainerId(activeContainerId: string) {
+    this.activeStep = activeContainerId;
+  }
+
+  private get activeContainerIndex(): number {
+    const index: number = this.formSchema.findIndex(
+      (container: IContainerSchema) => container.id === this.activeContainerId && !container.isHidden
+    );
+    if (index === -1) {
+      return this.firstVisibleContainerIndex === -1 ? 0 : this.firstVisibleContainerIndex;
+    }
+    return index;
+  }
+
+  private get firstVisibleContainerIndex(): number {
+    const index: number = this.formSchema.findIndex((container: IContainerSchema) => !container.isHidden);
+    return index === -1 ? 0 : index;
+  }
+
+  private get lastVisibleContainerIndex(): number {
+    const reverseContainers: IContainerSchema[] = [...this.formSchema].reverse();
+    const reverseContainerIndex: number = reverseContainers.findIndex(
+      (container: IContainerSchema) => !container.isHidden
+    );
+    return reverseContainerIndex === -1
+      ? this.formSchema.length - 1
+      : Math.abs(reverseContainerIndex - (this.formSchema.length - 1));
   }
 
   private get isPreviousVisible(): boolean {
@@ -140,9 +170,7 @@ export default class FormIndex extends Vue {
     this.$emit('stepClick', event);
   }
 
-  private handleTabChange(event: IStepClickEvent): void {
-    this.activeTab = event.containerId;
-  }
+  private handleTabChange(event: IStepClickEvent): void {}
   private handleContainerEmit(eventName: string, fieldId: string, value?: any): void {
     /**
      * This will emit an event on any change/blur/click etc. of component
@@ -153,38 +181,13 @@ export default class FormIndex extends Vue {
     this.$emit('emit', eventName, fieldId, value);
   }
 
-  protected get activeContainerId(): string {
-    return this.value;
-  }
-  protected set activeContainerId(activeContainerId: string) {
-    this.$emit('input', activeContainerId);
-  }
-
-  public get activeContainerIndex(): number {
-    const index: number = this.formSchema.findIndex(
-      (container: IContainerSchema) => container.id === this.activeContainerId && !container.isHidden
-    );
-    if (index === -1) {
-      return this.firstVisibleContainerIndex === -1 ? 0 : this.firstVisibleContainerIndex;
-    }
-    return index;
-  }
-
-  public get firstVisibleContainerIndex(): number {
-    const index: number = this.formSchema.findIndex((container: IContainerSchema) => !container.isHidden);
-    return index === -1 ? 0 : index;
-  }
-
-  public get lastVisibleContainerIndex(): number {
-    const reverseContainers: IContainerSchema[] = [...this.formSchema].reverse();
-    const reverseContainerIndex: number = reverseContainers.findIndex(
-      (container: IContainerSchema) => !container.isHidden
-    );
-    return reverseContainerIndex === -1
-      ? this.formSchema.length - 1
-      : Math.abs(reverseContainerIndex - (this.formSchema.length - 1));
-  }
-
+  /**
+   * Gets called when parent wants to access ref of the components.
+   * It will return ref of wrapperComponent/subContainer
+   * @param {string} fieldId
+   * @returns {any}
+   * @public
+   */
   public getFieldRef(fieldId: string): any {
     for (let container of this.formSchema) {
       if (this.$refs[container.id]) {

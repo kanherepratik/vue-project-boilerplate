@@ -62,7 +62,7 @@ export default class WrapperComponent extends Vue {
    * @public
    */
   public isValid = (showError: boolean = false): boolean => {
-    return (this.$refs[this.schema.id] as any).isValid(showError);
+    return (this.$refs[this.schema.id] as any) ? (this.$refs[this.schema.id] as any).isValid(showError) : true;
   };
 
   /**
