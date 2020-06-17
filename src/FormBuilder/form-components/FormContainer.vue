@@ -17,7 +17,7 @@
         <wrapper-component
           :key="componentSchema.id"
           :schema="componentSchema"
-          v-model="data[componentSchema.id]"
+          :data="data"
           v-on="$listeners"
           :ref="componentSchema.id"
         />

@@ -5,7 +5,7 @@
       v-if="!isHidden"
       :disabled="isDisabled"
       v-on="massagedEventMap"
-      v-model="valueInput"
+      v-model="data[schema.id]"
       v-bind="schema.otherProps"
       :ref="schema.id"
     />
@@ -27,17 +27,15 @@ export default class WrapperComponent extends Vue {
    * value holds the v-model property of wrapperComponent which is then bound to component v-model.
    * It is a key of data object
    */
-  @Prop({ required: true }) private value!: unknown;
+  @Prop({ required: true }) private data!: any;
   private componentMap: { [key: string]: IComponentMap } = componentMap;
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
-  private valueInput!: unknown;
   private eventMap: IEventMap = {};
 
   private created() {
     this.isDisabled = this.schema.isDisabled || false;
     this.isHidden = this.schema.isHidden || false;
-    this.valueInput = this.$props.value;
   }
 
   private get massagedEventMap(): IEventMap {
@@ -45,11 +43,6 @@ export default class WrapperComponent extends Vue {
       this.eventMap[event] = this.handleEvent;
     }
     return this.eventMap;
-  }
-
-  @Watch('value')
-  private onValueChange(newValue: unknown): void {
-    this.valueInput = newValue;
   }
 
   private handleEvent(value: any, event: any): void {
@@ -71,14 +64,6 @@ export default class WrapperComponent extends Vue {
   public isValid = (showError: boolean = false): boolean => {
     return (this.$refs[this.schema.id] as any).isValid(showError);
   };
-
-  /**
-   * Gets called when parent wants the value of the component bound with v-model.
-   * @public
-   */
-  public getValue(): any {
-    return this.valueInput;
-  }
 
   /**
    * Gets called when parent wants the `ref` of the component.

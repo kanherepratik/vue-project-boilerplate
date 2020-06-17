@@ -5,7 +5,7 @@
       v-for="component in schema.children"
       :key="component.id"
       :schema="component"
-      v-model="data[component.id]"
+      :data="data"
       v-on="$listeners"
       :ref="component.id"
     />
