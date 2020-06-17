@@ -10,6 +10,7 @@
       @emit="handleEvent"
       ref="formRef"
     />
+    <form-summary :formSchema="formSchema" :formData="formData" />
   </div>
 </template>
 
@@ -20,6 +21,7 @@ import Vue from 'vue';
 import { get } from '@/services/api';
 import { IStepClickEvent } from '@/FormBuilder/shared/interfaces';
 import FormIndex from '../../FormBuilder/FormIndex.vue';
+import FormSummary from '../../FormBuilder/FormSummary.vue';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IData {
@@ -37,6 +39,7 @@ export default Vue.extend({
     // 'todo-component': TodoComponent,
     // 'app-checkbox': AppCheckbox,
     'form-index': FormIndex,
+    'form-summary': FormSummary,
   },
   data: (): IData => ({
     activeFormId: '',
@@ -53,7 +56,7 @@ export default Vue.extend({
       },
     ],
     formData: {
-      ownerName: '',
+      ownerName: 'sumit',
       gender: 'female',
       address: '',
       dob: '',
