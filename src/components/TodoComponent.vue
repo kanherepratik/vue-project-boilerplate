@@ -6,30 +6,15 @@
       <p>Todo List</p>
       <div v-for="(todo, index) in todoList" :key="index">{{ todo }}</div>
       <button type="button" class="dialogButton abc" @click="openModal">Open Modal!</button>
-      <app-dialog
-        v-show="showModal"
-        v-bind:showModal="showModal"
-        @close="closeModal"
-        :fullScreen="true"
-      >
+      <app-dialog v-show="showModal" v-bind:showModal="showModal" @close="closeModal" :fullScreen="true">
         <template v-slot:header>
           This is the default tile!
-          <button
-            type="button"
-            class="btn-close"
-            @click="closeModal"
-            aria-label="Close modal"
-          >x</button>
+          <button type="button" class="btn-close" @click="closeModal" aria-label="Close modal">x</button>
         </template>
         <template v-slot:body>I'm the default body!</template>
         <template v-slot:footer>
           I'm the default footer!
-          <button
-            type="button"
-            class="btn-green"
-            @click="closeModal"
-            aria-label="Close modal"
-          >Close me!</button>
+          <button type="button" class="btn-green" @click="closeModal" aria-label="Close modal">Close me!</button>
         </template>
       </app-dialog>
     </div>

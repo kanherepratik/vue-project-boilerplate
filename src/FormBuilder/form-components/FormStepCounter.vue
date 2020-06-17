@@ -6,31 +6,36 @@
         :key="container.id"
         class="steps-ul-step"
         :class="{
-					filled: container.isSubmitted,
-					active: container.isActive,
-					'is-routable': canNavigate(index, container.isHidden),
-				}"
-        @click="onStepClick($event, container, index);"
+          filled: container.isSubmitted,
+          active: container.isActive,
+          'is-routable': canNavigate(index, container.isHidden),
+        }"
+        @click="onStepClick($event, container, index)"
       >
         <div class="step-no">
+          <!--
+  	        @slot slot for step number
+	        -->
           <slot
             name="stepNumber"
             v-bind:index="index"
             v-bind:container="container"
-            v-bind:data="data"
             v-bind:canNavigate="canNavigate(index, container.isHidden)"
             v-bind:containerList="containerList"
           ></slot>
         </div>
         <span class="step-label">
+          <!--
+  	        @slot slot for step/tab label
+	        -->
           <slot
             name="stepLabel"
             v-bind:index="index"
             v-bind:container="container"
-            v-bind:data="data"
             v-bind:canNavigate="canNavigate(index, container.isHidden)"
             v-bind:containerList="containerList"
-          >{{ container.label }}</slot>
+            >{{ container.label }}</slot
+          >
         </span>
       </li>
     </ul>
@@ -46,15 +51,13 @@ import { canNavigate } from '../shared/utils';
   name: 'FormStepCounter',
 })
 export default class FormStepCounter extends Vue {
+  /**
+   * List of containers to render the steps/tabs.
+   */
   @Prop({ type: Array, required: true }) private containerList!: IStepContainer[];
-  @Prop({
-    type: Object,
-    default: (): { [key: string]: any } => {
-      return {};
-    },
-    required: false,
-  })
-  private data!: { [key: string]: any };
+  /**
+   * unique ID of container which is active.
+   */
   @Prop(String) private activeContainerId!: string;
 
   private canNavigate(index: number, isFormHidden: boolean): boolean {
@@ -84,7 +87,9 @@ export default class FormStepCounter extends Vue {
   }
 
   private onStepClick(event: any, container: IStepContainer, index: number): void {
-    // Fired when a step is clicked
+    /**
+     * Fired when step/tab is clicked.
+     */
     this.$emit('stepClick', {
       containerId: container.id,
       containerIndex: index,

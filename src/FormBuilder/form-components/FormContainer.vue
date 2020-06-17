@@ -23,6 +23,9 @@
         />
       </div>
     </div>
+    <!--
+  	  @slot Form buttons slot
+	  -->
     <slot name="formButtons">
       <app-button :title="schema.submitText || 'submit'" @click="handleSubmit" />
     </slot>
@@ -43,7 +46,13 @@ import { signals } from '../shared/signals';
   },
 })
 export default class FormContainer extends Vue {
+  /**
+   * the form schema which will render WrapperComponent or subContainer.
+   */
   @Prop({ required: true }) private schema!: IContainerSchema;
+  /**
+   * the data object with keys as fieldId and value bound to v-model of component.
+   */
   @Prop({ required: true }) private data!: any;
 
   private created(): void {
@@ -59,7 +68,7 @@ export default class FormContainer extends Vue {
   }
 
   /**
-   * Gets called to validate the component
+   * Gets called to check validity of the child components
    * @param {boolean} showError
    * @returns {boolean}
    * @public
@@ -97,5 +106,5 @@ export default class FormContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}
-</style>>
+}</style
+>>

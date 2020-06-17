@@ -8,7 +8,7 @@
         :containerList="formSchema"
         :data="formData"
         :activeContainerId="value"
-        @stepClick="onStepClick($event);"
+        @stepClick="onStepClick($event)"
       >
         <template slot="stepNumber" slot-scope="slotProps">{{ slotProps.index + 1 }}</template>
       </form-step-counter>
@@ -52,51 +52,25 @@ import { signals } from './shared/signals';
   },
 })
 export default class FormIndex extends Vue {
+  /**
+   * the schema which will render container/tabbedContainer.
+   */
   @Prop({ default: () => [] }) formSchema!: IContainerSchema[];
+  /**
+   * the data object with keys as fieldId and value bound to v-model of component.
+   * It is passed down to container and subContainer.
+   * Used to prefill the fields with user data.
+   */
   @Prop({}) formData!: { [key: string]: any };
   @Prop(String) value!: string;
+  /**
+   * flag to show/hide navigation buttons.
+   */
   @Prop({ type: Boolean, default: false }) private showNavigation!: boolean;
   private activeTab: string = '';
 
-  //example for getting data on after submit from container
   private getDataOnSubmit(containerId: string, data: any): void {
     console.log('getData from index', data, containerId);
-  }
-
-  protected get activeContainerId(): string {
-    return this.value;
-  }
-  protected set activeContainerId(activeContainerId: string) {
-    this.$emit('input', activeContainerId);
-  }
-
-  // public isValid = () => {
-  //   return false;
-  // };
-
-  public get activeContainerIndex(): number {
-    const index: number = this.formSchema.findIndex(
-      (container: IContainerSchema) => container.id === this.activeContainerId && !container.isHidden
-    );
-    if (index === -1) {
-      return this.firstVisibleContainerIndex === -1 ? 0 : this.firstVisibleContainerIndex;
-    }
-    return index;
-  }
-
-  public get firstVisibleContainerIndex(): number {
-    const index: number = this.formSchema.findIndex((container: IContainerSchema) => !container.isHidden);
-    return index === -1 ? 0 : index;
-  }
-
-  public get lastVisibleContainerIndex(): number {
-    const reverseContainers: IContainerSchema[] = [...this.formSchema].reverse();
-    const reverseContainerIndex: number = reverseContainers.findIndex(
-      (container: IContainerSchema) => !container.isHidden
-    );
-    return reverseContainerIndex === -1
-      ? this.formSchema.length - 1
-      : Math.abs(reverseContainerIndex - (this.formSchema.length - 1));
   }
 
   private get isPreviousVisible(): boolean {
@@ -158,10 +132,11 @@ export default class FormIndex extends Vue {
     }
   }
   private onStepClick(event: IStepClickEvent): void {
-    // Fired when a step on the `FormStepCounter` is clicked
-    // @arg `:IStepClickEvent`<br/>Form properties of the form clicked on
-    console.log('step clicked', event);
     this.activeContainerId = event.containerId;
+    /**
+     * Fired when a step is clicked.
+     * @param {IStepClickEvent} event
+     */
     this.$emit('stepClick', event);
   }
 
@@ -169,7 +144,45 @@ export default class FormIndex extends Vue {
     this.activeTab = event.containerId;
   }
   private handleContainerEmit(eventName: string, fieldId: string, value?: any): void {
+    /**
+     * This will emit an event on any change/blur/click etc. of component
+     * @param {string} eventType
+     * @param {string} fieldId
+     * @param {any} value
+     */
     this.$emit('emit', eventName, fieldId, value);
+  }
+
+  protected get activeContainerId(): string {
+    return this.value;
+  }
+  protected set activeContainerId(activeContainerId: string) {
+    this.$emit('input', activeContainerId);
+  }
+
+  public get activeContainerIndex(): number {
+    const index: number = this.formSchema.findIndex(
+      (container: IContainerSchema) => container.id === this.activeContainerId && !container.isHidden
+    );
+    if (index === -1) {
+      return this.firstVisibleContainerIndex === -1 ? 0 : this.firstVisibleContainerIndex;
+    }
+    return index;
+  }
+
+  public get firstVisibleContainerIndex(): number {
+    const index: number = this.formSchema.findIndex((container: IContainerSchema) => !container.isHidden);
+    return index === -1 ? 0 : index;
+  }
+
+  public get lastVisibleContainerIndex(): number {
+    const reverseContainers: IContainerSchema[] = [...this.formSchema].reverse();
+    const reverseContainerIndex: number = reverseContainers.findIndex(
+      (container: IContainerSchema) => !container.isHidden
+    );
+    return reverseContainerIndex === -1
+      ? this.formSchema.length - 1
+      : Math.abs(reverseContainerIndex - (this.formSchema.length - 1));
   }
 
   public getFieldRef(fieldId: string): any {

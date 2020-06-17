@@ -24,7 +24,13 @@ import { signals } from '../shared/signals';
   },
 })
 export default class SubContainer extends Vue {
+  /**
+   * the schema object which will render WrapperComponent.
+   */
   @Prop({ required: true }) private schema!: ISubContainerSchema;
+  /**
+   * the data object with keys as fieldId and value bound to v-model of component.
+   */
   @Prop({ required: true }) private data!: any;
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
@@ -89,5 +95,5 @@ export default class SubContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}
-</style>>
+}</style
+>>

@@ -20,9 +20,13 @@ import componentMap from '../config/componentMap';
 @Component
 export default class WrapperComponent extends Vue {
   /**
-   * The schema object which will be used to render a component
+   * The schema object which will be used to render a dynamic component
    */
   @Prop({ type: Object, required: true }) private schema!: IWrapperComponentSchema;
+  /**
+   * value holds the v-model property of wrapperComponent which is then bound to component v-model.
+   * It is a key of data object
+   */
   @Prop({ required: true }) private value!: unknown;
   private componentMap: { [key: string]: IComponentMap } = componentMap;
   private isDisabled: boolean = false;
@@ -49,6 +53,12 @@ export default class WrapperComponent extends Vue {
   }
 
   private handleEvent(value: any, event: any): void {
+    /**
+     * This will emit an event on any change/blur/click etc. of component
+     * @param {string} eventType
+     * @param {string} fieldId
+     * @param {any} value
+     */
     this.$emit('emit', event.type, this.schema.id, value);
   }
 

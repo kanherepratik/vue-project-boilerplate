@@ -3,7 +3,7 @@
     <form-step-counter
       :containerList="schema.children"
       :activeContainerId="value"
-      @stepClick="handleTabChange($event);"
+      @stepClick="handleTabChange($event)"
     ></form-step-counter>
     <sub-container
       :schema="schema.children[activeContainerIndex]"
@@ -13,6 +13,9 @@
       :id="schema.children[activeContainerIndex].id"
       :key="schema.children[activeContainerIndex].id"
     />
+    <!--
+  	  @slot Form buttons slot
+	  -->
     <slot name="formButtons">
       <app-button :title="schema.submitText || 'submit'" @click="handleSubmit" />
     </slot>
@@ -38,14 +41,20 @@ import FormStepCounter from './FormStepCounter.vue';
   },
 })
 export default class FormTabbedContainer extends Vue {
+  /**
+   * the form schema which will render subContainer.
+   */
   @Prop({ required: true }) private schema!: IContainerSchema;
+  /**
+   * the data object with keys as fieldId and value bound to v-model of component.
+   */
   @Prop({ required: true }) private data!: any;
   @Prop(String) value!: string;
 
-  protected get activeContainerId(): string {
+  private get activeContainerId(): string {
     return this.value;
   }
-  protected set activeContainerId(activeContainerId: string) {
+  private set activeContainerId(activeContainerId: string) {
     this.$emit('input', activeContainerId);
   }
 
@@ -149,10 +158,11 @@ export default class FormTabbedContainer extends Vue {
     }
   }
   private handleTabChange(event: IStepClickEvent): void {
-    // Fired when a step on the `FormStepCounter` is clicked
-    // @arg `:IStepClickEvent`<br/>Form properties of the form clicked on
-    console.log('tab changed', event);
     this.activeContainerId = event.containerId;
+    /**
+     * Fired when a tab is changed/clicked.
+     * @param {IStepClickEvent} event
+     */
     this.$emit('tabChange', event);
   }
 
@@ -178,5 +188,5 @@ export default class FormTabbedContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}
-</style>>
+}</style
+>>
