@@ -19,6 +19,9 @@ import componentMap from '../config/componentMap';
 
 @Component
 export default class WrapperComponent extends Vue {
+  /**
+   * The schema object which will be used to render a component
+   */
   @Prop({ type: Object, required: true }) private schema!: IWrapperComponentSchema;
   @Prop({ required: true }) private value!: unknown;
   private componentMap: { [key: string]: IComponentMap } = componentMap;
@@ -34,7 +37,7 @@ export default class WrapperComponent extends Vue {
   }
 
   private get massagedEventMap(): IEventMap {
-    for (let event of componentMap[this.schema.component].eventMap) {
+    for (let event of this.componentMap[this.schema.component].eventMap) {
       this.eventMap[event] = this.handleEvent;
     }
     return this.eventMap;

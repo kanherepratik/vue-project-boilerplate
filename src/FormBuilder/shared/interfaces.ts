@@ -37,7 +37,6 @@ export interface ISubContainerSchema extends IContainerComponentParentSchema {
   children: IWrapperComponentSchema[];
 }
 
-// see if this needs more properties
 export interface IWrapperComponentSchema extends IContainerComponentParentSchema {
   component: WrapperComponentType;
   validations?: IValidation[];
@@ -56,13 +55,12 @@ export interface IEventMap {
 }
 
 export interface INavigateClickEvent {
-  /** Unique identifier form */
   containerId: string;
-  /** index position of the form within form array */
   containerIndex: number;
 }
 export interface IStepClickEvent extends INavigateClickEvent {
-  /** Indicates if the form can be navigated or not. */
   canNavigate: boolean;
   event?: any;
 }
+
+export type IStepContainer = IContainerSchema | ISubContainerSchema;

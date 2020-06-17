@@ -1,12 +1,12 @@
 import { IComponentMap } from '../shared/interfaces';
 import { WrapperComponentType } from '../shared/enums';
 
-const componentMap: { [key: string]: IComponentMap } = { // {[key: stringEnum] : IComponentMap}
+const componentMap: { [key: string]: IComponentMap } = {
   [WrapperComponentType.Radio]: {
     component: 'RadioButton',
     eventMap: ['input'],
     propMap: {
-      disabled: 'isDisabled', // is this common with all components?
+      disabled: 'isDisabled',
     },
   },
   [WrapperComponentType.TextInput]: {

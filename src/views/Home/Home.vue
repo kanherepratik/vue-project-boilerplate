@@ -92,10 +92,6 @@ export default Vue.extend({
           (this.$refs.formRef as any).getFieldRef('mobile').disableField();
           break;
         }
-        case 'claimInPastYear': {
-          (this.$refs.formRef as any).getFieldRef('as').disableField();
-          break;
-        }
         default:
       }
     },
