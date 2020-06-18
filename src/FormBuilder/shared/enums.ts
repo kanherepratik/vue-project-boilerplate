@@ -11,3 +11,8 @@ export enum WrapperComponentType {
   MobileInput = 'MobileInput',
   DatePicker = 'DatePicker',
 }
+
+export enum FormMode {
+  Review,
+  Edit
+}

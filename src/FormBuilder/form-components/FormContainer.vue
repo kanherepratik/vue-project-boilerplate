@@ -25,7 +25,7 @@
     </div>
     <!--
   	  @slot Form buttons slot
-	  -->
+    -->
     <slot name="formButtons">
       <app-button :title="schema.submitText || 'submit'" @click="handleSubmit" />
     </slot>
@@ -63,6 +63,7 @@ export default class FormContainer extends Vue {
     if (!this.isValid(true)) {
       return;
     }
+    this.$emit('submit', this.schema.id);
     this.$emit(signals.ON_BEFORE_SUBMIT);
     this.$emit(signals.ON_AFTER_SUBMIT, this.schema.id, this.data);
   }
@@ -108,5 +109,6 @@ export default class FormContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}</style
+}
+</style
 >>

@@ -162,6 +162,7 @@ export default class FormTabbedContainer extends Vue {
     if (!this.isValid(true)) {
       return;
     }
+    this.$emit('submit', this.schema.id);
     this.$emit(signals.ON_BEFORE_SUBMIT);
     this.$emit(signals.ON_AFTER_SUBMIT, this.schema.id, this.data);
   }

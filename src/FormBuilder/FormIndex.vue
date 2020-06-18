@@ -4,34 +4,41 @@
       <spinner-component />
     </div>
     <div v-else>
-      <form-step-counter
-        :containerList="formSchema"
-        :data="formData"
-        :activeContainerId="activeStep"
-        @stepClick="onStepClick($event)"
-      >
-        <template slot="stepNumber" slot-scope="slotProps">{{ slotProps.index + 1 }}</template>
-      </form-step-counter>
-      <form-tabbed-container
-        v-if="formSchema[activeContainerIndex].component === 'TabbedContainer'"
-        :schema="formSchema[activeContainerIndex]"
-        :data="formData"
-        :ref="formSchema[activeContainerIndex].id"
-        :id="formSchema[activeContainerIndex].id"
-        v-model="activeTab"
-        @tabChange="handleTabChange"
-        @emit="handleContainerEmit"
-        @onAfterSubmit="getDataOnSubmit"
-      />
-      <form-container
-        v-else
-        :schema="formSchema[activeContainerIndex]"
-        :data="formData"
-        :ref="formSchema[activeContainerIndex].id"
-        :id="formSchema[activeContainerIndex].id"
-        @emit="handleContainerEmit"
-        @onAfterSubmit="getDataOnSubmit"
-      ></form-container>
+      <div v-if="allFormsSubmitted && mode === FormMode.Review">
+        <form-summary :formSchema="formSchema" :formData="formData" @edit="onSummaryEdit" />
+      </div>
+      <div v-else>
+        <form-step-counter
+          :containerList="formSchema"
+          :data="formData"
+          :activeContainerId="activeStep"
+          @stepClick="onStepClick($event)"
+        >
+          <template slot="stepNumber" slot-scope="slotProps">{{ slotProps.index + 1 }}</template>
+        </form-step-counter>
+        <form-tabbed-container
+          v-if="formSchema[activeContainerIndex].component === 'TabbedContainer'"
+          :schema="formSchema[activeContainerIndex]"
+          :data="formData"
+          :ref="formSchema[activeContainerIndex].id"
+          :id="formSchema[activeContainerIndex].id"
+          v-model="activeTab"
+          @tabChange="handleTabChange"
+          @emit="handleContainerEmit"
+          @onAfterSubmit="getDataOnSubmit"
+          @submit="handleSubmit"
+        />
+        <form-container
+          v-else
+          :schema="formSchema[activeContainerIndex]"
+          :data="formData"
+          :ref="formSchema[activeContainerIndex].id"
+          :id="formSchema[activeContainerIndex].id"
+          @emit="handleContainerEmit"
+          @onAfterSubmit="getDataOnSubmit"
+          @submit="handleSubmit"
+        ></form-container>
+      </div>
     </div>
   </div>
 </template>
@@ -43,12 +50,15 @@ import FormStepCounter from './form-components/FormStepCounter.vue';
 import FormTabbedContainer from './form-components/FormTabbedContainer.vue';
 import { IContainerSchema, IStepClickEvent } from './shared/interfaces';
 import { signals } from './shared/signals';
+import FormSummary from './FormSummary.vue';
+import { FormMode } from './shared/enums';
 
 @Component({
   components: {
     'form-container': FormContainer,
     'form-step-counter': FormStepCounter,
     'form-tabbed-container': FormTabbedContainer,
+    'form-summary': FormSummary,
   },
 })
 export default class FormIndex extends Vue {
@@ -71,6 +81,8 @@ export default class FormIndex extends Vue {
    */
   @Model('change', { type: String }) readonly activeStep;
   private activeTab: string = '';
+  private mode: FormMode = FormMode.Edit;
+  private FormMode: typeof FormMode = FormMode;
 
   private getDataOnSubmit(containerId: string, data: any): void {
     console.log('getData from index', data, containerId);
@@ -110,6 +122,10 @@ export default class FormIndex extends Vue {
 
   private get isPreviousVisible(): boolean {
     return this.firstVisibleContainerIndex > -1 && this.activeContainerIndex > this.firstVisibleContainerIndex;
+  }
+
+  private get allFormsSubmitted(): boolean {
+    return this.formSchema.findIndex((container) => !container.isSubmitted) === -1;
   }
 
   private previousContainerIndex(formIndex: number): number {
@@ -188,6 +204,25 @@ export default class FormIndex extends Vue {
     this.$emit('emit', eventName, fieldId, value);
   }
 
+  private onSummaryEdit(containerId: string): void {
+    this.mode = FormMode.Edit;
+    this.activeContainerId = containerId;
+  }
+
+  private handleSubmit(containerId: string): void {
+    this.$emit('submit', containerId);
+    if (this.formSchema.findIndex((container) => containerId === container.id) === this.formSchema.length - 1) {
+      this.mode = FormMode.Review;
+    }
+  }
+
+  /**
+   * Gets called when parent wants to access ref of the components.
+   * It will return ref of wrapperComponent/subContainer
+   * @param {string} fieldId
+   * @returns {any}
+   * @public
+   */
   public getFieldRef(fieldId: string): any {
     for (let container of this.formSchema) {
       if (this.$refs[container.id]) {
