@@ -7,7 +7,7 @@
       <form-step-counter
         :containerList="formSchema"
         :data="formData"
-        :activeContainerId="activeContainerId"
+        :activeContainerId="activeStep"
         @stepClick="onStepClick($event)"
       >
         <template slot="stepNumber" slot-scope="slotProps">{{ slotProps.index + 1 }}</template>
@@ -18,6 +18,7 @@
         :data="formData"
         :ref="formSchema[activeContainerIndex].id"
         :id="formSchema[activeContainerIndex].id"
+        v-model="activeTab"
         @tabChange="handleTabChange"
         @emit="handleContainerEmit"
         @onAfterSubmit="getDataOnSubmit"
@@ -36,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch, Model } from 'vue-property-decorator';
 import FormContainer from './form-components/FormContainer.vue';
 import FormStepCounter from './form-components/FormStepCounter.vue';
 import FormTabbedContainer from './form-components/FormTabbedContainer.vue';
@@ -65,7 +66,11 @@ export default class FormIndex extends Vue {
    * flag to show/hide navigation buttons.
    */
   @Prop({ type: Boolean, default: false }) private showNavigation!: boolean;
-  private activeStep: string = '';
+  /**
+   * Model for activeStep. It is bound via v-model
+   */
+  @Model('change', { type: String }) readonly activeStep;
+  private activeTab: string = '';
 
   private getDataOnSubmit(containerId: string, data: any): void {
     console.log('getData from index', data, containerId);
@@ -75,7 +80,7 @@ export default class FormIndex extends Vue {
     return this.activeStep;
   }
   private set activeContainerId(activeContainerId: string) {
-    this.activeStep = activeContainerId;
+    this.$emit('change', activeContainerId);
   }
 
   private get activeContainerIndex(): number {
@@ -170,7 +175,9 @@ export default class FormIndex extends Vue {
     this.$emit('stepClick', event);
   }
 
-  private handleTabChange(event: IStepClickEvent): void {}
+  private handleTabChange(event: IStepClickEvent): void {
+    this.activeTab = event.containerId;
+  }
   private handleContainerEmit(eventName: string, fieldId: string, value?: any): void {
     /**
      * This will emit an event on any change/blur/click etc. of component
@@ -181,13 +188,6 @@ export default class FormIndex extends Vue {
     this.$emit('emit', eventName, fieldId, value);
   }
 
-  /**
-   * Gets called when parent wants to access ref of the components.
-   * It will return ref of wrapperComponent/subContainer
-   * @param {string} fieldId
-   * @returns {any}
-   * @public
-   */
   public getFieldRef(fieldId: string): any {
     for (let container of this.formSchema) {
       if (this.$refs[container.id]) {
