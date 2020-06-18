@@ -2,7 +2,7 @@
   <div class>
     <form-step-counter
       :containerList="schema.children"
-      :activeContainerId="activeContainerId"
+      :activeContainerId="activeTab"
       @stepClick="handleTabChange($event)"
     ></form-step-counter>
     <sub-container
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch, Model } from 'vue-property-decorator';
 import SubContainer from './SubContainer.vue';
 import {
   IContainerSchema,
@@ -49,18 +49,21 @@ export default class FormTabbedContainer extends Vue {
    * the data object with keys as fieldId and value bound to v-model of component.
    */
   @Prop({ required: true }) private data!: any;
-  // @Prop(String) value!: string;
-  private activeContainer: string = this.schema.children[0].id;
+  /**
+   * Model for activeTab. It is bound via v-model
+   */
+  @Model('change', { type: String }) readonly activeTab;
+  // private activeContainer: string = this.schema.children[0].id;
 
   private created(): void {
     this.$emit(signals.ON_CONTAINER_LOAD);
   }
 
   private get activeContainerId(): string {
-    return this.activeContainer;
+    return this.activeTab;
   }
   private set activeContainerId(activeContainerId: string) {
-    this.activeContainer = activeContainerId;
+    this.$emit('change', activeContainerId);
   }
 
   private get activeContainerIndex(): number {
@@ -204,6 +207,5 @@ export default class FormTabbedContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}
-</style
+}</style
 >>
