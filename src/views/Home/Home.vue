@@ -8,6 +8,7 @@
       v-model="activeStepId"
       @stepClick="onStepClick($event)"
       @emit="handleEvent"
+      @submit="onSubmit"
       ref="formRef"
     />
   </div>
@@ -18,7 +19,7 @@ import Vue from 'vue';
 // import TodoComponent from '@/components/TodoComponent.vue';
 // import AppCheckbox from '@/common/components/AppCheckbox.vue';
 import { get } from '@/services/api';
-import { IStepClickEvent } from '@/FormBuilder/shared/interfaces';
+import { IStepClickEvent, IContainerSchema } from '@/FormBuilder/shared/interfaces';
 import FormIndex from '../../FormBuilder/FormIndex.vue';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -53,7 +54,7 @@ export default Vue.extend({
       },
     ],
     formData: {
-      ownerName: '',
+      ownerName: 'sumit',
       gender: 'female',
       address: '',
       dob: '',
@@ -93,6 +94,18 @@ export default Vue.extend({
           break;
         }
         default:
+      }
+    },
+    onSubmit(containerId): void {
+      console.log('da', containerId);
+      const activeFormIndex = (this.formSchema as IContainerSchema[]).findIndex(
+        (container) => container.id === containerId
+      );
+      if (activeFormIndex > -1) {
+        (this.formSchema as IContainerSchema[])[activeFormIndex].isSubmitted = true;
+        if (activeFormIndex < (this.formSchema as IContainerSchema[]).length - 1) {
+          this.activeStepId = (this.formSchema as IContainerSchema[])[activeFormIndex + 1].id;
+        }
       }
     },
   },

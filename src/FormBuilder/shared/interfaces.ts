@@ -39,6 +39,7 @@ export interface ISubContainerSchema extends IContainerComponentParentSchema {
 
 export interface IWrapperComponentSchema extends IContainerComponentParentSchema {
   component: WrapperComponentType;
+  label: string;
   validations?: IValidation[];
   isDisabled?: boolean;
   otherProps?: Object;
