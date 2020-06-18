@@ -25,7 +25,6 @@
           v-model="activeTab"
           @tabChange="handleTabChange"
           @emit="handleContainerEmit"
-          @onAfterSubmit="getDataOnSubmit"
           @submit="handleSubmit"
         />
         <form-container
@@ -35,7 +34,6 @@
           :ref="formSchema[activeContainerIndex].id"
           :id="formSchema[activeContainerIndex].id"
           @emit="handleContainerEmit"
-          @onAfterSubmit="getDataOnSubmit"
           @submit="handleSubmit"
         ></form-container>
       </div>
@@ -51,7 +49,7 @@ import FormTabbedContainer from './form-components/FormTabbedContainer.vue';
 import { IContainerSchema, IStepClickEvent } from './shared/interfaces';
 import { signals } from './shared/signals';
 import FormSummary from './FormSummary.vue';
-import { FormMode } from './shared/enums';
+import { FormMode, ContainerType } from './shared/enums';
 
 @Component({
   components: {
@@ -83,10 +81,6 @@ export default class FormIndex extends Vue {
   private activeTab: string = '';
   private mode: FormMode = FormMode.Edit;
   private FormMode: typeof FormMode = FormMode;
-
-  private getDataOnSubmit(containerId: string, data: any): void {
-    console.log('getData from index', data, containerId);
-  }
 
   private get activeContainerId(): string {
     return this.activeStep;
@@ -211,7 +205,8 @@ export default class FormIndex extends Vue {
 
   private handleSubmit(containerId: string): void {
     this.$emit('submit', containerId);
-    if (this.formSchema.findIndex((container) => containerId === container.id) === this.formSchema.length - 1) {
+    const activeFormIndex = this.formSchema.findIndex((container) => containerId === container.id);
+    if (activeFormIndex === this.formSchema.length - 1) {
       this.mode = FormMode.Review;
     }
   }

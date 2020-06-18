@@ -69,8 +69,12 @@ export default class SubContainer extends Vue {
   public isValid(showError: boolean = false): boolean {
     this.$emit(signals.ON_BEFORE_VALIDATE);
     let isValid = true;
-    this.schema.children.forEach((component: IWrapperComponentSchema): boolean => {
-      return (this.$refs[component.id] as any)[0] ? (this.$refs[component.id] as any)[0].isValid(showError) : true;
+    // It will hold the boolean flag of each component
+    const isValidList: boolean[] = [];
+    this.schema.children.forEach((component: IWrapperComponentSchema): void => {
+      isValidList.push((this.$refs[component.id] as any)[0].isValid(showError));
+      // If any of the component is not valid (isValid == false) then assign false to isValid
+      isValid = !isValidList.includes(false);
     });
     return isValid;
   }

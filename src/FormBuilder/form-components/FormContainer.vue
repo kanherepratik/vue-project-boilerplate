@@ -77,8 +77,12 @@ export default class FormContainer extends Vue {
   public isValid(showError: boolean = false): boolean {
     this.$emit(signals.ON_BEFORE_VALIDATE);
     let isValid = true;
+    // It will hold the boolean flag of each component
+    const isValidList: boolean[] = [];
     this.schema.children.forEach((component: IContainerComponentParentSchema): void => {
-      isValid = (this.$refs[component.id] as any) ? (this.$refs[component.id] as any)[0].isValid(showError) : true;
+      isValidList.push((this.$refs[component.id] as any)[0].isValid(showError));
+      // If any of the component is not valid (isValid == false) then assign false to isValid
+      isValid = !isValidList.includes(false);
     });
     return isValid;
   }
@@ -109,6 +113,5 @@ export default class FormContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}
-</style
+}</style
 >>

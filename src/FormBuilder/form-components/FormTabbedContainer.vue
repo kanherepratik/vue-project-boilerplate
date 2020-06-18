@@ -196,7 +196,9 @@ export default class FormTabbedContainer extends Vue {
     this.$emit(signals.ON_BEFORE_VALIDATE);
     let isValid = true;
     this.schema.children.forEach((component: IContainerComponentParentSchema): void => {
-      isValid = (this.$refs[component.id] as any) ? (this.$refs[component.id] as any).isValid(showError) : true;
+      if (this.$refs[component.id] as any) {
+        isValid = (this.$refs[component.id] as any).isValid(showError);
+      }
     });
     return isValid;
   }

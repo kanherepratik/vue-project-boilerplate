@@ -54,8 +54,8 @@ export default Vue.extend({
       },
     ],
     formData: {
-      ownerName: 'sumit',
-      gender: 'female',
+      ownerName: '',
+      gender: '',
       address: '',
       dob: '',
       mobile: '',
@@ -90,18 +90,18 @@ export default Vue.extend({
       console.log(eventName, fieldId, value);
       switch (fieldId) {
         case 'gender': {
-          (this.$refs.formRef as any).getFieldRef('mobile').disableField();
+          // (this.$refs.formRef as any).getFieldRef('mobile').disableField();
           break;
         }
         default:
       }
     },
     onSubmit(containerId): void {
-      console.log('da', containerId);
       const activeFormIndex = (this.formSchema as IContainerSchema[]).findIndex(
         (container) => container.id === containerId
       );
       if (activeFormIndex > -1) {
+        // set isSubmitted for the current container
         (this.formSchema as IContainerSchema[])[activeFormIndex].isSubmitted = true;
         if (activeFormIndex < (this.formSchema as IContainerSchema[]).length - 1) {
           this.activeStepId = (this.formSchema as IContainerSchema[])[activeFormIndex + 1].id;

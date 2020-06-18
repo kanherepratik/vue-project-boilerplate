@@ -1,5 +1,5 @@
 <template>
-  <div class="date-picker" :class="{'disabled-field': disabled}">
+  <div class="date-picker" :class="{ 'disabled-field': disabled }">
     <date-picker
       :mode="mode"
       :popover="{ placement: 'auto', visibility: 'click' }"
@@ -29,7 +29,7 @@ import Vue from 'vue';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import { DatePickerMode } from '../shared/enum';
 import { IDatePicker, IValidationRule, IValidation } from '../shared/interfaces';
-import { validationHandler } from '../shared/validations';
+// import { validationHandler } from '../shared/validations';
 
 /**
  * It is used to select the date
@@ -116,8 +116,8 @@ export default Vue.extend({
      * @returns boolean whether current state of the input is valid or not
      */
     isValid(): boolean {
-      this.validation = validationHandler(this.selectedDate, this.validations);
-      return this.validation.isValid;
+      // Todo: proper validation logic tbd
+      return true;
     },
   },
   components: {
