@@ -11,6 +11,7 @@
           v-on="$listeners"
           :id="componentSchema.id"
           :ref="componentSchema.id"
+          :componentMap="componentMap"
         />
       </div>
       <div v-else>
@@ -20,6 +21,7 @@
           :data="data"
           v-on="$listeners"
           :ref="componentSchema.id"
+          :componentMap="componentMap"
         />
       </div>
     </div>
@@ -36,7 +38,12 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
 import SubContainer from './SubContainer.vue';
-import { IContainerSchema, IWrapperComponentSchema, IContainerComponentParentSchema } from '../shared/interfaces';
+import {
+  IContainerSchema,
+  IWrapperComponentSchema,
+  IContainerComponentParentSchema,
+  IComponentMap,
+} from '../shared/interfaces';
 import { signals } from '../shared/signals';
 
 @Component({
@@ -54,6 +61,8 @@ export default class FormContainer extends Vue {
    * the data object with keys as fieldId and value bound to v-model of component.
    */
   @Prop({ required: true }) private data!: any;
+
+  @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
 
   private created(): void {
     this.$emit(signals.ON_CONTAINER_LOAD);

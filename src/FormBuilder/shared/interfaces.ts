@@ -1,4 +1,4 @@
-import { ContainerType, WrapperComponentType } from './enums';
+import { ContainerType } from './enums';
 
 interface IValidation {
   name: string;
@@ -38,7 +38,7 @@ export interface ISubContainerSchema extends IContainerComponentParentSchema {
 }
 
 export interface IWrapperComponentSchema extends IContainerComponentParentSchema {
-  component: WrapperComponentType;
+  component: string;
   label: string;
   validations?: IValidation[];
   isDisabled?: boolean;
