@@ -15,7 +15,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { IWrapperComponentSchema, IComponentMap, IEventMap } from '../shared/interfaces';
-import componentMap from '../config/componentMap';
 
 @Component
 export default class WrapperComponent extends Vue {
@@ -28,7 +27,7 @@ export default class WrapperComponent extends Vue {
    * It is a key of data object
    */
   @Prop({ required: true }) private data!: any;
-  private componentMap: { [key: string]: IComponentMap } = componentMap;
+  @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
   private eventMap: IEventMap = {};

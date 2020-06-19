@@ -1,5 +1,5 @@
-import { IComponentMap } from '../shared/interfaces';
-import { WrapperComponentType } from '../shared/enums';
+import { IComponentMap } from '../../FormBuilder/shared/interfaces';
+import { WrapperComponentType } from '../enums';
 
 const componentMap: { [key: string]: IComponentMap } = {
   [WrapperComponentType.Radio]: {

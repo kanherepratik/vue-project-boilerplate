@@ -12,6 +12,7 @@
       :ref="schema.children[activeContainerIndex].id"
       :id="schema.children[activeContainerIndex].id"
       :key="schema.children[activeContainerIndex].id"
+      :componentMap="componentMap"
     />
     <!--
   	  @slot Form buttons slot
@@ -30,6 +31,7 @@ import {
   IStepClickEvent,
   ISubContainerSchema,
   IContainerComponentParentSchema,
+  IComponentMap,
 } from '../shared/interfaces';
 import { signals } from '../shared/signals';
 import FormStepCounter from './FormStepCounter.vue';
@@ -53,6 +55,8 @@ export default class FormTabbedContainer extends Vue {
    * Model for activeTab. It is bound via v-model
    */
   @Model('change', { type: String }) readonly activeTab;
+
+  @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
   // private activeContainer: string = this.schema.children[0].id;
 
   private created(): void {
@@ -210,5 +214,6 @@ export default class FormTabbedContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}</style
+}
+</style
 >>

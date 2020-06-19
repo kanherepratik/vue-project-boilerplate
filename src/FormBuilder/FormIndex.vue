@@ -22,6 +22,7 @@
           :data="formData"
           :ref="formSchema[activeContainerIndex].id"
           :id="formSchema[activeContainerIndex].id"
+          :componentMap="componentMap"
           v-model="activeTab"
           @tabChange="handleTabChange"
           @emit="handleContainerEmit"
@@ -33,6 +34,7 @@
           :data="formData"
           :ref="formSchema[activeContainerIndex].id"
           :id="formSchema[activeContainerIndex].id"
+          :componentMap="componentMap"
           @emit="handleContainerEmit"
           @submit="handleSubmit"
         ></form-container>
@@ -46,7 +48,7 @@ import { Component, Vue, Prop, Watch, Model } from 'vue-property-decorator';
 import FormContainer from './form-components/FormContainer.vue';
 import FormStepCounter from './form-components/FormStepCounter.vue';
 import FormTabbedContainer from './form-components/FormTabbedContainer.vue';
-import { IContainerSchema, IStepClickEvent } from './shared/interfaces';
+import { IContainerSchema, IStepClickEvent, IComponentMap } from './shared/interfaces';
 import { signals } from './shared/signals';
 import FormSummary from './FormSummary.vue';
 import { FormMode, ContainerType } from './shared/enums';
@@ -78,6 +80,9 @@ export default class FormIndex extends Vue {
    * Model for activeStep. It is bound via v-model
    */
   @Model('change', { type: String }) readonly activeStep;
+
+  @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
+
   private activeTab: string = '';
   private mode: FormMode = FormMode.Edit;
   private FormMode: typeof FormMode = FormMode;
