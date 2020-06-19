@@ -6,6 +6,7 @@
       :formSchema="formSchema"
       :formData="formData"
       :componentMap="componentMap"
+      :signal="signals"
       v-model="activeStepId"
       @stepClick="onStepClick($event)"
       @emit="handleEvent"
@@ -20,8 +21,9 @@ import Vue from 'vue';
 // import TodoComponent from '@/components/TodoComponent.vue';
 import { get } from '@/services/api';
 import { IStepClickEvent, IContainerSchema, IComponentMap } from '@/FormBuilder/shared/interfaces';
-import FormIndex from '../../FormBuilder/FormIndex.vue';
-import componentMap from '../../shared/config/componentMap';
+import { signals as SIGNAL } from '@/FormBuilder/shared/signals';
+import FormIndex from '@/FormBuilder/FormIndex.vue';
+import componentMap from '@/shared/config/componentMap';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IData {
@@ -32,6 +34,7 @@ interface IData {
   formSchema?: any[];
   activeStepId: string;
   componentMap: { [key: string]: IComponentMap };
+  signals: { [key: string]: () => boolean };
 } // local interface for data properties
 
 export default Vue.extend({
@@ -78,11 +81,14 @@ export default Vue.extend({
     },
     formSchema: [],
     componentMap,
+    signals: {},
   }),
   created(): void {
     get('https:/jsonblob.com/api/d1ab0271-aa12-11ea-a88a-e3742b354a00', true).then((res) => {
       this.formSchema = res;
     });
+    this.signals[SIGNAL.ON_BEFORE_VALIDATE] = this.handleOnBeforeValid.bind(this);
+    this.signals[SIGNAL.ON_CONTAINER_LOAD] = this.handleOnContainerLoad.bind(this);
   },
   computed: {},
   methods: {
@@ -110,6 +116,14 @@ export default Vue.extend({
           this.activeStepId = (this.formSchema as IContainerSchema[])[activeFormIndex + 1].id;
         }
       }
+    },
+    handleOnBeforeValid(): boolean {
+      // can execute some condition and return true/false on that basis
+      return true;
+    },
+    handleOnContainerLoad(): boolean {
+      // can execute some condition and return true/false on that basis
+      return true;
     },
   },
 });
