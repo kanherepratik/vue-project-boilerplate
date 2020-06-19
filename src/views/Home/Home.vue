@@ -88,6 +88,7 @@ export default Vue.extend({
       this.formSchema = res;
     });
     this.signals[SIGNAL.ON_BEFORE_VALIDATE] = this.handleOnBeforeValid.bind(this);
+    this.signals[SIGNAL.ON_CONTAINER_LOAD] = this.handleOnContainerLoad.bind(this);
   },
   computed: {},
   methods: {
@@ -117,6 +118,10 @@ export default Vue.extend({
       }
     },
     handleOnBeforeValid(): boolean {
+      // can execute some condition and return true/false on that basis
+      return true;
+    },
+    handleOnContainerLoad(): boolean {
       // can execute some condition and return true/false on that basis
       return true;
     },

@@ -23,6 +23,7 @@
           :ref="formSchema[activeContainerIndex].id"
           :id="formSchema[activeContainerIndex].id"
           :componentMap="componentMap"
+          :signal="signal"
           v-model="activeTab"
           @tabChange="handleTabChange"
           @emit="handleContainerEmit"
