@@ -111,8 +111,7 @@ export default class FormTabbedContainer extends Vue {
     return reverseNextFormIndex === -1 ? formIndex : Math.abs(reverseNextFormIndex - (this.schema.children.length - 1));
   }
 
-  private setActiveContainer(activeContainerId: string): IStepClickEvent {
-    const stepClickEvent: IStepClickEvent = { containerId: '', containerIndex: 0, canNavigate: false };
+  private setActiveContainer(activeContainerId: string): void {
     const index: number = this.schema.children.findIndex(
       (container: IContainerComponentParentSchema) => container.id === activeContainerId && !container.isHidden
     );
@@ -129,21 +128,17 @@ export default class FormTabbedContainer extends Vue {
         (container as ISubContainerSchema).isActive = false;
         if (container.id === activeContainerId) {
           (container as ISubContainerSchema).isActive = true;
-          stepClickEvent.containerId = container.id;
-          stepClickEvent.containerIndex = index;
-          stepClickEvent.canNavigate = true;
         }
       });
     }
-    return stepClickEvent;
   }
   private handleTabChange(event: IStepClickEvent): void {
-    const activeTabEvent = this.setActiveContainer(event.containerId);
+    this.setActiveContainer(event.containerId);
     /**
      * Fired when a tab is changed/clicked.
-     * @param {IStepClickEvent} activeTabEvent
+     * @param {IStepClickEvent} event
      */
-    this.$emit('tabChange', activeTabEvent);
+    this.$emit('tabChange', event);
   }
 
   private handleSubmit(): void {
