@@ -32,6 +32,15 @@ export default Vue.extend({
   name: 'MobileInput',
   props: {
     /**
+     * Type of input
+     * @values {String, Number}
+     * @default ""
+     */
+    value: {
+      type: [String, Number],
+      default: '',
+    },
+    /**
      * Validations array of objects of type IValidationRule to valdiate the input
      * @values Array<IValidationRule>
      */
@@ -84,6 +93,9 @@ export default Vue.extend({
     inputValue: '',
     validation: { isValid: true } as IValidation,
   }),
+  mounted(): void {
+    this.inputValue = String(this.$props.value || '');
+  },
   watch: {
     value(): void {
       this.inputValue = String(this.$props.value || '');
