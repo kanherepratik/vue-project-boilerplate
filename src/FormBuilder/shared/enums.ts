@@ -3,15 +3,6 @@ export enum ContainerType {
   TabbedContainer = 'TabbedContainer',
 }
 
-export enum WrapperComponentType {
-  Radio = 'Radio',
-  Checkbox = 'Checkbox',
-  Dropdown = 'Dropdown',
-  TextInput = 'TextInput',
-  MobileInput = 'MobileInput',
-  DatePicker = 'DatePicker',
-}
-
 export enum FormMode {
   Review,
   Edit

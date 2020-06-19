@@ -8,6 +8,7 @@
       :data="data"
       v-on="$listeners"
       :ref="component.id"
+      :componentMap="componentMap"
     />
   </div>
 </template>
@@ -15,7 +16,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import WrapperComponent from './WrapperComponent.vue';
-import { ISubContainerSchema, IWrapperComponentSchema } from '../shared/interfaces';
+import { ISubContainerSchema, IWrapperComponentSchema, IComponentMap } from '../shared/interfaces';
 import { signals } from '../shared/signals';
 
 @Component({
@@ -32,6 +33,7 @@ export default class SubContainer extends Vue {
    * the data object with keys as fieldId and value bound to v-model of component.
    */
   @Prop({ required: true }) private data!: any;
+  @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
 
@@ -97,5 +99,6 @@ export default class SubContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}</style
+}
+</style
 >>

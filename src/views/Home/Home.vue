@@ -5,6 +5,7 @@
     <form-index
       :formSchema="formSchema"
       :formData="formData"
+      :componentMap="componentMap"
       v-model="activeStepId"
       @stepClick="onStepClick($event)"
       @emit="handleEvent"
@@ -17,10 +18,10 @@
 <script lang="ts">
 import Vue from 'vue';
 // import TodoComponent from '@/components/TodoComponent.vue';
-// import AppCheckbox from '@/common/components/AppCheckbox.vue';
 import { get } from '@/services/api';
-import { IStepClickEvent, IContainerSchema } from '@/FormBuilder/shared/interfaces';
+import { IStepClickEvent, IContainerSchema, IComponentMap } from '@/FormBuilder/shared/interfaces';
 import FormIndex from '../../FormBuilder/FormIndex.vue';
+import componentMap from '../../shared/config/componentMap';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IData {
@@ -30,6 +31,7 @@ interface IData {
   formData?: object;
   formSchema?: any[];
   activeStepId: string;
+  componentMap: { [key: string]: IComponentMap };
 } // local interface for data properties
 
 export default Vue.extend({
@@ -75,6 +77,7 @@ export default Vue.extend({
       prevNCB: '',
     },
     formSchema: [],
+    componentMap,
   }),
   created(): void {
     get('https:/jsonblob.com/api/d1ab0271-aa12-11ea-a88a-e3742b354a00', true).then((res) => {
