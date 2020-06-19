@@ -82,14 +82,6 @@ export default class FormIndex extends Vue {
   private mode: FormMode = FormMode.Edit;
   private FormMode: typeof FormMode = FormMode;
 
-  // created(): void {
-  //   const activeContainer = this.formSchema.find(
-  //     (container: IContainerSchema) => container.id === this.activeContainerId && !container.isHidden
-  //   );
-  //   if (activeContainer && activeContainer.component === ContainerType.TabbedContainer) {
-  //     this.activeTab = this.formSchema[this.activeContainerIndex].children[0].id;
-  //   }
-  // }
   private get activeContainerId(): string {
     return this.activeStep;
   }
@@ -141,7 +133,7 @@ export default class FormIndex extends Vue {
   s;
 
   private setActiveContainer(activeContainerId: string): IStepClickEvent {
-    let stepClickEvent;
+    const stepClickEvent: IStepClickEvent = { containerId: '', containerIndex: 0, canNavigate: false };
     const index: number = this.formSchema.findIndex(
       (container: IContainerSchema) => container.id === activeContainerId && !container.isHidden
     );
@@ -164,7 +156,9 @@ export default class FormIndex extends Vue {
         container.isActive = false;
         if (container.id === activeContainerId) {
           container.isActive = true;
-          stepClickEvent = { containerId: container.id, containerIndex: index };
+          stepClickEvent.containerId = container.id;
+          stepClickEvent.containerIndex = index;
+          stepClickEvent.canNavigate = true;
         }
       });
     } else {
@@ -184,16 +178,13 @@ export default class FormIndex extends Vue {
         }
         this.activeContainerId = this.formSchema[activeIndex].id;
       }
-      stepClickEvent = {
-        containerId: this.activeContainerId,
-        containerIndex: incompleteFormIndex,
-        canNavigate: false,
-      };
+      stepClickEvent.containerId = this.activeContainerId;
+      stepClickEvent.containerIndex = incompleteFormIndex;
+      stepClickEvent.canNavigate = false;
     }
     return stepClickEvent;
   }
   private onStepClick(event: IStepClickEvent): void {
-    // this.activeContainerId = event.containerId;
     const activeContainerEvent = this.setActiveContainer(event.containerId);
     /**
      * Fired when a step is clicked.

@@ -108,7 +108,7 @@ export default class FormTabbedContainer extends Vue {
   }
 
   private setActiveContainer(activeContainerId: string): IStepClickEvent {
-    let stepClickEvent;
+    const stepClickEvent: IStepClickEvent = { containerId: '', containerIndex: 0, canNavigate: false };
     const index: number = this.schema.children.findIndex(
       (container: IContainerComponentParentSchema) => container.id === activeContainerId && !container.isHidden
     );
@@ -125,7 +125,9 @@ export default class FormTabbedContainer extends Vue {
         (container as ISubContainerSchema).isActive = false;
         if (container.id === activeContainerId) {
           (container as ISubContainerSchema).isActive = true;
-          stepClickEvent = { containerId: container.id, containerIndex: index };
+          stepClickEvent.containerId = container.id;
+          stepClickEvent.containerIndex = index;
+          stepClickEvent.canNavigate = true;
         }
       });
     }
