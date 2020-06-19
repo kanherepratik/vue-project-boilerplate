@@ -107,7 +107,8 @@ export default class FormTabbedContainer extends Vue {
     return reverseNextFormIndex === -1 ? formIndex : Math.abs(reverseNextFormIndex - (this.schema.children.length - 1));
   }
 
-  private setActiveContainer(activeContainerId: string): void {
+  private setActiveContainer(activeContainerId: string): IStepClickEvent {
+    let stepClickEvent;
     const index: number = this.schema.children.findIndex(
       (container: IContainerComponentParentSchema) => container.id === activeContainerId && !container.isHidden
     );
@@ -119,43 +120,24 @@ export default class FormTabbedContainer extends Vue {
           '" cannot be active as it is either hidden or does not exist in the form schema'
       );
     }
-    if (
-      activeContainerId &&
-      index > -1 &&
-      (index === this.firstVisibleContainerIndex ||
-        (this.schema.children[index] as ISubContainerSchema).isSubmitted ||
-        (this.schema.children[this.previousContainerIndex(index)] as ISubContainerSchema).isSubmitted)
-    ) {
+    if (activeContainerId && index > -1) {
       this.schema.children.forEach((container: IContainerComponentParentSchema) => {
         (container as ISubContainerSchema).isActive = false;
         if (container.id === activeContainerId) {
           (container as ISubContainerSchema).isActive = true;
+          stepClickEvent = { containerId: container.id, containerIndex: index };
         }
       });
-    } else {
-      const incompleteFormIndex: number = this.schema.children.findIndex(
-        (container: IContainerComponentParentSchema) =>
-          !(container as ISubContainerSchema).isSubmitted && !container.isHidden
-      );
-
-      let activeIndex: number = this.schema.children.findIndex(
-        (container: IContainerComponentParentSchema) =>
-          (container as ISubContainerSchema).isActive === true && !container.isHidden
-      );
-      if (activeIndex === -1) {
-        // Make last submitted form active if all schema.children are submitted and no form is active
-        activeIndex = this.lastVisibleContainerIndex;
-      }
-      this.activeContainerId = this.schema.children[activeIndex].id;
     }
+    return stepClickEvent;
   }
   private handleTabChange(event: IStepClickEvent): void {
-    this.activeContainerId = event.containerId;
+    const activeTabEvent = this.setActiveContainer(event.containerId);
     /**
      * Fired when a tab is changed/clicked.
-     * @param {IStepClickEvent} event
+     * @param {IStepClickEvent} activeTabEvent
      */
-    this.$emit('tabChange', event);
+    this.$emit('tabChange', activeTabEvent);
   }
 
   private handleSubmit(): void {
