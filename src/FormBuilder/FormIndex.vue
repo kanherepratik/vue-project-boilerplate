@@ -35,6 +35,7 @@
           :ref="formSchema[activeContainerIndex].id"
           :id="formSchema[activeContainerIndex].id"
           :componentMap="componentMap"
+          :signal="signal"
           @emit="handleContainerEmit"
           @submit="handleSubmit"
         ></form-container>
@@ -82,6 +83,8 @@ export default class FormIndex extends Vue {
   @Model('change', { type: String }) readonly activeStep;
 
   @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
+
+  @Prop(Object) private signal!: { [key: string]: () => boolean };
 
   private activeTab: string = '';
   private mode: FormMode = FormMode.Edit;
