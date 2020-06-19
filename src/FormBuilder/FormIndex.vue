@@ -137,8 +137,7 @@ export default class FormIndex extends Vue {
   }
   s;
 
-  private setActiveContainer(activeContainerId: string): IStepClickEvent {
-    const stepClickEvent: IStepClickEvent = { containerId: '', containerIndex: 0, canNavigate: false };
+  private setActiveContainer(activeContainerId: string): void {
     const index: number = this.formSchema.findIndex(
       (container: IContainerSchema) => container.id === activeContainerId && !container.isHidden
     );
@@ -161,9 +160,6 @@ export default class FormIndex extends Vue {
         container.isActive = false;
         if (container.id === activeContainerId) {
           container.isActive = true;
-          stepClickEvent.containerId = container.id;
-          stepClickEvent.containerIndex = index;
-          stepClickEvent.canNavigate = true;
         }
       });
     } else {
@@ -183,19 +179,16 @@ export default class FormIndex extends Vue {
         }
         this.activeContainerId = this.formSchema[activeIndex].id;
       }
-      stepClickEvent.containerId = this.activeContainerId;
-      stepClickEvent.containerIndex = incompleteFormIndex;
-      stepClickEvent.canNavigate = false;
     }
-    return stepClickEvent;
   }
   private onStepClick(event: IStepClickEvent): void {
-    const activeContainerEvent = this.setActiveContainer(event.containerId);
+    this.setActiveContainer(event.containerId);
     /**
      * Fired when a step is clicked.
-     * @param {IStepClickEvent} activeContainerEvent
+     * @param {IStepClickEvent} event
      */
-    this.$emit('stepClick', activeContainerEvent);
+
+    this.$emit('stepClick', event);
   }
 
   private handleTabChange(event: IStepClickEvent): void {
