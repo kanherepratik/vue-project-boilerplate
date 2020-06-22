@@ -12,6 +12,7 @@
       :ref="schema.children[activeContainerIndex].id"
       :id="schema.children[activeContainerIndex].id"
       :key="schema.children[activeContainerIndex].id"
+      :signal="signal"
       :componentMap="componentMap"
     />
     <!--
@@ -107,12 +108,12 @@ export default class FormTabbedContainer extends Vue {
   }
 
   private handleTabChange(event: IStepClickEvent): void {
-    const activeTabEvent = this.setActiveContainer(event.containerId);
+    this.setActiveContainer(event.containerId);
     /**
      * Fired when a tab is changed/clicked.
-     * @param {IStepClickEvent} activeTabEvent
+     * @param {IStepClickEvent} event
      */
-    this.$emit('tabChange', activeTabEvent);
+    this.$emit('tabChange', event);
   }
 
   private handleSubmit(): void {
@@ -185,6 +186,7 @@ export default class FormTabbedContainer extends Vue {
     }
     let isValid = true;
     this.schema.children.forEach((component: IContainerComponentParentSchema): void => {
+      console.log(this.$refs[component.id]);
       if (this.$refs[component.id] as any) {
         isValid = (this.$refs[component.id] as any).isValid(showError);
       }
