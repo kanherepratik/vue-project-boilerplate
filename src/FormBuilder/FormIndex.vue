@@ -87,6 +87,10 @@ export default class FormIndex extends Vue {
   private mode: FormMode = FormMode.Edit;
   private FormMode: typeof FormMode = FormMode;
 
+  private updated(): void {
+    this.activeTab = this.activeTabId;
+  }
+
   private get activeContainerId(): string {
     return this.activeStep;
   }
@@ -125,6 +129,16 @@ export default class FormIndex extends Vue {
 
   private get allFormsSubmitted(): boolean {
     return this.formSchema.findIndex((container) => !container.isSubmitted) === -1;
+  }
+
+  private get activeTabId(): string {
+    const containerObj = this.formSchema[this.activeContainerIndex];
+    let activeId = '';
+    if (containerObj.component === ContainerType.TabbedContainer) {
+      const activeTabContainer = containerObj.children.find((component) => (component as ISubContainerSchema).isActive);
+      activeId = activeTabContainer ? activeTabContainer.id : containerObj.children[0].id;
+    }
+    return activeId;
   }
 
   private previousContainerIndex(formIndex: number): number {
