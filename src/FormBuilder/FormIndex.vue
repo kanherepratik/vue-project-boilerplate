@@ -23,7 +23,7 @@
           :ref="formSchema[activeContainerIndex].id"
           :id="formSchema[activeContainerIndex].id"
           :componentMap="componentMap"
-          v-model="activeTab"
+          v-model="activeTabId"
           @tabChange="handleTabChange"
           @emit="handleContainerEmit"
           @submit="handleSubmit"
@@ -87,10 +87,6 @@ export default class FormIndex extends Vue {
   private mode: FormMode = FormMode.Edit;
   private FormMode: typeof FormMode = FormMode;
 
-  private updated(): void {
-    this.activeTab = this.activeTabId;
-  }
-
   private get activeContainerId(): string {
     return this.activeStep;
   }
@@ -139,6 +135,10 @@ export default class FormIndex extends Vue {
       activeId = activeTabContainer ? activeTabContainer.id : containerObj.children[0].id;
     }
     return activeId;
+  }
+
+  private set activeTabId(tabId: string) {
+    this.activeTab = tabId;
   }
 
   private previousContainerIndex(formIndex: number): number {
@@ -206,7 +206,7 @@ export default class FormIndex extends Vue {
   }
 
   private handleTabChange(event: IStepClickEvent): void {
-    this.activeTab = event.containerId;
+    this.activeTabId = event.containerId;
   }
   private handleContainerEmit(eventName: string, fieldId: string, value?: any): void {
     /**
@@ -233,7 +233,7 @@ export default class FormIndex extends Vue {
       );
       if (activeTabIndex !== activeForm.children.length - 1) {
         (activeForm.children[activeTabIndex] as ISubContainerSchema).isActive = false;
-        this.activeTab = activeForm.children[activeTabIndex + 1].id;
+        this.activeTabId = activeForm.children[activeTabIndex + 1].id;
         (activeForm.children[activeTabIndex + 1] as ISubContainerSchema).isActive = true;
         return;
       }
