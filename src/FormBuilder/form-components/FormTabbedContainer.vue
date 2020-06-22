@@ -65,7 +65,7 @@ export default class FormTabbedContainer extends Vue {
   @Prop(Object) private signal!: { [key: string]: () => boolean };
 
   private created(): void {
-    this.signal[signals.ON_CONTAINER_LOAD]?.();
+    this.signal?.[signals.ON_CONTAINER_LOAD]?.();
   }
 
   private get activeContainerId(): string {
@@ -154,24 +154,6 @@ export default class FormTabbedContainer extends Vue {
     }
   }
 
-  private handleTabChange(event: IStepClickEvent): void {
-    this.setActiveContainer(event.containerId);
-    /**
-     * Fired when a tab is changed/clicked.
-     * @param {IStepClickEvent} event
-     */
-    this.$emit('tabChange', event);
-  }
-
-  private handleSubmit(): void {
-    if (!this.isValid(true)) {
-      return;
-    }
-    this.$emit('submit', this.schema.id);
-    this.$emit(signals.ON_BEFORE_SUBMIT);
-    this.$emit(signals.ON_AFTER_SUBMIT, this.schema.id, this.data);
-  }
-
   /**
    * Gets called when parent wants to access ref of the components.
    * It will return ref of wrapperComponent/subContainer
@@ -198,7 +180,7 @@ export default class FormTabbedContainer extends Vue {
    * @public
    */
   public isValid(showError: boolean = false): boolean {
-    if (!this.signal[signals.ON_BEFORE_VALIDATE]?.()) {
+    if (!this.signal?.[signals.ON_BEFORE_VALIDATE]?.()) {
       return false;
     }
     let isValid = true;

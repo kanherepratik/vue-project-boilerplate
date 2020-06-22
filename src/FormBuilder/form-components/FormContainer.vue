@@ -72,7 +72,7 @@ export default class FormContainer extends Vue {
   @Prop(Object) private signal!: { [key: string]: () => boolean };
 
   private created(): void {
-    this.signal[signals.ON_CONTAINER_LOAD]?.();
+    this.signal?.[signals.ON_CONTAINER_LOAD]?.();
   }
 
   private handleSubmit(): void {
@@ -89,7 +89,7 @@ export default class FormContainer extends Vue {
    * @public
    */
   public isValid(showError: boolean = false): boolean {
-    if (!this.signal[signals.ON_BEFORE_VALIDATE]?.()) {
+    if (!this.signal?.[signals.ON_BEFORE_VALIDATE]?.()) {
       return false;
     }
 

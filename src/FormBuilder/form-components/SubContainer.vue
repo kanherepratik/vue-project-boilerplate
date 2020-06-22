@@ -45,7 +45,7 @@ export default class SubContainer extends Vue {
   private isHidden: boolean = false;
 
   private created(): void {
-    this.signal[signals.ON_CONTAINER_LOAD]?.();
+    this.signal?.[signals.ON_CONTAINER_LOAD]?.();
   }
   /**
    * Gets called when parent wants to show a hidden subContainer
@@ -79,7 +79,7 @@ export default class SubContainer extends Vue {
    * @public
    */
   public isValid(showError: boolean = false): boolean {
-    if (!this.signal[signals.ON_BEFORE_VALIDATE]?.()) {
+    if (!this.signal?.[signals.ON_BEFORE_VALIDATE]?.()) {
       return false;
     }
 

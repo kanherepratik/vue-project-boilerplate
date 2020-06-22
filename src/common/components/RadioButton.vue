@@ -80,7 +80,7 @@ export default Vue.extend({
     this.inputValue = this.$props.value;
   },
   methods: {
-    handleChange(event, value: string): void {
+    handleChange(event: any, value: string): void {
       // Event to be discarded if input is disabled
       if (this.disabled) {
         return;
