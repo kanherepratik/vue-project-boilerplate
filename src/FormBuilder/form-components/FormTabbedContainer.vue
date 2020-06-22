@@ -109,12 +109,12 @@ export default class FormTabbedContainer extends Vue {
 
   private handleTabChange(event: IStepClickEvent): void {
     if (event.canNavigate) {
-      const activeTabEvent = this.setActiveContainer(event.containerId);
+      this.setActiveContainer(event.containerId);
       /**
        * Fired when a tab is changed/clicked.
-       * @param {IStepClickEvent} activeTabEvent
+       * @param {IStepClickEvent} event
        */
-      this.$emit('tabChange', activeTabEvent);
+      this.$emit('tabChange', event);
     }
   }
 
