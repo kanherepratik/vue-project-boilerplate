@@ -108,12 +108,14 @@ export default class FormTabbedContainer extends Vue {
   }
 
   private handleTabChange(event: IStepClickEvent): void {
-    this.setActiveContainer(event.containerId);
-    /**
-     * Fired when a tab is changed/clicked.
-     * @param {IStepClickEvent} event
-     */
-    this.$emit('tabChange', event);
+    if (event.canNavigate) {
+      this.setActiveContainer(event.containerId);
+      /**
+       * Fired when a tab is changed/clicked.
+       * @param {IStepClickEvent} event
+       */
+      this.$emit('tabChange', event);
+    }
   }
 
   private handleSubmit(): void {
@@ -146,12 +148,30 @@ export default class FormTabbedContainer extends Vue {
       );
     }
     if (activeContainerId && index > -1) {
-      this.schema.children.forEach((container: IContainerComponentParentSchema) => {
-        (container as ISubContainerSchema).isActive = false;
+      (this.schema.children as ISubContainerSchema[]).forEach((container) => {
+        container.isActive = false;
         if (container.id === activeContainerId) {
-          (container as ISubContainerSchema).isActive = true;
+          container.isActive = true;
+          this.activeContainerId = container.id;
         }
       });
+    } else {
+      const incompleteFormIndex: number = (this.schema.children as ISubContainerSchema[]).findIndex(
+        (container) => !container.isSubmitted && !container.isHidden
+      );
+      if (incompleteFormIndex > -1) {
+        // Make first un-submitted and visible form active
+        this.activeContainerId = this.schema.children[incompleteFormIndex].id;
+      } else {
+        let activeIndex: number = (this.schema.children as ISubContainerSchema[]).findIndex(
+          (container) => container.isActive === true && !container.isHidden
+        );
+        if (activeIndex === -1) {
+          // Make last submitted form active if all schema.children are submitted and no form is active
+          activeIndex = this.lastVisibleContainerIndex;
+        }
+        this.activeContainerId = this.schema.children[activeIndex].id;
+      }
     }
   }
 
@@ -186,7 +206,6 @@ export default class FormTabbedContainer extends Vue {
     }
     let isValid = true;
     this.schema.children.forEach((component: IContainerComponentParentSchema): void => {
-      console.log(this.$refs[component.id]);
       if (this.$refs[component.id] as any) {
         isValid = (this.$refs[component.id] as any).isValid(showError);
       }

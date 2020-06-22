@@ -24,8 +24,7 @@
           :id="formSchema[activeContainerIndex].id"
           :componentMap="componentMap"
           :signal="signal"
-          v-model="activeTab"
-          @tabChange="handleTabChange"
+          v-model="activeTabId"
           @emit="handleContainerEmit"
           @submit="handleSubmit"
         />
@@ -52,7 +51,7 @@ import FormStepCounter from './form-components/FormStepCounter.vue';
 import FormTabbedContainer from './form-components/FormTabbedContainer.vue';
 import { IContainerSchema, IStepClickEvent, IComponentMap, ISubContainerSchema } from './shared/interfaces';
 import { signals } from './shared/signals';
-import FormSummary from './FormSummary.vue';
+import FormSummary from './form-components/FormSummary.vue';
 import { FormMode, ContainerType } from './shared/enums';
 
 @Component({
@@ -135,7 +134,9 @@ export default class FormIndex extends Vue {
     const containerObj = this.formSchema[this.activeContainerIndex];
     let activeId = '';
     if (containerObj.component === ContainerType.TabbedContainer) {
-      const activeTabContainer = containerObj.children.find((component) => (component as ISubContainerSchema).isActive);
+      const activeTabContainer = (containerObj.children as ISubContainerSchema[]).find(
+        (component) => component.isActive
+      );
       activeId = activeTabContainer ? activeTabContainer.id : containerObj.children[0].id;
     }
     return activeId;
@@ -178,6 +179,7 @@ export default class FormIndex extends Vue {
         container.isActive = false;
         if (container.id === activeContainerId) {
           container.isActive = true;
+          this.activeContainerId = container.id;
         }
       });
     } else {
@@ -200,7 +202,9 @@ export default class FormIndex extends Vue {
     }
   }
   private onStepClick(event: IStepClickEvent): void {
-    this.setActiveContainer(event.containerId);
+    if (event.canNavigate) {
+      this.setActiveContainer(event.containerId);
+    }
     /**
      * Fired when a step is clicked.
      * @param {IStepClickEvent} event
@@ -209,9 +213,6 @@ export default class FormIndex extends Vue {
     this.$emit('stepClick', event);
   }
 
-  private handleTabChange(event: IStepClickEvent): void {
-    this.activeTabId = event.containerId;
-  }
   private handleContainerEmit(eventName: string, fieldId: string, value?: any): void {
     /**
      * This will emit an event on any change/blur/click etc. of component
@@ -229,19 +230,6 @@ export default class FormIndex extends Vue {
 
   private handleSubmit(containerId: string): void {
     const activeFormIndex = this.formSchema.findIndex((container) => containerId === container.id);
-    const activeForm = this.formSchema[activeFormIndex];
-
-    if (activeForm.component === ContainerType.TabbedContainer) {
-      const activeTabIndex = activeForm.children.findIndex(
-        (subContainer) => (subContainer as ISubContainerSchema).isActive
-      );
-      if (activeTabIndex !== activeForm.children.length - 1) {
-        (activeForm.children[activeTabIndex] as ISubContainerSchema).isActive = false;
-        this.activeTabId = activeForm.children[activeTabIndex + 1].id;
-        (activeForm.children[activeTabIndex + 1] as ISubContainerSchema).isActive = true;
-        return;
-      }
-    }
     this.$emit('submit', containerId);
     if (activeFormIndex === this.formSchema.length - 1) {
       this.mode = FormMode.Review;

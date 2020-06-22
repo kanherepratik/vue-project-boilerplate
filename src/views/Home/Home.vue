@@ -8,7 +8,6 @@
       :componentMap="componentMap"
       :signal="signals"
       v-model="activeStepId"
-      @stepClick="onStepClick($event)"
       @emit="handleEvent"
       @submit="onSubmit"
       ref="formRef"
@@ -20,10 +19,11 @@
 import Vue from 'vue';
 // import TodoComponent from '@/components/TodoComponent.vue';
 import { get } from '@/services/api';
-import { IStepClickEvent, IContainerSchema, IComponentMap } from '@/FormBuilder/shared/interfaces';
+import { IContainerSchema, IComponentMap, ISubContainerSchema } from '@/FormBuilder/shared/interfaces';
 import { signals as SIGNAL } from '@/FormBuilder/shared/signals';
 import FormIndex from '@/FormBuilder/FormIndex.vue';
 import componentMap from '@/shared/config/componentMap';
+import { ContainerType } from '../../FormBuilder/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IData {
@@ -92,9 +92,6 @@ export default Vue.extend({
   },
   computed: {},
   methods: {
-    onStepClick(event: IStepClickEvent): void {
-      this.activeStepId = event.containerId;
-    },
     handleEvent(eventName: string, fieldId: string, value?: any): void {
       console.log(eventName, fieldId, value);
       switch (fieldId) {
@@ -109,7 +106,22 @@ export default Vue.extend({
       const activeFormIndex = (this.formSchema as IContainerSchema[]).findIndex(
         (container) => container.id === containerId
       );
+      const activeForm = (this.formSchema as IContainerSchema[])[activeFormIndex];
       if (activeFormIndex > -1) {
+        // handling for tabbedContainer.
+        // Check if it is the last tab, if not move to next tab.
+        if (activeForm.component === ContainerType.TabbedContainer) {
+          const activeTabIndex = activeForm.children.findIndex(
+            (subContainer) => (subContainer as ISubContainerSchema).isActive
+          );
+          (activeForm.children[activeTabIndex] as ISubContainerSchema).isSubmitted = true;
+          if (activeTabIndex !== activeForm.children.length - 1) {
+            (activeForm.children[activeTabIndex] as ISubContainerSchema).isActive = false;
+            // this.activeTabId = activeForm.children[activeTabIndex + 1].id;
+            (activeForm.children[activeTabIndex + 1] as ISubContainerSchema).isActive = true;
+            return;
+          }
+        }
         // set isSubmitted for the current container
         (this.formSchema as IContainerSchema[])[activeFormIndex].isSubmitted = true;
         if (activeFormIndex < (this.formSchema as IContainerSchema[]).length - 1) {
