@@ -8,7 +8,6 @@
       :componentMap="componentMap"
       :signal="signals"
       v-model="activeStepId"
-      @stepClick="onStepClick($event)"
       @emit="handleEvent"
       @submit="onSubmit"
       ref="formRef"
@@ -20,7 +19,7 @@
 import Vue from 'vue';
 // import TodoComponent from '@/components/TodoComponent.vue';
 import { get } from '@/services/api';
-import { IStepClickEvent, IContainerSchema, IComponentMap } from '@/FormBuilder/shared/interfaces';
+import { IContainerSchema, IComponentMap } from '@/FormBuilder/shared/interfaces';
 import { signals as SIGNAL } from '@/FormBuilder/shared/signals';
 import FormIndex from '@/FormBuilder/FormIndex.vue';
 import componentMap from '@/shared/config/componentMap';
@@ -92,9 +91,6 @@ export default Vue.extend({
   },
   computed: {},
   methods: {
-    onStepClick(event: IStepClickEvent): void {
-      this.activeStepId = event.containerId;
-    },
     handleEvent(eventName: string, fieldId: string, value?: any): void {
       console.log(eventName, fieldId, value);
       switch (fieldId) {

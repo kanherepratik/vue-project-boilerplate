@@ -24,7 +24,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { IContainerSchema } from './shared/interfaces';
+import { IContainerSchema } from '../shared/interfaces';
 
 @Component
 export default class FormSummary extends Vue {
