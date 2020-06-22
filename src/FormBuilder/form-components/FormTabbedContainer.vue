@@ -12,6 +12,7 @@
       :ref="schema.children[activeContainerIndex].id"
       :id="schema.children[activeContainerIndex].id"
       :key="schema.children[activeContainerIndex].id"
+      :signal="signal"
       :componentMap="componentMap"
     />
     <!--
@@ -55,12 +56,17 @@ export default class FormTabbedContainer extends Vue {
    * Model for activeTab. It is bound via v-model
    */
   @Model('change', { type: String }) readonly activeTab;
-
+  /**
+   * Mapping for form-components
+   */
   @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
-  // private activeContainer: string = this.schema.children[0].id;
+  /**
+   * Maping for signal callbacks
+   */
+  @Prop(Object) private signal!: { [key: string]: () => boolean };
 
   private created(): void {
-    this.$emit(signals.ON_CONTAINER_LOAD);
+    this.signal?.[signals.ON_CONTAINER_LOAD]?.();
   }
 
   private get activeContainerId(): string {
@@ -101,6 +107,22 @@ export default class FormTabbedContainer extends Vue {
     return this.firstVisibleContainerIndex > -1 && this.activeContainerIndex > this.firstVisibleContainerIndex;
   }
 
+  private handleTabChange(event: IStepClickEvent): void {
+    this.setActiveContainer(event.containerId);
+    /**
+     * Fired when a tab is changed/clicked.
+     * @param {IStepClickEvent} event
+     */
+    this.$emit('tabChange', event);
+  }
+
+  private handleSubmit(): void {
+    if (!this.isValid(true)) {
+      return;
+    }
+    this.$emit('submit', this.schema.id);
+  }
+
   private previousContainerIndex(formIndex: number): number {
     const reverseContainers: IContainerComponentParentSchema[] = [...this.schema.children].reverse();
     const reverseContainerIndex: number = Math.abs(formIndex - (this.schema.children.length - 1));
@@ -132,23 +154,6 @@ export default class FormTabbedContainer extends Vue {
       });
     }
   }
-  private handleTabChange(event: IStepClickEvent): void {
-    this.setActiveContainer(event.containerId);
-    /**
-     * Fired when a tab is changed/clicked.
-     * @param {IStepClickEvent} event
-     */
-    this.$emit('tabChange', event);
-  }
-
-  private handleSubmit(): void {
-    if (!this.isValid(true)) {
-      return;
-    }
-    this.$emit('submit', this.schema.id);
-    this.$emit(signals.ON_BEFORE_SUBMIT);
-    this.$emit(signals.ON_AFTER_SUBMIT, this.schema.id, this.data);
-  }
 
   /**
    * Gets called when parent wants to access ref of the components.
@@ -176,9 +181,12 @@ export default class FormTabbedContainer extends Vue {
    * @public
    */
   public isValid(showError: boolean = false): boolean {
-    this.$emit(signals.ON_BEFORE_VALIDATE);
+    if (!this.signal?.[signals.ON_BEFORE_VALIDATE]?.()) {
+      return false;
+    }
     let isValid = true;
     this.schema.children.forEach((component: IContainerComponentParentSchema): void => {
+      console.log(this.$refs[component.id]);
       if (this.$refs[component.id] as any) {
         isValid = (this.$refs[component.id] as any).isValid(showError);
       }

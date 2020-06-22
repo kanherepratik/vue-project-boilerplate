@@ -33,10 +33,20 @@ export default class SubContainer extends Vue {
    * the data object with keys as fieldId and value bound to v-model of component.
    */
   @Prop({ required: true }) private data!: any;
+  /**
+   * Mapping for form-components
+   */
   @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
+  /**
+   * Maping for signal callbacks
+   */
+  @Prop(Object) private signal!: { [key: string]: () => boolean };
   private isDisabled: boolean = false;
   private isHidden: boolean = false;
 
+  private created(): void {
+    this.signal?.[signals.ON_CONTAINER_LOAD]?.();
+  }
   /**
    * Gets called when parent wants to show a hidden subContainer
    * @public
@@ -69,7 +79,10 @@ export default class SubContainer extends Vue {
    * @public
    */
   public isValid(showError: boolean = false): boolean {
-    this.$emit(signals.ON_BEFORE_VALIDATE);
+    if (!this.signal?.[signals.ON_BEFORE_VALIDATE]?.()) {
+      return false;
+    }
+
     let isValid = true;
     // It will hold the boolean flag of each component
     const isValidList: boolean[] = [];

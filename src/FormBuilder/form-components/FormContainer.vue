@@ -8,6 +8,7 @@
           :key="componentSchema.id"
           :schema="componentSchema"
           :data="data"
+          :signal="signal"
           v-on="$listeners"
           :id="componentSchema.id"
           :ref="componentSchema.id"
@@ -61,11 +62,17 @@ export default class FormContainer extends Vue {
    * the data object with keys as fieldId and value bound to v-model of component.
    */
   @Prop({ required: true }) private data!: any;
-
+  /**
+   * Mapping for form-components
+   */
   @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
+  /**
+   * Maping for signal callbacks
+   */
+  @Prop(Object) private signal!: { [key: string]: () => boolean };
 
   private created(): void {
-    this.$emit(signals.ON_CONTAINER_LOAD);
+    this.signal?.[signals.ON_CONTAINER_LOAD]?.();
   }
 
   private handleSubmit(): void {
@@ -73,8 +80,6 @@ export default class FormContainer extends Vue {
       return;
     }
     this.$emit('submit', this.schema.id);
-    this.$emit(signals.ON_BEFORE_SUBMIT);
-    this.$emit(signals.ON_AFTER_SUBMIT, this.schema.id, this.data);
   }
 
   /**
@@ -84,7 +89,10 @@ export default class FormContainer extends Vue {
    * @public
    */
   public isValid(showError: boolean = false): boolean {
-    this.$emit(signals.ON_BEFORE_VALIDATE);
+    if (!this.signal?.[signals.ON_BEFORE_VALIDATE]?.()) {
+      return false;
+    }
+
     let isValid = true;
     // It will hold the boolean flag of each component
     const isValidList: boolean[] = [];
@@ -122,5 +130,6 @@ export default class FormContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}</style
+}
+</style
 >>
