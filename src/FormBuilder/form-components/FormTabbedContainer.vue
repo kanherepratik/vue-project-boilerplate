@@ -108,12 +108,14 @@ export default class FormTabbedContainer extends Vue {
   }
 
   private handleTabChange(event: IStepClickEvent): void {
-    this.setActiveContainer(event.containerId);
-    /**
-     * Fired when a tab is changed/clicked.
-     * @param {IStepClickEvent} event
-     */
-    this.$emit('tabChange', event);
+    if (event.canNavigate) {
+      const activeTabEvent = this.setActiveContainer(event.containerId);
+      /**
+       * Fired when a tab is changed/clicked.
+       * @param {IStepClickEvent} activeTabEvent
+       */
+      this.$emit('tabChange', activeTabEvent);
+    }
   }
 
   private handleSubmit(): void {
@@ -150,6 +152,7 @@ export default class FormTabbedContainer extends Vue {
         (container as ISubContainerSchema).isActive = false;
         if (container.id === activeContainerId) {
           (container as ISubContainerSchema).isActive = true;
+          this.activeContainerId = container.id;
         }
       });
     }

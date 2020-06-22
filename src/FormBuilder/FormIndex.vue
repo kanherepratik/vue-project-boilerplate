@@ -25,7 +25,6 @@
           :componentMap="componentMap"
           :signal="signal"
           v-model="activeTab"
-          @tabChange="handleTabChange"
           @emit="handleContainerEmit"
           @submit="handleSubmit"
         />
@@ -52,7 +51,7 @@ import FormStepCounter from './form-components/FormStepCounter.vue';
 import FormTabbedContainer from './form-components/FormTabbedContainer.vue';
 import { IContainerSchema, IStepClickEvent, IComponentMap, ISubContainerSchema } from './shared/interfaces';
 import { signals } from './shared/signals';
-import FormSummary from './FormSummary.vue';
+import FormSummary from './form-components/FormSummary.vue';
 import { FormMode, ContainerType } from './shared/enums';
 
 @Component({
@@ -164,6 +163,7 @@ export default class FormIndex extends Vue {
         container.isActive = false;
         if (container.id === activeContainerId) {
           container.isActive = true;
+          this.activeContainerId = container.id;
         }
       });
     } else {
@@ -186,7 +186,9 @@ export default class FormIndex extends Vue {
     }
   }
   private onStepClick(event: IStepClickEvent): void {
-    this.setActiveContainer(event.containerId);
+    if (event.canNavigate) {
+      this.setActiveContainer(event.containerId);
+    }
     /**
      * Fired when a step is clicked.
      * @param {IStepClickEvent} event
@@ -195,9 +197,6 @@ export default class FormIndex extends Vue {
     this.$emit('stepClick', event);
   }
 
-  private handleTabChange(event: IStepClickEvent): void {
-    this.activeTab = event.containerId;
-  }
   private handleContainerEmit(eventName: string, fieldId: string, value?: any): void {
     /**
      * This will emit an event on any change/blur/click etc. of component
