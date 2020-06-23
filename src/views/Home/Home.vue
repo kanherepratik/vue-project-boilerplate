@@ -7,9 +7,7 @@
       :formData="formData"
       :componentMap="componentMap"
       :signal="signals"
-      v-model="activeStepId"
       @emit="handleEvent"
-      @submit="onSubmit"
       ref="formRef"
     />
   </div>
@@ -31,7 +29,6 @@ interface IData {
   validations?: any[];
   formData?: object;
   formSchema?: any[];
-  activeStepId: string;
   componentMap: { [key: string]: IComponentMap };
   signals: { [key: string]: () => boolean };
 } // local interface for data properties
@@ -44,7 +41,6 @@ export default Vue.extend({
     'form-index': FormIndex,
   },
   data: (): IData => ({
-    activeStepId: '',
     selectedItems: [],
     validations: [{ name: 'required', message: 'I am super important' }],
     options: [
@@ -88,6 +84,7 @@ export default Vue.extend({
     });
     this.signals[SIGNAL.ON_BEFORE_VALIDATE] = this.handleOnBeforeValid.bind(this);
     this.signals[SIGNAL.ON_CONTAINER_LOAD] = this.handleOnContainerLoad.bind(this);
+    this.signals[SIGNAL.ON_AFTER_SUBMIT] = this.handleOnAfterSubmit.bind(this);
   },
   computed: {},
   methods: {
@@ -101,24 +98,20 @@ export default Vue.extend({
         default:
       }
     },
-    onSubmit(containerId): void {
-      const activeFormIndex = (this.formSchema as IContainerSchema[]).findIndex(
-        (container) => container.id === containerId
-      );
-      if (activeFormIndex > -1) {
-        // set isSubmitted for the current container
-        (this.formSchema as IContainerSchema[])[activeFormIndex].isSubmitted = true;
-        if (activeFormIndex < (this.formSchema as IContainerSchema[]).length - 1) {
-          this.activeStepId = (this.formSchema as IContainerSchema[])[activeFormIndex + 1].id;
-        }
-      }
-    },
+
     handleOnBeforeValid(): boolean {
       // can execute some condition and return true/false on that basis
       return true;
     },
     handleOnContainerLoad(): boolean {
       // can execute some condition and return true/false on that basis
+      return true;
+    },
+    handleOnAfterSubmit(): boolean {
+      /**
+       * API call here on submit of container
+       * returns true in case of success else false
+       */
       return true;
     },
   },

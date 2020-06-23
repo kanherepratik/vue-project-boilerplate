@@ -189,7 +189,6 @@ export default class FormTabbedContainer extends Vue {
     }
     let isValid = true;
     this.schema.children.forEach((component: IContainerComponentParentSchema): void => {
-      console.log(this.$refs[component.id]);
       if (this.$refs[component.id] as any) {
         isValid = (this.$refs[component.id] as any).isValid(showError);
       }
@@ -204,6 +203,5 @@ export default class FormTabbedContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}
-</style
+}</style
 >>
