@@ -17,7 +17,7 @@
 import Vue from 'vue';
 // import TodoComponent from '@/components/TodoComponent.vue';
 import { get } from '@/services/api';
-import { IContainerSchema, IComponentMap } from '@/FormBuilder/shared/interfaces';
+import { IComponentMap } from '@/FormBuilder/shared/interfaces';
 import { signals as SIGNAL } from '@/FormBuilder/shared/signals';
 import FormIndex from '@/FormBuilder/FormIndex.vue';
 import componentMap from '@/shared/config/componentMap';
@@ -30,7 +30,7 @@ interface IData {
   formData?: object;
   formSchema?: any[];
   componentMap: { [key: string]: IComponentMap };
-  signals: { [key: string]: () => boolean };
+  signals: { [key: string]: () => boolean | Promise<boolean> };
 } // local interface for data properties
 
 export default Vue.extend({
@@ -84,7 +84,7 @@ export default Vue.extend({
     });
     this.signals[SIGNAL.ON_BEFORE_VALIDATE] = this.handleOnBeforeValid.bind(this);
     this.signals[SIGNAL.ON_CONTAINER_LOAD] = this.handleOnContainerLoad.bind(this);
-    this.signals[SIGNAL.ON_AFTER_SUBMIT] = this.handleOnAfterSubmit.bind(this);
+    this.signals[SIGNAL.ON_SUBMIT] = this.handleOnSubmit.bind(this);
   },
   computed: {},
   methods: {
@@ -107,12 +107,14 @@ export default Vue.extend({
       // can execute some condition and return true/false on that basis
       return true;
     },
-    handleOnAfterSubmit(): boolean {
+    handleOnSubmit(): Promise<boolean> {
       /**
        * API call here on submit of container
        * returns true in case of success else false
        */
-      return true;
+      return new Promise((resolve) => {
+        resolve(true);
+      });
     },
   },
 });

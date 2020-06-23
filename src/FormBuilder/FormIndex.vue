@@ -257,19 +257,15 @@ export default class FormIndex extends Vue {
     }
   }
 
-  private async handleSubmit(containerId: string): Promise<any> {
-    const isSubmitSuccess = await this.signal?.[signals.ON_AFTER_SUBMIT]?.();
+  private async handleSubmit(containerId: string): Promise<void> {
+    const isSubmitSuccess = await this.signal?.[signals.ON_SUBMIT]?.();
     const activeFormIndex = this.formSchema.findIndex((container) => containerId === container.id);
     const activeForm = this.formSchema[activeFormIndex];
     if (!isSubmitSuccess) {
       activeForm.isSubmitted = false;
-    } else {
-      if (activeForm.component === ContainerType.TabbedContainer) {
-        this.setNextActive(activeForm.id, true);
-      } else {
-        this.setNextActive(activeForm.id);
-      }
+      return;
     }
+    this.setNextActive(activeForm.id, activeForm.component === ContainerType.TabbedContainer);
   }
 
   /**
