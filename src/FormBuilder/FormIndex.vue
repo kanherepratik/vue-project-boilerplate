@@ -11,7 +11,7 @@
         <form-step-counter
           :containerList="formSchema"
           :data="formData"
-          :activeContainerId="activeStep"
+          :activeContainerId="activeContainerId"
           @stepClick="onStepClick($event)"
         >
           <template slot="stepNumber" slot-scope="slotProps">{{ slotProps.index + 1 }}</template>
@@ -80,12 +80,12 @@ export default class FormIndex extends Vue {
   /**
    * Model for activeStep. It is bound via v-model
    */
-  @Model('change', { type: String }) readonly activeStep;
 
   @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
 
   @Prop(Object) private signal!: { [key: string]: () => boolean };
 
+  private activeStep: string = '';
   private activeTab: string = '';
   private mode: FormMode = FormMode.Edit;
   private FormMode: typeof FormMode = FormMode;
@@ -94,7 +94,7 @@ export default class FormIndex extends Vue {
     return this.activeStep;
   }
   private set activeContainerId(activeContainerId: string) {
-    this.$emit('change', activeContainerId);
+    this.activeStep = activeContainerId;
   }
 
   private get activeContainerIndex(): number {
@@ -103,6 +103,17 @@ export default class FormIndex extends Vue {
     );
     if (index === -1) {
       return this.firstVisibleContainerIndex === -1 ? 0 : this.firstVisibleContainerIndex;
+    }
+    return index;
+  }
+
+  private get activeTabIndex(): number {
+    const index = this.formSchema[this.activeContainerIndex].children.findIndex(
+      (subContainer) => (subContainer as ISubContainerSchema).id === this.activeTab
+    );
+
+    if (index === -1) {
+      return 0;
     }
     return index;
   }
@@ -138,20 +149,23 @@ export default class FormIndex extends Vue {
     );
     return reverseNextFormIndex === -1 ? formIndex : Math.abs(reverseNextFormIndex - (this.formSchema.length - 1));
   }
-  s;
-
+  /**
+   * This method handles the steps change and make the container active.
+   */
   private setActiveContainer(activeContainerId: string): void {
     const index: number = this.formSchema.findIndex(
       (container: IContainerSchema) => container.id === activeContainerId && !container.isHidden
     );
     // Error message in case of invalid form id
-    if (activeContainerId && index === -1) {
+    if (index === -1) {
       console.error(
         'Form Id: "' +
           activeContainerId +
           '" cannot be active as it is either hidden or does not exist in the form schema'
       );
     }
+    // check if previous form is submitted then make the current form active.
+    // If it is the first form make it active.
     if (
       activeContainerId &&
       index > -1 &&
@@ -185,6 +199,7 @@ export default class FormIndex extends Vue {
       }
     }
   }
+
   private onStepClick(event: IStepClickEvent): void {
     if (event.canNavigate) {
       this.setActiveContainer(event.containerId);
@@ -209,28 +224,48 @@ export default class FormIndex extends Vue {
 
   private onSummaryEdit(containerId: string): void {
     this.mode = FormMode.Edit;
-    this.activeContainerId = containerId;
+    this.setActiveContainer(containerId);
+    // reset active tab on edit
+    this.activeTab = this.formSchema[this.activeContainerIndex]?.children[0].id;
   }
 
-  private handleSubmit(containerId: string): void {
+  /**
+   * This method takes care of container isActive and isSubmitted on submit.
+   */
+  private setNextActive(containerId: string, isTab: boolean = false): void {
     const activeFormIndex = this.formSchema.findIndex((container) => containerId === container.id);
     const activeForm = this.formSchema[activeFormIndex];
 
-    if (activeForm.component === ContainerType.TabbedContainer) {
-      const activeTabIndex = activeForm.children.findIndex(
-        (subContainer) => (subContainer as ISubContainerSchema).isActive
-      );
-      if (activeTabIndex !== activeForm.children.length - 1) {
-        (activeForm.children[activeTabIndex] as ISubContainerSchema).isActive = false;
-        this.activeTab = activeForm.children[activeTabIndex + 1].id;
-        (activeForm.children[activeTabIndex + 1] as ISubContainerSchema).isActive = true;
+    // Check if its a tabbed container
+    if (isTab) {
+      (activeForm.children[this.activeTabIndex] as ISubContainerSchema).isSubmitted = true;
+      (activeForm.children[this.activeTabIndex] as ISubContainerSchema).isActive = false;
+      if (this.activeTabIndex !== activeForm.children.length - 1) {
+        (activeForm.children[this.activeTabIndex + 1] as ISubContainerSchema).isActive = true;
+        this.activeTab = (activeForm.children[this.activeTabIndex + 1] as ISubContainerSchema).id;
         return;
       }
     }
-    this.$emit('submit', containerId);
+    // if its the last tab then simply mark submitted
+    activeForm.isSubmitted = true;
     if (activeFormIndex === this.formSchema.length - 1) {
+      this.formSchema[activeFormIndex].isActive = false;
       this.mode = FormMode.Review;
+    } else {
+      // set next container's isActive to true in formSchema
+      this.setActiveContainer(this.formSchema[activeFormIndex + 1].id);
     }
+  }
+
+  private async handleSubmit(containerId: string): Promise<void> {
+    const isSubmitSuccess = await this.signal?.[signals.ON_SUBMIT]?.();
+    const activeFormIndex = this.formSchema.findIndex((container) => containerId === container.id);
+    const activeForm = this.formSchema[activeFormIndex];
+    if (!isSubmitSuccess) {
+      activeForm.isSubmitted = false;
+      return;
+    }
+    this.setNextActive(activeForm.id, activeForm.component === ContainerType.TabbedContainer);
   }
 
   /**

@@ -6,6 +6,7 @@ export enum signals {
   ON_AFTER_EDIT = 'onAfterEdit',
   ON_BEFORE_SUBMIT = 'onBeforeSubmit',
   ON_AFTER_SUBMIT = 'onAfterSubmit',
+  ON_SUBMIT = 'onSubmit',
   ON_BEFORE_TAB_CHANGE = 'onBeforeTabChange',
   ON_AFTER_TAB_CHANGE = 'onAfterTabChange',
   CLEAR_ERROR = 'clearError',
