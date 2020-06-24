@@ -88,7 +88,7 @@ export default Vue.extend({
   },
   watch: {
     value(): void {
-      this.selectedDate = this.$props.value;
+      this.selectedDate = this.value;
     },
   },
   created() {
@@ -96,7 +96,7 @@ export default Vue.extend({
      * In future for multiple dates or ranges map the props to appropriate form
      * and then pass to date-picker library
      */
-    this.selectedDate = this.$props.value;
+    this.selectedDate = this.value;
   },
   methods: {
     /**

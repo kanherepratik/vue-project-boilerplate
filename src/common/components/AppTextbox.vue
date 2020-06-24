@@ -30,13 +30,6 @@ import Vue from 'vue';
 import { IAppTextboxData, IValidationRule, IValidation } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
 
-
-// local interface for data properties
-interface IAppTextboxData {
-  inputValue: string;
-  validation: IValidation; // To store the validation object
-}
-
 export default Vue.extend({
   name: 'AppTextbox',
   props: {

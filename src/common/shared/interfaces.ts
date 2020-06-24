@@ -113,8 +113,8 @@ export interface ISingleSelectData {
 
 // Textbox Component interfaces
 export interface IAppTextboxData {
-  inputVal: string;
-  validation: IValidation;
+  inputValue: string;
+  validation: IValidation; // To store the validation object
 }
 
 // Registration Component interfaces
