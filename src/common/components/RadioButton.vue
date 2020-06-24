@@ -20,14 +20,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { IValidation, IValidationRule } from '../shared/interfaces';
+import { IValidation, IValidationRule, IOption } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
-
-// local interface for items properties
-interface IItemProps {
-  value: string;
-  label: string;
-}
 
 interface IRadioButtonData {
   inputValue: string;
@@ -55,8 +49,8 @@ export default Vue.extend({
       default: '',
     },
     items: {
-      type: Array as () => Array<IItemProps>,
-      default: (): Array<IItemProps> => [],
+      type: Array as () => Array<IOption>,
+      default: (): Array<IOption> => [],
     },
     /**
      * Validations array of objects of type IValidationRule to valdiate the input

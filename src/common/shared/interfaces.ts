@@ -84,7 +84,7 @@ export interface IInitStepperStep {
 
 export interface IOption {
   label: string;
-  value: string;
+  value: any;
 }
 
 export interface ICheckboxOption extends IOption {
@@ -111,10 +111,21 @@ export interface ISingleSelectData {
   validation: IValidation;
 }
 
-// Date picker interfaces
+// Textbox Component interfaces
+export interface IAppTextboxData {
+  inputValue: string;
+  validation: IValidation; // To store the validation object
+}
 
+// Registration Component interfaces
+export interface IRegistrationInputData {
+  registrationValidations: Array<IValidationRule>;
+  value: string;
+  validation: IValidation;
+}
+
+// Date picker interfaces
 export interface IDatePicker {
-  configuredDates: Date | string;
   selectedDate: Date | string;
   errorMessage: string;
   validation: IValidation;

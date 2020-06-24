@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <!-- <todo-component />
-    <app-checkbox />-->
+    <!-- <todo-component /> -->
     <form-index
       :formSchema="formSchema"
       :formData="formData"

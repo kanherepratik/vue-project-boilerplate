@@ -12,6 +12,7 @@
         :type="inputType"
         :autofocus="autoFocus"
         :placeholder="placeholder"
+        :maxlength="maxLength"
         :disabled="disabled"
         @input="onChange"
         @focus="onFocus"
@@ -26,21 +27,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { IValidationRule, IValidation } from '../shared/interfaces';
+import { IAppTextboxData, IValidationRule, IValidation } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
-
-// local interface for data properties
-interface IAppTextboxData {
-  inputValue: string;
-  validation: IValidation; // To store the validation object
-}
 
 export default Vue.extend({
   name: 'AppTextbox',
-  /**
-   * Model of the component
-   * prop contains the state of the component
-   */
   props: {
     /**
      * Type of input
@@ -72,6 +63,12 @@ export default Vue.extend({
     /**
      * Max length of the input
      * @values Number
+     */
+    maxLength: Number,
+    /**
+     * Flag to show the clear input symbol
+     * @values Boolean
+     * @default false
      */
     clearable: {
       type: Boolean,
@@ -140,7 +137,6 @@ export default Vue.extend({
   mounted(): void {
     this.inputValue = String(this.$props.value || '');
   },
-
   methods: {
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not
