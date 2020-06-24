@@ -7,9 +7,7 @@
       :formData="formData"
       :componentMap="componentMap"
       :signal="signals"
-      v-model="activeStepId"
       @emit="handleEvent"
-      @submit="onSubmit"
       ref="formRef"
     />
   </div>
@@ -19,7 +17,7 @@
 import Vue from 'vue';
 // import TodoComponent from '@/components/TodoComponent.vue';
 import { get } from '@/services/api';
-import { IContainerSchema, IComponentMap } from '@/FormBuilder/shared/interfaces';
+import { IComponentMap } from '@/FormBuilder/shared/interfaces';
 import { signals as SIGNAL } from '@/FormBuilder/shared/signals';
 import FormIndex from '@/FormBuilder/FormIndex.vue';
 import componentMap from '@/shared/config/componentMap';
@@ -31,9 +29,8 @@ interface IData {
   validations?: any[];
   formData?: object;
   formSchema?: any[];
-  activeStepId: string;
   componentMap: { [key: string]: IComponentMap };
-  signals: { [key: string]: () => boolean };
+  signals: { [key: string]: () => boolean | Promise<boolean> };
 } // local interface for data properties
 
 export default Vue.extend({
@@ -44,7 +41,6 @@ export default Vue.extend({
     'form-index': FormIndex,
   },
   data: (): IData => ({
-    activeStepId: '',
     selectedItems: [],
     validations: [{ name: 'required', message: 'I am super important' }],
     options: [
@@ -88,6 +84,7 @@ export default Vue.extend({
     });
     this.signals[SIGNAL.ON_BEFORE_VALIDATE] = this.handleOnBeforeValid.bind(this);
     this.signals[SIGNAL.ON_CONTAINER_LOAD] = this.handleOnContainerLoad.bind(this);
+    this.signals[SIGNAL.ON_SUBMIT] = this.handleOnSubmit.bind(this);
   },
   computed: {},
   methods: {
@@ -101,18 +98,7 @@ export default Vue.extend({
         default:
       }
     },
-    onSubmit(containerId): void {
-      const activeFormIndex = (this.formSchema as IContainerSchema[]).findIndex(
-        (container) => container.id === containerId
-      );
-      if (activeFormIndex > -1) {
-        // set isSubmitted for the current container
-        (this.formSchema as IContainerSchema[])[activeFormIndex].isSubmitted = true;
-        if (activeFormIndex < (this.formSchema as IContainerSchema[]).length - 1) {
-          this.activeStepId = (this.formSchema as IContainerSchema[])[activeFormIndex + 1].id;
-        }
-      }
-    },
+
     handleOnBeforeValid(): boolean {
       // can execute some condition and return true/false on that basis
       return true;
@@ -120,6 +106,15 @@ export default Vue.extend({
     handleOnContainerLoad(): boolean {
       // can execute some condition and return true/false on that basis
       return true;
+    },
+    handleOnSubmit(): Promise<boolean> {
+      /**
+       * API call here on submit of container
+       * returns true in case of success else false
+       */
+      return new Promise((resolve) => {
+        resolve(true);
+      });
     },
   },
 });

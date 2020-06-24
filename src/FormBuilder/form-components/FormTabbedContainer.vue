@@ -36,6 +36,12 @@ import {
 } from '../shared/interfaces';
 import { signals } from '../shared/signals';
 import FormStepCounter from './FormStepCounter.vue';
+import {
+  getFirstVisibleContainerIndex,
+  getLastVisibleContainerIndex,
+  getPreviousContainerIndex,
+  getActiveContainerIndex,
+} from '../shared/utils';
 
 @Component({
   components: {
@@ -69,6 +75,13 @@ export default class FormTabbedContainer extends Vue {
     this.signal?.[signals.ON_CONTAINER_LOAD]?.();
   }
 
+  /**
+   * getters methods starts
+   */
+  private get tabs(): ISubContainerSchema[] {
+    return this.schema.children as ISubContainerSchema[];
+  }
+
   private get activeContainerId(): string {
     return this.activeTab;
   }
@@ -77,9 +90,7 @@ export default class FormTabbedContainer extends Vue {
   }
 
   private get activeContainerIndex(): number {
-    const index: number = this.schema.children.findIndex(
-      (container: IContainerComponentParentSchema) => container.id === this.activeContainerId && !container.isHidden
-    );
+    const index = getActiveContainerIndex(this.tabs, this.activeContainerId);
     if (index === -1) {
       return this.firstVisibleContainerIndex === -1 ? 0 : this.firstVisibleContainerIndex;
     }
@@ -87,26 +98,54 @@ export default class FormTabbedContainer extends Vue {
   }
 
   private get firstVisibleContainerIndex(): number {
-    const index: number = this.schema.children.findIndex(
-      (container: IContainerComponentParentSchema) => !container.isHidden
-    );
-    return index === -1 ? 0 : index;
+    return getFirstVisibleContainerIndex(this.tabs);
   }
 
   private get lastVisibleContainerIndex(): number {
-    const reverseContainers: IContainerComponentParentSchema[] = [...this.schema.children].reverse();
-    const reverseContainerIndex: number = reverseContainers.findIndex(
-      (container: IContainerComponentParentSchema) => !container.isHidden
-    );
-    return reverseContainerIndex === -1
-      ? this.schema.children.length - 1
-      : Math.abs(reverseContainerIndex - (this.schema.children.length - 1));
+    return getLastVisibleContainerIndex(this.tabs);
   }
 
   private get isPreviousVisible(): boolean {
     return this.firstVisibleContainerIndex > -1 && this.activeContainerIndex > this.firstVisibleContainerIndex;
   }
+  /**
+   * getters methods ends
+   */
 
+  private previousContainerIndex(formIndex: number): number {
+    return getPreviousContainerIndex(this.tabs, formIndex);
+  }
+
+  private setActiveContainer(activeContainerId: string): void {
+    const index = getActiveContainerIndex(this.tabs, activeContainerId);
+    // Error message in case of invalid form id
+    if (activeContainerId && index === -1) {
+      console.error(
+        'Form Id: "' +
+          activeContainerId +
+          '" cannot be active as it is either hidden or does not exist in the form schema'
+      );
+    }
+    if (
+      activeContainerId &&
+      index > -1 &&
+      (index === this.firstVisibleContainerIndex ||
+        this.tabs[index].isSubmitted ||
+        this.tabs[this.previousContainerIndex(index)].isSubmitted)
+    ) {
+      this.tabs.forEach((container) => {
+        container.isActive = false;
+        if (container.id === activeContainerId) {
+          container.isActive = true;
+          this.activeContainerId = container.id;
+        }
+      });
+    }
+  }
+
+  /**
+   * event handlers methods
+   */
   private handleTabChange(event: IStepClickEvent): void {
     if (event.canNavigate) {
       this.setActiveContainer(event.containerId);
@@ -125,39 +164,6 @@ export default class FormTabbedContainer extends Vue {
     this.$emit('submit', this.schema.id);
   }
 
-  private previousContainerIndex(formIndex: number): number {
-    const reverseContainers: IContainerComponentParentSchema[] = [...this.schema.children].reverse();
-    const reverseContainerIndex: number = Math.abs(formIndex - (this.schema.children.length - 1));
-    const reverseNextFormIndex: number = reverseContainers.findIndex(
-      (container: IContainerComponentParentSchema, index: number) =>
-        index > reverseContainerIndex && !container.isHidden
-    );
-    return reverseNextFormIndex === -1 ? formIndex : Math.abs(reverseNextFormIndex - (this.schema.children.length - 1));
-  }
-
-  private setActiveContainer(activeContainerId: string): void {
-    const index: number = this.schema.children.findIndex(
-      (container: IContainerComponentParentSchema) => container.id === activeContainerId && !container.isHidden
-    );
-    // Error message in case of invalid form id
-    if (activeContainerId && index === -1) {
-      console.error(
-        'Form Id: "' +
-          activeContainerId +
-          '" cannot be active as it is either hidden or does not exist in the form schema'
-      );
-    }
-    if (activeContainerId && index > -1) {
-      this.schema.children.forEach((container: IContainerComponentParentSchema) => {
-        (container as ISubContainerSchema).isActive = false;
-        if (container.id === activeContainerId) {
-          (container as ISubContainerSchema).isActive = true;
-          this.activeContainerId = container.id;
-        }
-      });
-    }
-  }
-
   /**
    * Gets called when parent wants to access ref of the components.
    * It will return ref of wrapperComponent/subContainer
@@ -169,7 +175,7 @@ export default class FormTabbedContainer extends Vue {
     if (this.$refs[fieldId]) {
       return this.$refs[fieldId];
     } else {
-      for (let item of this.schema.children) {
+      for (let item of this.tabs) {
         if (this.$refs[item.id]) {
           return (this.$refs[item.id] as any).getFieldRef(fieldId);
         }
@@ -188,8 +194,7 @@ export default class FormTabbedContainer extends Vue {
       return false;
     }
     let isValid = true;
-    this.schema.children.forEach((component: IContainerComponentParentSchema): void => {
-      console.log(this.$refs[component.id]);
+    this.tabs.forEach((component): void => {
       if (this.$refs[component.id] as any) {
         isValid = (this.$refs[component.id] as any).isValid(showError);
       }
@@ -204,6 +209,5 @@ export default class FormTabbedContainer extends Vue {
   border: 1px solid;
   margin-bottom: 20px;
   padding: 20px;
-}
-</style
+}</style
 >>

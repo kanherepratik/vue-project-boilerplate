@@ -32,7 +32,7 @@ module.exports = {
     'comma-dangle': 'off',
     'no-restricted-syntax': 'off',
     'no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
-    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/default-param-last': 'error',
     '@typescript-eslint/explicit-function-return-type': 'error',
