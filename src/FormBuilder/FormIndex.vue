@@ -53,6 +53,12 @@ import { IContainerSchema, IStepClickEvent, IComponentMap, ISubContainerSchema }
 import { signals } from './shared/signals';
 import FormSummary from './form-components/FormSummary.vue';
 import { FormMode, ContainerType } from './shared/enums';
+import {
+  getFirstVisibleContainerIndex,
+  getLastVisibleContainerIndex,
+  getPreviousContainerIndex,
+  getActiveContainerIndex,
+} from './shared/utils';
 
 @Component({
   components: {
@@ -78,11 +84,12 @@ export default class FormIndex extends Vue {
    */
   @Prop({ type: Boolean, default: false }) private showNavigation!: boolean;
   /**
-   * Model for activeStep. It is bound via v-model
+   * Mapping for form-components
    */
-
   @Prop(Object) private componentMap!: { [key: string]: IComponentMap };
-
+  /**
+   * Maping for signal callbacks
+   */
   @Prop(Object) private signal!: { [key: string]: () => boolean };
 
   private activeStep: string = '';
@@ -90,6 +97,9 @@ export default class FormIndex extends Vue {
   private mode: FormMode = FormMode.Edit;
   private FormMode: typeof FormMode = FormMode;
 
+  /**
+   * getters methods starts
+   */
   private get activeContainerId(): string {
     return this.activeStep;
   }
@@ -98,9 +108,7 @@ export default class FormIndex extends Vue {
   }
 
   private get activeContainerIndex(): number {
-    const index: number = this.formSchema.findIndex(
-      (container: IContainerSchema) => container.id === this.activeContainerId && !container.isHidden
-    );
+    const index = getActiveContainerIndex(this.formSchema, this.activeContainerId);
     if (index === -1) {
       return this.firstVisibleContainerIndex === -1 ? 0 : this.firstVisibleContainerIndex;
     }
@@ -119,18 +127,11 @@ export default class FormIndex extends Vue {
   }
 
   private get firstVisibleContainerIndex(): number {
-    const index: number = this.formSchema.findIndex((container: IContainerSchema) => !container.isHidden);
-    return index === -1 ? 0 : index;
+    return getFirstVisibleContainerIndex(this.formSchema);
   }
 
   private get lastVisibleContainerIndex(): number {
-    const reverseContainers: IContainerSchema[] = [...this.formSchema].reverse();
-    const reverseContainerIndex: number = reverseContainers.findIndex(
-      (container: IContainerSchema) => !container.isHidden
-    );
-    return reverseContainerIndex === -1
-      ? this.formSchema.length - 1
-      : Math.abs(reverseContainerIndex - (this.formSchema.length - 1));
+    return getLastVisibleContainerIndex(this.formSchema);
   }
 
   private get isPreviousVisible(): boolean {
@@ -141,21 +142,18 @@ export default class FormIndex extends Vue {
     return this.formSchema.findIndex((container) => !container.isSubmitted) === -1;
   }
 
+  /**
+   * getters methods ends
+   */
+
   private previousContainerIndex(formIndex: number): number {
-    const reverseContainers: IContainerSchema[] = [...this.formSchema].reverse();
-    const reverseContainerIndex: number = Math.abs(formIndex - (this.formSchema.length - 1));
-    const reverseNextFormIndex: number = reverseContainers.findIndex(
-      (container: IContainerSchema, index: number) => index > reverseContainerIndex && !container.isHidden
-    );
-    return reverseNextFormIndex === -1 ? formIndex : Math.abs(reverseNextFormIndex - (this.formSchema.length - 1));
+    return getPreviousContainerIndex(this.formSchema, formIndex);
   }
   /**
    * This method handles the steps change and make the container active.
    */
   private setActiveContainer(activeContainerId: string): void {
-    const index: number = this.formSchema.findIndex(
-      (container: IContainerSchema) => container.id === activeContainerId && !container.isHidden
-    );
+    const index = getActiveContainerIndex(this.formSchema, activeContainerId);
     // Error message in case of invalid form id
     if (index === -1) {
       console.error(
@@ -181,6 +179,7 @@ export default class FormIndex extends Vue {
         }
       });
     } else {
+      // Todo: check if the else part is really needed or not!!
       const incompleteFormIndex: number = this.formSchema.findIndex(
         (container: IContainerSchema) => !container.isSubmitted && !container.isHidden
       );
@@ -198,35 +197,6 @@ export default class FormIndex extends Vue {
         this.activeContainerId = this.formSchema[activeIndex].id;
       }
     }
-  }
-
-  private onStepClick(event: IStepClickEvent): void {
-    if (event.canNavigate) {
-      this.setActiveContainer(event.containerId);
-    }
-    /**
-     * Fired when a step is clicked.
-     * @param {IStepClickEvent} event
-     */
-
-    this.$emit('stepClick', event);
-  }
-
-  private handleContainerEmit(eventName: string, fieldId: string, value?: any): void {
-    /**
-     * This will emit an event on any change/blur/click etc. of component
-     * @param {string} eventType
-     * @param {string} fieldId
-     * @param {any} value
-     */
-    this.$emit('emit', eventName, fieldId, value);
-  }
-
-  private onSummaryEdit(containerId: string): void {
-    this.mode = FormMode.Edit;
-    this.setActiveContainer(containerId);
-    // reset active tab on edit
-    this.activeTab = this.formSchema[this.activeContainerIndex]?.children[0].id;
   }
 
   /**
@@ -255,6 +225,39 @@ export default class FormIndex extends Vue {
       // set next container's isActive to true in formSchema
       this.setActiveContainer(this.formSchema[activeFormIndex + 1].id);
     }
+  }
+
+  /**
+   * event handlers methods
+   */
+
+  private onStepClick(event: IStepClickEvent): void {
+    if (event.canNavigate) {
+      this.setActiveContainer(event.containerId);
+    }
+    /**
+     * Fired when a step is clicked.
+     * @param {IStepClickEvent} event
+     */
+
+    this.$emit('stepClick', event);
+  }
+
+  private handleContainerEmit(eventName: string, fieldId: string, value?: any): void {
+    /**
+     * This will emit an event on any change/blur/click etc. of component
+     * @param {string} eventType
+     * @param {string} fieldId
+     * @param {any} value
+     */
+    this.$emit('emit', eventName, fieldId, value);
+  }
+
+  private onSummaryEdit(containerId: string): void {
+    this.mode = FormMode.Edit;
+    this.setActiveContainer(containerId);
+    // reset active tab on edit
+    this.activeTab = this.formSchema[this.activeContainerIndex]?.children[0].id;
   }
 
   private async handleSubmit(containerId: string): Promise<void> {
