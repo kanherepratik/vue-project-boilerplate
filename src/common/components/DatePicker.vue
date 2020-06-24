@@ -5,8 +5,9 @@
       :popover="{ placement: 'auto', visibility: 'click' }"
       :min-date="minDate"
       :max-date="maxDate"
-      :value="configuredDates"
+      v-model="selectedDate"
       @input="onDateChange"
+      :disabled="disabled"
     >
       <div class="input-slot" slot-scope="{ inputProps, inputEvents }">
         <input
@@ -29,7 +30,7 @@ import Vue from 'vue';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import { DatePickerMode } from '../shared/enum';
 import { IDatePicker, IValidationRule, IValidation } from '../shared/interfaces';
-// import { validationHandler } from '../shared/validations';
+import { validationHandler } from '../shared/validations';
 
 /**
  * It is used to select the date
@@ -58,7 +59,6 @@ export default Vue.extend({
   name: 'DatePicker',
   data(): IDatePicker {
     return {
-      configuredDates: '' as Date | string,
       selectedDate: '' as Date | string,
       errorMessage: '',
       validation: { isValid: true } as IValidation,
@@ -71,12 +71,12 @@ export default Vue.extend({
     },
     minDate: Date,
     maxDate: Date,
-    dates: Date,
     placeholder: String,
     disabled: {
       type: Boolean,
       default: false,
     },
+    value: [Date, String],
     /**
      * Validations array of objects of type IValidationRule to valdiate the input
      * @values Array<IValidationRule>
@@ -86,12 +86,17 @@ export default Vue.extend({
       default: (): Array<IValidationRule> => [] as Array<IValidationRule>,
     },
   },
+  watch: {
+    value(): void {
+      this.selectedDate = this.$props.value;
+    },
+  },
   created() {
     /**
      * In future for multiple dates or ranges map the props to appropriate form
      * and then pass to date-picker library
      */
-    this.configuredDates = this.dates;
+    this.selectedDate = this.$props.value;
   },
   methods: {
     /**
@@ -99,25 +104,18 @@ export default Vue.extend({
      * @param {Date} date User selected date
      */
     onDateChange(date: Date | string): void {
-      this.selectedDate = date;
       /**
        * It emits the date selected by the user
        */
-      this.$emit('change', date, { type: 'change' });
-    },
-    /**
-     * This method is to be used by the parent component to get the current selected date
-     */
-    getValue(): Date | string {
-      return this.selectedDate;
+      this.$emit('input', date);
     },
     /**
      * Calls the validationHandler to check the validations, whether the state of input is valid or not
      * @returns boolean whether current state of the input is valid or not
      */
     isValid(): boolean {
-      // Todo: proper validation logic tbd
-      return true;
+      this.validation = validationHandler(this.selectedDate, this.validations);
+      return this.validation.isValid;
     },
   },
   components: {

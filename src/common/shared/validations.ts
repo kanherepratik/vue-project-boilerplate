@@ -4,7 +4,7 @@ import { ValidationMessages } from './enum';
 import { IValidation, IValidationRules, IValidationRule } from './interfaces';
 
 declare let RegExp: {
-  new (pattern: any, flags?: string): RegExp;
+  new(pattern: any, flags?: string): RegExp;
   (pattern: any, flags?: string): RegExp;
 };
 

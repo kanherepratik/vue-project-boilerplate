@@ -39,14 +39,15 @@ export default Vue.extend({
    */
   model: {
     prop: 'selectedItems',
-    event: 'onChange',
+    event: 'change',
   },
   props: {
     /**
      * The model prop of the checkbox
      */
     selectedItems: {
-      type: Array as () => Array<string>,
+      type: Array as () => Array<any>,
+      default: (): any[] => [],
     },
     header: {
       type: String,
@@ -81,9 +82,14 @@ export default Vue.extend({
     validation: { isValid: true } as IValidation,
   }),
   watch: {
-    value(): void {
+    // Watch for changes from outside
+    selectedItems(): void {
       this.values = [...this.selectedItems];
     },
+  },
+  created(): void {
+    // Initialize values
+    this.values = [...this.selectedItems];
   },
   methods: {
     /**
@@ -105,9 +111,9 @@ export default Vue.extend({
       }
       /**
        * onClick event to be called when checkbox is clicked.
-       * @event onChange
+       * @event change
        */
-      this.$emit('onChange', this.values, event);
+      this.$emit('change', this.values, event);
     },
   },
 });
