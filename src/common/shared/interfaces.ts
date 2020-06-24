@@ -111,8 +111,20 @@ export interface ISingleSelectData {
   validation: IValidation;
 }
 
-// Date picker interfaces
+// Textbox Component interfaces
+export interface IAppTextboxData {
+  inputVal: string;
+  validation: IValidation;
+}
 
+// Registration Component interfaces
+export interface IRegistrationInputData {
+  registrationValidations: Array<IValidationRule>;
+  value: string;
+  validation: IValidation;
+}
+
+// Date picker interfaces
 export interface IDatePicker {
   selectedDate: Date | string;
   errorMessage: string;
