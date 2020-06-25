@@ -130,3 +130,8 @@ export interface IDatePicker {
   errorMessage: string;
   validation: IValidation;
 }
+
+// ToolTip interfaces
+export interface IToolTipData {
+  hover: boolean;
+}

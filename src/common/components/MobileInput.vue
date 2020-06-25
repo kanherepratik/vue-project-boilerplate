@@ -112,6 +112,8 @@ export default Vue.extend({
       if (this.disabled) {
         return;
       }
+      // restrict characters
+      this.inputValue = this.inputValue.replace(/[^\d]/, '');
       this.$emit('input', this.inputValue, event);
     },
     /**

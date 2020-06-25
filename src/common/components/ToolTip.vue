@@ -9,11 +9,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-
-// local interface for data object
-interface IToolTipData {
-  hover: boolean;
-}
+import { IToolTipData } from '../shared/interfaces';
 
 /**
  *
