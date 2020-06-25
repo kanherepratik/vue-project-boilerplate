@@ -4,7 +4,7 @@
       <label class="dropdown-label">{{ label }}</label>
       <div class="selected-item">{{ selectedItem }}</div>
     </div>
-    <div v-if="showDropdown" class="filtered-list">
+    <div v-if="showDropdown" class="filtered-list" :class="{'mobile-mode': mobileMode}">
       <div v-if="searchable" class="search-block">
         <input
           class="input-field"
@@ -23,9 +23,7 @@
         :class="['filtered-item', { active: listItem.value === selectedItem, selected: searchIndex === index }]"
         :key="listItem.value"
         @click="onSelection(index)"
-      >
-        {{ listItem.label }}
-      </div>
+      >{{ listItem.label }}</div>
     </div>
     <div v-if="!validation.isValid" class="radioButtonErrorMsg">{{ validation.message }}</div>
   </div>
@@ -100,9 +98,17 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    value: String,
+    mobileMode: Boolean,
   },
   created(): void {
     this.mappedItems = transformData(this.items, this.labelKey, this.valueKey);
+
+    // initialize with value
+    const index: number = this.mappedItems.findIndex((item) => item.value === this.value);
+    if (index > -1) {
+      this.selectedItem = this.mappedItems[index].label;
+    }
   },
   mounted(): void {
     // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -115,6 +121,14 @@ export default Vue.extend({
   beforeDestroy(): void {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     document.removeEventListener('click', this.onBlur);
+  },
+  watch: {
+    value(): void {
+      const index: number = this.mappedItems.findIndex((item) => item.value === this.value);
+      if (index > -1) {
+        this.selectedItem = this.mappedItems[index].label;
+      }
+    },
   },
   methods: {
     isValid(): boolean {
@@ -178,6 +192,9 @@ export default Vue.extend({
     updateAndNotifySelection(selectedItem: ISelectItem | null = null): void {
       this.selectedItem = selectedItem ? selectedItem.label : '';
       this.$emit('selection', selectedItem);
+      if (selectedItem) {
+        this.$emit('input', selectedItem.value);
+      }
     },
     /**
      * This function is to used by the parent Component to get the current Selected Item
