@@ -5,7 +5,7 @@
       <div class="selected-item">{{ selectedItem }}</div>
     </div>
     <div v-if="showDropdown" class="filtered-list" :class="{'mobile-mode': mobileMode}">
-      <div v-if="searchable" class="search-block">
+      <div v-if="searchable && !mobileMode" class="search-block">
         <input
           class="input-field"
           type="text"
@@ -193,7 +193,7 @@ export default Vue.extend({
       this.selectedItem = selectedItem ? selectedItem.label : '';
       this.$emit('selection', selectedItem);
       if (selectedItem) {
-        this.$emit('input', selectedItem.value);
+        this.$emit('input', selectedItem.value, { type: 'input' });
       }
     },
     /**
