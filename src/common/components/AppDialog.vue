@@ -1,18 +1,16 @@
 <template>
   <transition name="modal-fade">
     <div :class="[!hideOverlay && 'modal-backdrop']" @click="onOverlayClicked">
-      <div :class="['modal', fullScreen && 'modal-fullscreen']" role="dialog" aria-labelledby="modalTitle"
-        aria-describedby="modalDescription" ref="modalContainer" @click="modalClicked">
+      <div :class="['modal', fullScreen && 'modal-fullscreen']" role="dialog">
         <header class="modal-header">
-          <slot name="header">
-          </slot>
+          <slot name="header"></slot>
         </header>
         <section class="modal-body">
-          <slot name="body">
-          </slot>
+          <slot name="body"></slot>
         </section>
         <footer class="modal-footer">
           <slot name="footer">
+            <button @click.prevent="onClose">Close</button>
           </slot>
         </footer>
       </div>
@@ -23,55 +21,27 @@
 <script lang="ts">
 import Vue from 'vue';
 
-// To keep the original height and overflow of body to restore it on modal close
-let bodyHeight = '';
-let bodyOverflowY = '';
-
-/**
- * Props -
- *
- * showModal: Boolean - Controls whether the component is visible or hidden.
- * persistent: Boolean - Clicking outside of the element will not deactivate it.
- * hideOverlay: Boolean - Hides the display of the overlay.
- * fullScreen: Boolean - Changes layout for fullscreen display.
- */
 export default Vue.extend({
   name: 'AppDialog',
-  model: {
-    prop: 'showModal',
-    event: 'close',
-  },
   props: {
-    showModal: Boolean,
     fullScreen: Boolean,
     hideOverlay: Boolean,
     persistent: Boolean,
   },
+  created(): void {
+    // tslint:disable no-unused-expressions
+    document.querySelector('body')?.classList.add('modal-open');
+  },
   methods: {
-    close(): void {
+    onClose(): void {
+      // tslint:disable no-unused-expressions
+      document.querySelector('body')?.classList.remove('modal-open');
       this.$emit('close');
     },
     onOverlayClicked(): void {
       if (!this.persistent) {
         this.$emit('overlayClicked');
-        this.close();
-      }
-    },
-    modalClicked(event: any): void {
-      event.stopPropagation();
-    },
-  },
-  watch: {
-    showModal(value: boolean): void {
-      // To stop scrolling the cotent behind overlay
-      if (value) {
-        bodyHeight = document.body.style.height;
-        bodyOverflowY = document.body.style.overflowY;
-        document.body.style.height = '100vh';
-        document.body.style.overflowY = 'hidden';
-      } else {
-        document.body.style.overflowY = bodyOverflowY || '';
-        document.body.style.height = bodyHeight || '';
+        this.onClose();
       }
     },
   },
@@ -128,5 +98,4 @@ export default Vue.extend({
   position: relative;
   padding: 20px 10px;
 }
-
 </style>

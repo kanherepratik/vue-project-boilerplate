@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <!-- <todo-component /> -->
+    <button @click="openModal">open modal</button>
+    <app-dialog v-if="modalOpen" @close="closeModal" />
     <form-index
       :formSchema="formSchema"
       :formData="formData"
@@ -30,6 +31,7 @@ interface IData {
   formSchema?: any[];
   componentMap: { [key: string]: IComponentMap };
   signals: { [key: string]: () => boolean | Promise<boolean> };
+  modalOpen: boolean;
 } // local interface for data properties
 
 export default Vue.extend({
@@ -76,6 +78,7 @@ export default Vue.extend({
     formSchema: [],
     componentMap,
     signals: {},
+    modalOpen: false,
   }),
   created(): void {
     get('https:/jsonblob.com/api/d1ab0271-aa12-11ea-a88a-e3742b354a00', true).then((res) => {
@@ -97,7 +100,12 @@ export default Vue.extend({
         default:
       }
     },
-
+    openModal(): void {
+      this.modalOpen = true;
+    },
+    closeModal(): void {
+      this.modalOpen = false;
+    },
     handleOnBeforeValid(): boolean {
       // can execute some condition and return true/false on that basis
       return true;
