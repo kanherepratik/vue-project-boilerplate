@@ -1,14 +1,13 @@
 <template>
-  <div>
-    <div v-if="label" class="textboxContainer__label">{{ label }}</div>
+  <div class="mobile-input">
+    <div v-if="label" class="mobileInputContainer__label">{{ label }}</div>
     <input
-      ref="input"
       type="tel"
       v-model="inputValue"
       :autofocus="autoFocus"
       :disabled="disabled"
       :placeholder="placeholder"
-      :maxlength="maxLen"
+      :maxlength="maxLength"
       @input="onChange"
       @focus="onFocus"
       @blur="onBlur"
@@ -19,14 +18,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { IValidationRule, IValidation } from '../shared/interfaces';
+import { IValidationRule, IValidation, IAppTextboxData } from '../shared/interfaces';
 import { validationHandler } from '../shared/validations';
-
-// local interface for data properties
-interface IMobileInput {
-  inputValue: string;
-  validation: IValidation; // To store the validation object
-}
 
 export default Vue.extend({
   name: 'MobileInput',
@@ -79,7 +72,7 @@ export default Vue.extend({
      * Max length of the input
      * @values Number
      */
-    maxLen: Number,
+    maxLength: Number,
     /**
      * Label to be shown above the input
      * @values String
@@ -89,16 +82,16 @@ export default Vue.extend({
       default: '',
     },
   },
-  data: (): IMobileInput => ({
+  data: (): IAppTextboxData => ({
     inputValue: '',
     validation: { isValid: true } as IValidation,
   }),
   mounted(): void {
-    this.inputValue = String(this.$props.value || '');
+    this.inputValue = String(this.value || '');
   },
   watch: {
     value(): void {
-      this.inputValue = String(this.$props.value || '');
+      this.inputValue = String(this.value || '');
     },
   },
   methods: {

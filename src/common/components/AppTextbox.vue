@@ -131,11 +131,11 @@ export default Vue.extend({
   }),
   watch: {
     value(): void {
-      this.inputValue = String(this.$props.value || '');
+      this.inputValue = String(this.value || '');
     },
   },
   mounted(): void {
-    this.inputValue = String(this.$props.value || '');
+    this.inputValue = String(this.value || '');
   },
   methods: {
     /**
