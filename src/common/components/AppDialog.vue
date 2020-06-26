@@ -32,10 +32,12 @@ export default Vue.extend({
     // tslint:disable no-unused-expressions
     document.querySelector('body')?.classList.add('modal-open');
   },
+  destroyed(): void {
+    // tslint:disable no-unused-expressions
+    document.querySelector('body')?.classList.remove('modal-open');
+  },
   methods: {
     onClose(): void {
-      // tslint:disable no-unused-expressions
-      document.querySelector('body')?.classList.remove('modal-open');
       this.$emit('close');
     },
     onOverlayClicked(): void {
