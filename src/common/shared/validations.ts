@@ -4,7 +4,7 @@ import { ValidationMessages } from './enum';
 import { IValidation, IValidationRules, IValidationRule } from './interfaces';
 
 declare let RegExp: {
-  new (pattern: any, flags?: string): RegExp;
+  new(pattern: any, flags?: string): RegExp;
   (pattern: any, flags?: string): RegExp;
 };
 
@@ -18,6 +18,9 @@ const required = (value: any): boolean => {
     return false;
   }
   if (typeof value === 'object' && !Object.keys(value).length) {
+    if (Object.prototype.toString.call(value) === '[object Date]' && value) {
+      return true;
+    }
     return false;
   }
   if (typeof value === 'string' && value.trim() === '') {
