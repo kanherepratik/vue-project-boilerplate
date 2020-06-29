@@ -11,7 +11,7 @@ const componentMap: { [key: string]: IComponentMap } = {
   },
   [WrapperComponentType.TextInput]: {
     component: 'AppTextbox',
-    eventMap: ['onBlur', 'onFocus', 'onChange'],
+    eventMap: ['onBlur', 'onFocus'],
     propMap: {
       disabled: 'isDisabled',
     },
@@ -39,7 +39,7 @@ const componentMap: { [key: string]: IComponentMap } = {
   },
   [WrapperComponentType.DatePicker]: {
     component: 'DatePicker',
-    eventMap: ['change'],
+    eventMap: ['input'],
     propMap: {
       disabled: 'isDisabled',
     },
