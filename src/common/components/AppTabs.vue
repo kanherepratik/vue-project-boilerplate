@@ -6,9 +6,7 @@
         :class="['tab-button', { 'active-tab': index === activeTabIndex }]"
         :key="index"
         @click="changeTab(index)"
-      >
-        {{ tab.title }}
-      </div>
+      >{{ tab.title }}</div>
     </div>
     <div class="content">
       <!--If keep alive-->
