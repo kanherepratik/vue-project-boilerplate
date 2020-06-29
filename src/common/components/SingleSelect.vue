@@ -1,6 +1,6 @@
 <template>
   <div class="single-select">
-    <div class="select-handle" tabindex="1" @click="onFocus" @keydown="onKeyDown">
+    <div class="select-handle" tabindex="1" @focus="onFocus" @click="onFocus" @keydown="onKeyDown">
       <label class="dropdown-label">{{ label }}</label>
       <div class="selected-item">{{ selectedItem }}</div>
     </div>
@@ -20,12 +20,12 @@
       </div>
       <div
         v-for="(listItem, index) of filteredItems"
-        :class="['filtered-item', { active: listItem.value === selectedItem, selected: searchIndex === index }]"
+        :class="['filtered-item', { active: listItem.label === selectedItem, selected: searchIndex === index }]"
         :key="listItem.value"
         @click="onSelection(index)"
       >{{ listItem.label }}</div>
     </div>
-    <div v-if="!validation.isValid" class="radioButtonErrorMsg">{{ validation.message }}</div>
+    <div v-if="!validation.isValid">{{ validation.message }}</div>
   </div>
 </template>
 
